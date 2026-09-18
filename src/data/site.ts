@@ -35,3 +35,13 @@ export const legal = [
 ];
 
 export const disclaimer = reglages.avertissement;
+
+/** Retire les guillemets saisis autour d'une citation : le site ajoute les siens (« … »). */
+export const citer = (texte: string) => texte.trim().replace(/^[«"“„]\s*/, '').replace(/\s*[»"”]$/, '');
+
+/** Raccourcit un texte pour la description des moteurs de recherche (≈155 signes, coupé sur un mot). */
+export const resume = (texte: string, max = 155) => {
+  const t = texte.replace(/\s+/g, ' ').trim();
+  if (t.length <= max) return t;
+  return t.slice(0, t.lastIndexOf(' ', max - 1)).replace(/[\s,;:·—-]+$/, '') + '…';
+};

@@ -12,6 +12,7 @@ const etapes = [
   { titre: 'Pendant la séance', texte: 'Arrivez avec une intention claire : ce que vous souhaitez stabiliser aujourd’hui. Nous clarifions ce qui se joue, ce qui doit être décidé et ce qui doit être structuré.' },
   { titre: 'Après la séance', texte: 'Vous repartez avec un axe clair, une décision stabilisée, une orientation précise pour l’étape d’après et votre livret d’axe.' },
 ];
+const ponctualite = consultation.conditions.find((c) => /ponctualit/i.test(c));
 ---
 <Base title="Votre Consultation d’Axe est réservée" description="Confirmation de votre Consultation d’Axe." noindex>
   <section class="section fond-noir">
@@ -39,7 +40,7 @@ const etapes = [
           </li>
         ))}
       </ol>
-      <p class="rappel">{consultation.conditions.find((c) => c.startsWith('Ponctualité'))}.</p>
+      {ponctualite && <p class="rappel">{ponctualite.replace(/\.?$/, '.')}</p>}
       <a class="lien" href="/">Retour au cabinet</a>
     </div>
   </section>

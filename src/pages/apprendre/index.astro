@@ -24,6 +24,7 @@ const date = (d: Date) => d.toLocaleDateString('fr-FR', { day: 'numeric', month:
 
   <section class="section fond-sable" aria-label="Articles">
     <div class="conteneur">
+      {articles.length === 0 && <p class="chapo">Les prochains articles arrivent bientôt.</p>}
       <ul class="liste">
         {articles.map((a) => (
           <li>

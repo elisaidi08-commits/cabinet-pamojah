@@ -6,7 +6,7 @@ import Titre from '../components/Titre.astro';
 import Citations from '../components/Citations.astro';
 import { services, consultationCarte, ACCES, type Service } from '../data/services';
 import { avis } from '../data/avis';
-import { site } from '../data/site';
+import { site, resume, citer } from '../data/site';
 
 export function getStaticPaths() {
   return services.map((service) => ({ params: { service: service.slug }, props: { service } }));
@@ -16,7 +16,7 @@ const { service: s } = Astro.props as { service: Service };
 const autres = services.filter((x) => x.slug !== s.slug);
 const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
 ---
-<Base title={s.nom} description={`${s.nom} — ${s.devise} ${s.description[0]}`}>
+<Base title={s.nom} description={resume(`${s.nom} : ${s.description[0] ?? s.devise}`)}>
   <section class="entree fond-noir">
     <Photo
       src={s.objet.image}
@@ -41,12 +41,12 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
 
   <section class="section fond-sable">
     <div class="conteneur description">
-      <p class="porte apparait">« {s.porte} »</p>
+      <p class="porte apparait">« {citer(s.porte)} »</p>
       <div class="apparait" style="--delai: 120ms">
         {s.description.map((p) => <p class="chapo">{p}</p>)}
         {s.fondation && <p class="fondation">{s.fondation}</p>}
         <p class="acces">
-          <strong>Ce programme est accessible uniquement après une Consultation d’Axe.</strong>
+          <strong>Ce programme est accessible uniquement après une Consultation d’Axe.</strong>{' '}
           C’est elle qui permet de vérifier qu’il correspond à votre situation.
         </p>
       </div>
@@ -64,7 +64,7 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
         style={`object-position: ${s.photo.position}`}
       />
       <div>
-        <Titre surtitre="Vous êtes au bon endroit si vous" id="pour-vous">Ce que vous traversez</Titre>
+        <Titre surtitre="Pour qui" id="pour-vous">Vous êtes au bon endroit si vous…</Titre>
         <ul class="liste-filets espace">
           {s.pourVous.map((x) => <li>{x}</li>)}
         </ul>

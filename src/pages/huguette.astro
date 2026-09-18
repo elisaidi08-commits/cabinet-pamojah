@@ -7,16 +7,15 @@ import Photo from '../components/Photo.astro';
 import Base from '../layouts/Base.astro';
 import Titre from '../components/Titre.astro';
 import Logo from '../components/Logo.astro';
-import { site } from '../data/site';
 import villa from '../assets/images/cabinet/S0-villa.png';
 import h from '../contenu/huguette.json';
 
 // Le portrait déposé dans l'administration (src/assets/images/huguette/) est optimisé comme les autres images.
-const portraits = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/huguette/*.{jpg,jpeg,png,webp,avif}', { eager: true });
+const portraits = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/huguette/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}', { eager: true });
 const portrait = h.portrait ? portraits[h.portrait]?.default : undefined;
 
 ---
-<Base title="L’architecte" description="Huguette Tolo-Tolo Ngemeyeme, architecte de souveraineté, fondatrice du Cabinet Pamojah : 17 ans d’infirmière, multi-entrepreneure.">
+<Base title="Huguette Tolo-Tolo Ngemeyeme" description="Huguette Tolo-Tolo Ngemeyeme, architecte de souveraineté et fondatrice du Cabinet Pamojah : infirmière pendant 17 ans, multi-entrepreneure.">
   <section class="section fond-noir tete">
     <div class="conteneur tete__grille">
       <div>

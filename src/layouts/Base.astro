@@ -43,6 +43,8 @@ const faqSchema = faq?.length
       mainEntity: faq.map((q) => ({ '@type': 'Question', name: q.question, acceptedAnswer: { '@type': 'Answer', text: q.reponse } })),
     }
   : null;
+// Données structurées : « < » échappé pour qu'un texte saisi dans l'administration ne puisse jamais fermer la balise.
+const jsonLd = (donnees: unknown) => JSON.stringify(donnees).replace(/</g, '\\u003c');
 const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.baseline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 // Tant que le site n'est pas officiellement lancé, les moteurs de recherche ne l'indexent pas.
@@ -55,6 +57,8 @@ const hasBefore = Astro.slots.has('avant-entete');
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Sans JavaScript, les textes à apparition restent visibles. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -70,8 +74,8 @@ const hasBefore = Astro.slots.has('avant-entete');
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(image, Astro.site)} />
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="application/ld+json" set:html={JSON.stringify(organisation)} />
-    {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+    <script type="application/ld+json" set:html={jsonLd(organisation)} />
+    {faqSchema && <script type="application/ld+json" set:html={jsonLd(faqSchema)} />}
   </head>
   <body>
     <a class="skip-link" href="#contenu">Aller au contenu</a>

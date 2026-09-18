@@ -55,6 +55,38 @@ Mise en ligne : déposer le contenu de `dist/` chez l'hébergeur (Netlify, Verce
 - **Pages préchargées au survol** des liens, **fondu enchaîné de 450 ms** entre les pages (Chrome, Edge, Safari récents), défilement doux vers les ancres, polices préchargées. Tout est désactivé si la visiteuse demande moins d'animations.
 - **Données structurées** (schema.org) : fiche du Cabinet sur toutes les pages, questions fréquentes sur l'accueil et la page Consultation.
 
+## Audit complet du site (18/09/2026, soir)
+
+Relecture du code, des textes et tests dans Brave et Safari iPhone (6 largeurs d'écran, clavier, sans JavaScript, mouvement réduit, connexion lente). Corrigé :
+
+- **Réservation** : le message « Chargement du calendrier… » restait affiché au-dessus de Calendly ; le calendrier débordait à 320 px ; en affichage automatique il volait le focus ; le retrait de l'accord cookies n'arrêtait pas l'affichage automatique.
+- **Administration** : effacer la date d'un article bloquait toute mise en ligne ; un lien Calendly ou un email vidé cassait la réservation → champs désormais obligatoires. Les images glissées dans un article sont rangées et optimisées. Tant que la connexion en ligne n'est pas activée, `/keystatic` affiche un message au lieu d'un espace vide.
+- **Film** : la vidéo HD (41 Mo) ne se charge plus que si la visiteuse fait défiler le film ; rien n'est chargé quand elle arrive directement dans le site ; sur connexion lente, les textes et le bouton suivent le scroll avant même que la vidéo soit prête ; le téléphone ne télécharge plus que son affiche ; le bouton Retour rend la position quittée (il renvoyait au début du site).
+- **Navigation** : l'en-tête ne réapparaît plus en scroll lent ; menu mobile : page courante signalée, état ouvert/fermé annoncé ; anneau de focus visible sur fond noir ; bandeau cookies rouvert au clavier (focus dedans, Échap, retour du focus).
+- **Sans JavaScript** : tous les textes s'affichent (ils restaient invisibles).
+- **Textes** : espace manquante (« d'Axe.C'est »), grammaire (page Le Cabinet, article, Consultation, page de l'architecte), **typographie française** automatique sur tout le site (espaces insécables avant : ; ? ! et dans « »), titres et descriptions pour les moteurs de recherche (nom d'Huguette dans le titre de sa page, descriptions ≤ 160 signes), bouton du pied de page (texte doré sur doré au survol).
+- **Partage et cache** : l'image d'aperçu et l'adresse canonique pointaient vers l'ancien site (lecabinetpamojah.com) → elles suivent maintenant le domaine de production Vercel ; les fichiers du site sont mis en cache par les navigateurs ; en-têtes de sécurité ajoutés (`vercel.json`).
+- **Robustesse du contenu** : guillemets tapés en double, section d'avis ou d'articles vide, portrait en .JPG, texte de FAQ contenant « < » : tout est géré.
+
+Vérifié : 0 violation d'accessibilité (axe, 13 pages), aucun défilement horizontal de 320 à 1920 px, film iPhone toujours fonctionnel.
+
+## Textes : propositions à faire valider par Huguette
+
+Ce sont ses mots ; rien n'a été changé sans son accord. Objectif : ne jamais présenter la lectrice comme fragile ni faire de promesse de santé (le site précise qu'il ne remplace pas un soin).
+
+| Où | Aujourd'hui | Proposition |
+|---|---|---|
+| Consultation (`clinique`) | « …qui aide à prévenir l'épuisement » | « …en préservant votre énergie » |
+| Consultation (`souhaits`) | « structurer leur intensité pour éviter l'épuisement » | « …pour préserver leur énergie » |
+| Consultation (`approche`) | « la prévention des risques professionnels liés à la santé mentale » | « l'attention portée à l'équilibre au travail » |
+| Le Cabinet + article « Clinique » | « la prévention de la surcharge, du burn-out » | « l'attention portée aux signaux de surcharge et à l'équilibre global » |
+| Consultation (`decalage`) | « un décalage intérieur… perte de sens, surcharge et fatigue mentale » | « Vous sentez qu'un nouveau cap se dessine : plus de responsabilités, des choix à arbitrer, une trajectoire à réaligner. » |
+| Consultation (`travail`, FAQ) | « zones de rupture », « mécanismes internes qui perturbent votre stabilité », « l'axe qui doit être restauré » | « zones de tension », « mécanismes qui orientent vos décisions », « l'axe à consolider » |
+| Consultation (`sortie`) | « un état intérieur apaisé » (ressemble à une promesse thérapeutique) | à retirer |
+| Bilan de soi | « fatigue mentale » ; « (phase de diagnostic approfondi) » ; « une consultation d'intégration » (confusion possible avec la Consultation d'Axe) | « une énergie dispersée » ; retirer la parenthèse ; « une séance d'intégration » |
+| Madame la CEO | « manquez de structure » ; « trop d'idées et pas assez de priorités » | « …et voulez la structurer » ; « beaucoup d'idées à hiérarchiser » |
+| L'architecte (genèse) | burn-out, maladie, syndrome de l'imposteur | son histoire, à elle de choisir ce qu'elle garde |
+
 ## Décisions prises en construisant (main libre donnée par Sady)
 
 - Les textes du film sont réglés sur des fenêtres de temps (`data-debut` / `data-fin` en secondes). Si le film est régénéré (2K, correctif de l'ordinateur), il faudra recaler ces fenêtres.
@@ -78,18 +110,22 @@ Mise en ligne : déposer le contenu de `dist/` chez l'hébergeur (Netlify, Verce
 ## Points ouverts côté production
 
 - **Film** : l'ordinateur pivote tout seul entre la lampe et l'ordinateur (correctif ≈ 430 crédits OpenArt) ; passage de porte un peu rapide. Version 2K possible avec Kling 4K (≈ 2 500 crédits, recharge nécessaire).
-- **Poids du film** : 41 Mo sur ordinateur, 10 Mo sur téléphone. Il ne se charge qu'en arrivant sur l'accueil ; à surveiller sur les connexions lentes.
+- **Poids du film** : version légère (6,5 Mo ordinateur, 2,3 Mo téléphone) à l'arrivée sur l'accueil ; la HD (41 Mo / 10 Mo) seulement si la visiteuse fait défiler le film.
 
 ## Structure du code
 
 ```
 src/
   pages/        une page = un fichier ([service].astro génère les 2 programmes)
-  components/   FilmEntree, Header (menu), Footer, MobileBar, Reservation, Faq, Citations, Cercles, Logo, Photo, Titre
+  components/   FilmEntree, Header (menu), Footer, Consentement (cookies), Reservation, Faq, Citations, Cercles, Logo, Photo, Titre
   layouts/      Base (en-tête, pied, métadonnées) · PageTexte (pages de lecture)
-  data/         site (coordonnées, Calendly), services, consultation, faq, avis — les textes se modifient ici
+  contenu/      les textes modifiables dans l'administration (JSON)
+  data/         lecture de ces textes pour les pages (services, consultation, faq, avis, site)
+  middleware.ts ferme /keystatic en ligne tant que la connexion n'est pas activée
   content/      articles/*.md — un fichier Markdown par article
   styles/       global.css — couleurs, typographie, espacements, boutons
   assets/       logos (SVG), images du cabinet, portraits étalonnés
 public/film/    le film (ordinateur, téléphone) et ses affiches
+typographie.mjs espaces insécables ajoutées à la construction du site
+vercel.json     cache et en-têtes de sécurité
 ```

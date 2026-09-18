@@ -48,6 +48,11 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: calc(var(--entete) + 16px);
+  scroll-padding-bottom: 16px;
+}
+/* Bandeau cookies ouvert : un élément atteint au clavier n'est jamais caché dessous (WCAG 2.4.11). */
+html.consentement-ouvert {
+  scroll-padding-bottom: calc(var(--hauteur-bandeau, 0px) + 32px);
 }
 
 body {
@@ -232,8 +237,13 @@ a { color: inherit; }
 }
 .bouton:hover { background: #C49B4A; border-color: #C49B4A; }
 .bouton:active { background: #9E7B33; border-color: #9E7B33; }
-.bouton:focus-visible { outline: 2px solid var(--noir); outline-offset: 3px; }
-.fond-noir .bouton:focus-visible { outline-color: var(--ivoire); }
+.bouton:focus-visible {
+  /* Anneau deux tons : lisible sur fond clair (noir) comme sur fond sombre (ivoire) — menu, film, bandeaux photo. */
+  outline: 2px solid var(--noir);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--ivoire);
+}
+.fond-noir .bouton:focus-visible { outline-color: var(--ivoire); box-shadow: 0 0 0 2px var(--noir); }
 
 .bouton--contour {
   background: transparent;
@@ -277,13 +287,13 @@ a { color: inherit; }
 /* ---------- Apparitions du récit ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
-  .apparait {
+  .js .apparait {
     opacity: 0;
     transform: translateY(16px);
     transition: opacity var(--recit) var(--courbe), transform var(--recit) var(--courbe);
     transition-delay: var(--delai, 0ms);
   }
-  .apparait.est-visible { opacity: 1; transform: none; }
+  .js .apparait.est-visible { opacity: 1; transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

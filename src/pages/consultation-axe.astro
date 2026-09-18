@@ -9,6 +9,7 @@ import { consultation as c } from '../data/consultation';
 import { faqConsultation } from '../data/faq';
 import { site, disclaimer } from '../data/site';
 import { leadershipDurable } from '../data/services';
+import { avis } from '../data/avis';
 import carnet from '../assets/images/portraits/carnet.jpg';
 import cabinet from '../assets/images/cabinet/S1-cabinet.png';
 
@@ -130,12 +131,14 @@ const romains = ['I', 'II', 'III'];
     </div>
   </section>
 
-  <section class="section fond-sable" aria-labelledby="temoignage">
-    <div class="conteneur">
-      <Titre surtitre="Elles l’ont vécue" id="temoignage">Un véritable moment de bascule</Titre>
-      <div class="espace-l"><Citations filtre={['consultation']} /></div>
-    </div>
-  </section>
+  {avis.some((x) => x.accompagnement === 'consultation') && (
+    <section class="section fond-sable" aria-labelledby="temoignage">
+      <div class="conteneur">
+        <Titre surtitre="Elles l’ont vécue" id="temoignage">Un véritable moment de bascule</Titre>
+        <div class="espace-l"><Citations filtre={['consultation']} /></div>
+      </div>
+    </section>
+  )}
 
   <section class="section fond-ivoire" aria-labelledby="reserver-titre">
     <div class="conteneur">

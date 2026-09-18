@@ -8,7 +8,7 @@ date: 2026-09-18
 
 Le Cabinet Pamojah est une clinique du leadership multi-talents. Le terme clinique désigne un espace d’écoute, de prévention, de discernement, de structuration du leadership et d’action.
 
-Nous accompagnons les femmes leaders multipotentielles, dont la richesse de leurs talents, la diversité d’expériences et la profondeur de leurs responsabilités nécessitent plus qu’une méthode standardisée de coaching professionnel.
+Nous accompagnons les femmes leaders multipotentielles, dont la richesse des talents, la diversité des expériences et la profondeur des responsabilités appellent autre chose qu’une méthode standardisée de coaching.
 
 ## Une approche à la fois
 

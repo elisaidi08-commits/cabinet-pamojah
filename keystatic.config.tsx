@@ -70,9 +70,14 @@ export default config({
         titre: fields.slug({ name: { label: 'Titre' }, slug: { label: 'Adresse de la page', description: 'Générée à partir du titre.' } }),
         resume: texte('Résumé', 'Deux lignes, affichées dans la liste des articles et sous le titre.'),
         theme: ligne('Thème', 'ex. « Leadership », « Multipotentialité »'),
-        date: fields.date({ label: 'Date de publication', defaultValue: { kind: 'today' } }),
+        date: fields.date({ label: 'Date de publication', defaultValue: { kind: 'today' }, validation: { isRequired: true } }),
         brouillon: fields.checkbox({ label: 'Brouillon', description: 'Cochée : l’article n’apparaît pas sur le site.', defaultValue: false }),
-        contenu: fields.markdoc({ label: 'Texte de l’article', extension: 'md' }),
+        contenu: fields.markdoc({
+          label: 'Texte de l’article',
+          extension: 'md',
+          // Images glissées dans un article : rangées avec les autres images, puis optimisées à la construction du site.
+          options: { image: { directory: 'src/assets/images/articles', publicPath: '../../assets/images/articles/' } },
+        }),
       },
     }),
   },
@@ -266,10 +271,13 @@ export default config({
       path: 'src/contenu/reglages',
       format: { data: 'json' },
       schema: {
-        email: ligne('Email de contact'),
+        email: fields.text({
+          label: 'Email de contact',
+          validation: { isRequired: true, pattern: { regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Adresse email invalide.' } },
+        }),
         instagram: fields.url({ label: 'Lien Instagram' }),
         instagramHandle: ligne('Nom du compte Instagram', 'ex. @lecabinetpamojah'),
-        calendly: fields.url({ label: 'Lien de réservation Calendly' }),
+        calendly: fields.url({ label: 'Lien de réservation Calendly', validation: { isRequired: true } }),
         signature: ligne('Signature', 'ex. « Confidentialité · Discernement · Exigence »'),
         avertissement: texte('Mention « non médical » (pied de page)'),
       },

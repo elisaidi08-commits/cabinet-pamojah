@@ -5,7 +5,12 @@
 import { consultation } from '../data/consultation';
 import { site } from '../data/site';
 
-const url = `${site.calendly}?hide_gdpr_banner=1&background_color=f4eee8&text_color=0d0d0d&primary_color=b38c3d`;
+// URL construite proprement même si le lien Calendly saisi dans l'administration contient déjà des paramètres.
+const calendly = new URL(site.calendly);
+Object.entries({ hide_gdpr_banner: '1', background_color: 'f4eee8', text_color: '0d0d0d', primary_color: 'b38c3d' }).forEach(([k, v]) =>
+  calendly.searchParams.set(k, v),
+);
+const url = calendly.href;
 ---
 <div class="resa" id="reserver">
   <div class="resa__cadre">
@@ -43,8 +48,9 @@ const url = `${site.calendly}?hide_gdpr_banner=1&background_color=f4eee8&text_co
     border-top: 1px solid var(--or);
   }
   .resa__attente { display: grid; gap: var(--e-5); justify-items: start; max-width: 34rem; }
+  .resa__attente[hidden], .resa__widget[hidden] { display: none; }
   .resa__note { font-size: 17px; color: var(--encre-douce); }
-  .resa__widget { min-width: 320px; height: 760px; }
+  .resa__widget { height: 760px; }
   .resa__widget :global(iframe) { width: 100%; height: 100%; border: 0; }
 
   @media (max-width: 900px) {
@@ -61,34 +67,42 @@ const url = `${site.calendly}?hide_gdpr_banner=1&background_color=f4eee8&text_co
   const attente = document.querySelector<HTMLElement>('[data-resa-attente]');
 
   let calendrierCharge = false;
-  const chargerCalendrier = () => {
+  // parClic : la visiteuse a demandé le calendrier, on y déplace le focus ; en chargement automatique, on ne la dérange pas.
+  const chargerCalendrier = (parClic = false) => {
     if (calendrierCharge || !module || !widget || !attente || !ouvrir) return;
     calendrierCharge = true;
     ouvrir.disabled = true;
     ouvrir.textContent = 'Chargement du calendrier…';
     const iframe = document.createElement('iframe');
     iframe.title = 'Réserver la Consultation d’Axe (Calendly)';
-    iframe.src = `${module.dataset.url}&embed_domain=${location.hostname}&embed_type=Inline`;
+    const src = new URL(module.dataset.url!);
+    src.searchParams.set('embed_domain', location.hostname);
+    src.searchParams.set('embed_type', 'Inline');
+    iframe.src = src.href;
     iframe.addEventListener('load', () => {
       attente.hidden = true;
       widget.hidden = false;
-      iframe.focus();
+      if (parClic) iframe.focus();
     });
     widget.append(iframe);
   };
-  ouvrir?.addEventListener('click', chargerCalendrier);
+  ouvrir?.addEventListener('click', () => chargerCalendrier(true));
 
   // Services externes acceptés (bandeau cookies) : le calendrier s'affiche seul à l'approche de la section.
+  // Si l'accord est retiré avant, on cesse de guetter.
+  let guet: IntersectionObserver | null = null;
   const siAccepte = () => {
+    guet?.disconnect();
+    guet = null;
     const c = (window as unknown as { pamojahConsentement?: { services: boolean } }).pamojahConsentement;
-    if (!c?.services || !module) return;
-    const observer = new IntersectionObserver((entrees) => {
+    if (!c?.services || !module || calendrierCharge) return;
+    guet = new IntersectionObserver((entrees) => {
       if (entrees.some((e) => e.isIntersecting)) {
         chargerCalendrier();
-        observer.disconnect();
+        guet?.disconnect();
       }
     }, { rootMargin: '600px 0px' });
-    observer.observe(module);
+    guet.observe(module);
   };
   siAccepte();
   document.addEventListener('pamojah:consentement', siAccepte);

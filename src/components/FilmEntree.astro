@@ -22,19 +22,16 @@ const programmes = [
 ---
 <section class="film" id="film" aria-label="Film d’entrée : la villa et le cabinet Pamojah" data-film>
   <div class="film__scene">
-    <img
-      class="film__affiche"
-      src="/film/affiche-ordinateur.jpg"
-      data-affiche-telephone="/film/affiche-telephone.jpg"
-      alt=""
-      fetchpriority="high"
-    />
+    <picture>
+      <source media="(max-width: 860px) and (orientation: portrait)" srcset="/film/affiche-telephone.jpg" width="608" height="1080" />
+      <img class="film__affiche" src="/film/affiche-ordinateur.jpg" width="1920" height="1080" alt="" fetchpriority="high" />
+    </picture>
     <video class="film__video" muted playsinline preload="auto" aria-hidden="true"></video>
     <div class="film__voile" aria-hidden="true"></div>
     <div class="film__ombre" aria-hidden="true"></div>
 
     <!-- Devant la villa : où sommes-nous ? -->
-    <div class="film__legende film__ouverture" data-legende data-avant data-voile="0.35" data-debut="-1" data-fin="2.4">
+    <div class="film__legende film__ouverture" data-legende data-voile="0.35" data-debut="-1" data-fin="2.4">
       <p class="surtitre">{f.ouvertureSurtitre}</p>
       <p class="film__lieu">{f.ouvertureTitre}</p>
       <p class="film__description">{f.ouvertureTexte}</p>
@@ -50,7 +47,7 @@ const programmes = [
     <!-- Les deux programmes, chacun sur son objet -->
     {programmes.map(({ s, debut, fin }) => (
       <div class="film__legende film__service" data-legende data-debut={debut} data-fin={fin} data-ombre>
-        <p class="surtitre">Programme · {s.duree} · {s.objet.nom}</p>
+        <p class="surtitre">Programme · {s.duree}</p>
         <p class="film__nom">{s.nom}</p>
         <p class="devise">{s.devise}</p>
         <p class="film__description">{s.description[0]}</p>
@@ -83,10 +80,11 @@ const programmes = [
 <script is:inline>
   // Le film ne s'active que si le JavaScript tourne et que le mouvement n'est pas réduit.
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.getElementById('film').classList.add('est-anime');
-  // Déjà vu pendant cette visite (retour depuis une autre page) : on arrive directement dans le site.
+  // Déjà vu pendant cette visite (retour vers l'accueil par un lien) : on arrive directement dans le site.
+  // Bouton Retour ou rechargement : le navigateur rend la position quittée, on n'y touche pas.
   try {
-    if (sessionStorage.getItem('pamojah-film-vu') && !location.hash) {
-      history.scrollRestoration = 'manual';
+    var navigation = (performance.getEntriesByType('navigation')[0] || {}).type;
+    if (sessionStorage.getItem('pamojah-film-vu') && !location.hash && navigation === 'navigate') {
       document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('bienvenue').scrollIntoView({ behavior: 'instant' });
       });
@@ -251,7 +249,6 @@ const programmes = [
   const film = document.querySelector<HTMLElement>('[data-film]');
   if (film?.classList.contains('est-anime')) {
     let video = film.querySelector<HTMLVideoElement>('.film__video')!;
-    const affiche = film.querySelector<HTMLImageElement>('.film__affiche')!;
     const voile = film.querySelector<HTMLElement>('.film__voile')!;
     const ombre = film.querySelector<HTMLElement>('.film__ombre')!;
     const legendes = [...film.querySelectorAll<HTMLElement>('[data-legende]')].map((el) => ({
@@ -260,7 +257,6 @@ const programmes = [
       fin: Number(el.dataset.fin),
       ombre: el.hasAttribute('data-ombre'),       // ombre basse (textes des services)
       voile: Number(el.dataset.voile ?? 0),       // voile plein (ouverture, bienvenue)
-      avant: el.hasAttribute('data-avant'),       // visible avant même le chargement du film
     }));
 
     // Deux temps : une version légère pour que le film réagisse vite, puis la HD en arrière-plan.
@@ -281,15 +277,19 @@ const programmes = [
     ];
 
     const telephone = window.matchMedia('(max-width: 860px) and (orientation: portrait)').matches;
-    if (telephone && affiche.dataset.afficheTelephone) affiche.src = affiche.dataset.afficheTelephone;
+    const sources = telephone ? SOURCES.telephone : SOURCES.ordinateur;
+
+    // Durée du film assemblé : les textes suivent le scroll même avant que la vidéo soit prête (connexion lente).
+    const DUREE_FILM = 20.67;
 
     let avancement = 0;
     let temps = 0;      // temps du film affiché, lissé
-    let duree = 0;
+    let duree = 0;      // durée réelle, connue quand la vidéo est prête
     let enCours = false;
 
     const tempsPour = (p: number) => {
-      const segments = RYTHME.map(([a, b, poids]) => [a, Math.min(b, duree), poids]).filter(([a, b]) => b > a);
+      const fin = duree || DUREE_FILM;
+      const segments = RYTHME.map(([a, b, poids]) => [a, Math.min(b, fin), poids]).filter(([a, b]) => b > a);
       const total = segments.reduce((s, [a, b, poids]) => s + (b - a) * poids, 0);
       let reste = p * total;
       for (const [a, b, poids] of segments) {
@@ -297,7 +297,7 @@ const programmes = [
         if (reste <= longueur) return a + reste / poids;
         reste -= longueur;
       }
-      return duree;
+      return fin;
     };
 
     const memoriser = () => {
@@ -325,8 +325,7 @@ const programmes = [
       let voileMax = 0;
       let ombreMax = 0;
       for (const l of legendes) {
-        let o = Math.min(1, Math.max(0, (temps - l.debut) / FONDU)) * Math.min(1, Math.max(0, (l.fin - temps) / FONDU));
-        if (!duree && !l.avant) o = 0;
+        const o = Math.min(1, Math.max(0, (temps - l.debut) / FONDU)) * Math.min(1, Math.max(0, (l.fin - temps) / FONDU));
         l.el.style.opacity = o.toFixed(3);
         l.el.style.visibility = o > 0.02 ? 'visible' : 'hidden';
         l.el.style.transform = `translateY(${((1 - o) * 12).toFixed(1)}px)`;
@@ -338,7 +337,7 @@ const programmes = [
     };
 
     const image = () => {
-      const cible = duree ? tempsPour(avancement) : 0;
+      const cible = tempsPour(avancement);
       temps += (cible - temps) * LISSAGE;
       if (Math.abs(cible - temps) < 0.003) temps = cible;
       peindre();
@@ -350,8 +349,16 @@ const programmes = [
       else enCours = false;
     };
 
+    let hdDemandee = false;
+    const demanderHd = () => {
+      if (hdDemandee || !hdPermise || !duree || avancement < 0.01) return;
+      hdDemandee = true;
+      passerEnHd(sources.hd);
+    };
+
     const auScroll = () => {
       mesurer();
+      demanderHd();
       if (!enCours) {
         enCours = true;
         requestAnimationFrame(image);
@@ -411,23 +418,22 @@ const programmes = [
       try {
         await remplir(hd, url);
         hd.currentTime = Math.min(temps, duree - 0.05);
-        await new Promise((ok) => hd.addEventListener('seeked', ok, { once: true }));
+        if (!(await attendre(hd, 'seeked', 4000))) throw new Error('HD trop lente');
         hd.classList.add('est-visible');
         const ancienne = video;
         video = hd;
-        film.classList.add('est-hd');
         auScroll();
         setTimeout(() => {
           URL.revokeObjectURL(ancienne.src);
           ancienne.remove();
         }, 600);
       } catch {
+        if (hd.src.startsWith('blob:')) URL.revokeObjectURL(hd.src);
         hd.remove();  // on garde la version légère
       }
     };
 
     const charger = async () => {
-      const sources = telephone ? SOURCES.telephone : SOURCES.ordinateur;
       try {
         await remplir(video, sources.leger);
         duree = video.duration;
@@ -438,13 +444,26 @@ const programmes = [
         figer();
         return;
       }
-      if (hdPermise) passerEnHd(sources.hd);
+      demanderHd();
     };
 
     window.addEventListener('scroll', auScroll, { passive: true });
     window.addEventListener('resize', auScroll);
     mesurer();
     peindre();
-    charger();
+
+    // Film déjà vu (arrivée directe dans le site) : la vidéo ne se charge que si l'on remonte dans le film.
+    let dejaVu = false;
+    try { dejaVu = Boolean(sessionStorage.getItem('pamojah-film-vu')); } catch {}
+    if (!dejaVu) charger();
+    else {
+      const guet = new IntersectionObserver((entrees) => {
+        if (entrees.some((e) => e.isIntersecting)) {
+          guet.disconnect();
+          charger();
+        }
+      }, { rootMargin: '-25% 0px' });
+      guet.observe(film);
+    }
   }
 </script>

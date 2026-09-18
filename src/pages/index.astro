@@ -12,7 +12,8 @@ import Faq from '../components/Faq.astro';
 import Cercles from '../components/Cercles.astro';
 import { services, consultationCarte, leadershipDurable, ACCES } from '../data/services';
 import { faqAccueil } from '../data/faq';
-import { site, disclaimer } from '../data/site';
+import { avis } from '../data/avis';
+import { site, disclaimer, citer } from '../data/site';
 import assise from '../assets/images/portraits/portrait-assise.jpg';
 import cabinet from '../assets/images/cabinet/S1-cabinet.png';
 import villa from '../assets/images/cabinet/S0-villa.png';
@@ -139,7 +140,7 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
               />
             </a>
             <div class="accomp__texte">
-              <p class="accomp__porte">« {s.porte} »</p>
+              <p class="accomp__porte">« {citer(s.porte)} »</p>
               <span class="surtitre">{s.surtitre}</span>
               <h3 id={`accomp-${s.id}`} class="accomp__nom">{s.nom}</h3>
               <p class="devise">{s.devise}</p>
@@ -166,9 +167,9 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
         <Titre surtitre={a.seuil.surtitre} id="seuil-titre">{a.seuil.titre}</Titre>
         <p class="chapo espace">{a.seuil.sousTitre}</p>
         <p class="espace"><strong>{a.seuil.pointEntree}</strong>{' '}{a.seuil.texte}</p>
-        <p class="seuil__moments" aria-label={a.seuil.moments.join(', ')}>
-          {a.seuil.moments.map((m) => <span>{m}</span>)}
-        </p>
+        <ul class="seuil__moments" role="list">
+          {a.seuil.moments.map((m) => <li>{m}</li>)}
+        </ul>
       </div>
       <Photo
         src={cabinet}
@@ -214,7 +215,7 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
       </div>
       <div class="architecte__texte">
         <blockquote class="architecte__citation apparait">
-          <p>« {a.architecte.citation} »</p>
+          <p>« {citer(a.architecte.citation)} »</p>
         </blockquote>
         <p class="espace apparait">{a.architecte.texte}</p>
         <p class="espace-s apparait">{a.architecte.ensemble}</p>
@@ -223,13 +224,13 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
     </div>
   </section>
 
-  <!-- 7. Les avis -->
-  <section class="section fond-ivoire" aria-labelledby="avis-titre">
+  <!-- 7. Les avis (la section disparaît s'il n'y en a aucun) -->
+  {avis.length > 0 && <section class="section fond-ivoire" aria-labelledby="avis-titre">
     <div class="conteneur">
       <Titre surtitre="Elles en parlent" id="avis-titre">{a.avisTitre}</Titre>
       <div class="espace-l"><Citations /></div>
     </div>
-  </section>
+  </section>}
 
   <!-- 8. La Sphère de pouvoir -->
   <section class="section fond-noir" aria-labelledby="sphere-titre">
@@ -244,8 +245,8 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
     </div>
   </section>
 
-  <!-- 9. Apprendre -->
-  <section class="section fond-sable" aria-labelledby="apprendre-titre">
+  <!-- 9. Apprendre (masqué si tous les articles sont en brouillon) -->
+  {articles.length > 0 && <section class="section fond-sable" aria-labelledby="apprendre-titre">
     <div class="conteneur">
       <div class="apprendre__tete">
         <Titre surtitre="S’informer et apprendre" id="apprendre-titre">La Bibliothèque</Titre>
@@ -267,7 +268,7 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
         <a href={site.instagram} rel="noopener">{site.instagramHandle}</a>
       </p>
     </div>
-  </section>
+  </section>}
 
   <!-- 10. Retour au seuil -->
   <section class="section retour fond-noir" aria-labelledby="retour-titre">
@@ -427,8 +428,8 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
     align-items: center;
   }
   :global(.seuil__image) { width: 100%; height: auto; }
-  .seuil__moments { display: flex; flex-wrap: wrap; gap: 6px 0; margin-top: var(--e-6); font-style: italic; color: rgba(244, 238, 232, 0.85); }
-  .seuil__moments span:not(:last-child)::after { content: '→'; margin: 0 10px; color: var(--or); font-style: normal; }
+  .seuil__moments { display: flex; flex-wrap: wrap; gap: 6px 0; margin: var(--e-6) 0 0; padding: 0; list-style: none; font-style: italic; color: rgba(244, 238, 232, 0.85); }
+  .seuil__moments li:not(:last-child)::after { content: '→'; margin: 0 10px; color: var(--or); font-style: normal; }
   .clarifions {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));

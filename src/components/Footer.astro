@@ -29,8 +29,8 @@ const annee = new Date().getFullYear();
       </div>
 
       <div class="pied__col pied__action">
-        <p class="surtitre">Toutes les portes s’ouvrent par</p>
-        <a class="bouton" href="/consultation-axe/#reserver">La {site.consultation.name}</a>
+        <p class="surtitre">Toutes les portes s’ouvrent par la {site.consultation.name}</p>
+        <a class="bouton" href="/consultation-axe/#reserver" aria-label={`Réserver ma ${site.consultation.name}`}>Réserver</a>
       </div>
     </div>
 
@@ -62,13 +62,13 @@ const annee = new Date().getFullYear();
 
   .pied__col ul { margin: var(--e-4) 0 0; padding: 0; list-style: none; }
   .pied__col li + li { margin-top: 6px; }
-  .pied__col a {
+  .pied__col a:not(.bouton) {
     display: inline-block;
     padding: 4px 0;
     text-decoration: none;
     font-size: 19px;
   }
-  .pied__col a:hover, .pied__col a:focus-visible { color: var(--or); }
+  .pied__col a:not(.bouton):hover, .pied__col a:not(.bouton):focus-visible { color: var(--or); }
   .pied__action .bouton { margin-top: var(--e-4); }
 
   .pied__signature {

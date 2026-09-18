@@ -12,7 +12,7 @@ const { questions } = Astro.props;
         <span>{q.question}</span>
         <span class="faq__signe" aria-hidden="true"></span>
       </summary>
-      <div class="faq__reponse"><p set:html={q.reponse} /></div>
+      <div class="faq__reponse"><p>{q.reponse}</p></div>
     </details>
   ))}
 </div>

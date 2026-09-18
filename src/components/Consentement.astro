@@ -122,9 +122,14 @@
     document.dispatchEvent(new CustomEvent('pamojah:consentement', { detail: c }));
   };
 
+  // Rouvert depuis « Gérer les cookies » : le focus entre dans le bandeau, puis revient au bouton à la fermeture.
+  let declencheur: HTMLElement | null = null;
+
   const fermer = () => {
     bandeau.hidden = true;
     document.documentElement.classList.remove('consentement-ouvert');
+    declencheur?.focus({ preventScroll: true });
+    declencheur = null;
   };
 
   const enregistrer = (mesure: boolean, services: boolean) => {
@@ -142,15 +147,29 @@
     bouton('personnaliser').setAttribute('aria-expanded', String(detail));
     bandeau.hidden = false;
     document.documentElement.classList.add('consentement-ouvert');
+    document.documentElement.style.setProperty('--hauteur-bandeau', `${bandeau.offsetHeight}px`);
   };
 
   bouton('refuser').addEventListener('click', () => enregistrer(false, false));
   bouton('accepter').addEventListener('click', () => enregistrer(true, true));
-  bouton('personnaliser').addEventListener('click', () => ouvrir(true));
+  bouton('personnaliser').addEventListener('click', () => {
+    ouvrir(true);
+    cases[0]?.focus();
+  });
   bouton('enregistrer').addEventListener('click', () =>
     enregistrer(cases.find((c) => c.dataset.categorie === 'mesure')!.checked, cases.find((c) => c.dataset.categorie === 'services')!.checked),
   );
-  document.querySelectorAll('[data-gerer-cookies]').forEach((el) => el.addEventListener('click', () => ouvrir(true)));
+  document.querySelectorAll<HTMLElement>('[data-gerer-cookies]').forEach((el) =>
+    el.addEventListener('click', () => {
+      declencheur = el;
+      ouvrir(true);
+      cases[0]?.focus();
+    }),
+  );
+
+  bandeau.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lire()) fermer();
+  });
 
   const existant = lire();
   if (existant) appliquer(existant);

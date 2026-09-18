@@ -9,7 +9,8 @@ const articles = defineCollection({
     titre: z.string(),
     resume: z.string(),
     theme: z.string(),
-    date: z.coerce.date(),
+    // Filet de sécurité : une date effacée ne doit jamais bloquer la mise en ligne.
+    date: z.coerce.date().default(() => new Date()),
     brouillon: z.boolean().default(false),
   }),
 });

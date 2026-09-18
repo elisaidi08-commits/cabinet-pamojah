@@ -29,7 +29,7 @@ const current = Astro.url.pathname;
       <span class="entete__action-court" aria-hidden="true">Réserver</span>
     </a>
 
-    <button class="entete__menu" type="button" aria-haspopup="dialog" aria-controls="menu" aria-label="Menu" data-ouvre-menu>
+    <button class="entete__menu" type="button" aria-haspopup="dialog" aria-controls="menu" aria-expanded="false" aria-label="Menu" data-ouvre-menu>
       <span class="entete__menu-mot">Menu</span>
       <span class="entete__traits" aria-hidden="true"></span>
     </button>
@@ -44,7 +44,7 @@ const current = Astro.url.pathname;
   <nav aria-label="Menu principal">
     <ul class="menu__liens">
       <li><a href="/">Accueil</a></li>
-      {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      {nav.map((item) => <li><a href={item.href} aria-current={current === item.href ? 'page' : undefined}>{item.label}</a></li>)}
       <li><a href="/la-sphere/">La Sphère de pouvoir</a></li>
     </ul>
   </nav>
@@ -182,6 +182,7 @@ const current = Astro.url.pathname;
     text-decoration: none;
   }
   .menu__liens a:hover, .menu__liens a:focus-visible { color: var(--or); }
+  .menu__liens a[aria-current='page'] { color: var(--or); }
 
   .menu__bas { display: grid; gap: var(--e-5); }
   .menu__signature {
@@ -202,7 +203,12 @@ const current = Astro.url.pathname;
   const entete = document.querySelector<HTMLElement>('[data-entete]');
   const menu = document.querySelector<HTMLDialogElement>('[data-menu]');
 
-  document.querySelector('[data-ouvre-menu]')?.addEventListener('click', () => menu?.showModal());
+  const ouvreMenu = document.querySelector<HTMLButtonElement>('[data-ouvre-menu]');
+  ouvreMenu?.addEventListener('click', () => {
+    menu?.showModal();
+    ouvreMenu.setAttribute('aria-expanded', 'true');
+  });
+  menu?.addEventListener('close', () => ouvreMenu?.setAttribute('aria-expanded', 'false'));
   document.querySelector('[data-ferme-menu]')?.addEventListener('click', () => menu?.close());
   menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => menu.close()));
 
@@ -213,9 +219,12 @@ const current = Astro.url.pathname;
     () => {
       if (!entete) return;
       const y = window.scrollY;
+      const ecart = y - dernier;
+      // Petits mouvements (scroll lent, inertie) : on attend d'avoir parcouru assez pour décider.
+      if (Math.abs(ecart) < 8 && y > 200) return;
       const colle = entete.getBoundingClientRect().top <= 0;
-      entete.classList.toggle('est-cache', colle && y > dernier + 4 && y > 200);
-      if (y < dernier - 4) entete.classList.remove('est-cache');
+      if (ecart > 0 && y > 200 && colle) entete.classList.add('est-cache');
+      else entete.classList.remove('est-cache');
       dernier = y;
     },
     { passive: true },

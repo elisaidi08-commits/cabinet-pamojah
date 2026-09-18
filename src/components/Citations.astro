@@ -1,6 +1,7 @@
 ---
 // Avis clientes : des citations typographiques, sans carte ni carrousel, sans photo.
 import { avis as tous, libelles, type Avis } from '../data/avis';
+import { citer } from '../data/site';
 
 interface Props {
   filtre?: Avis['accompagnement'][];
@@ -13,7 +14,7 @@ const liste = filtre ? tous.filter((a) => filtre.includes(a.accompagnement)) : t
     {liste.map((a, i) => (
       <li class="citation apparait" style={`--delai: ${i * 120}ms`}>
         <blockquote>
-          <p>« {a.citation} »</p>
+          <p>« {citer(a.citation)} »</p>
         </blockquote>
         <p class="citation__source">Cliente accompagnée · {libelles[a.accompagnement]}</p>
       </li>
