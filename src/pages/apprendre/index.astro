@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import Photo from '../../components/Photo.astro';
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+import afro from '../../assets/images/portraits/portrait-afro.jpg';
+
+const articles = (await getCollection('articles', ({ data }) => !data.brouillon)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const date = (d: Date) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title="Apprendre" description="S’informer et apprendre avec le Cabinet Pamojah : articles sur la multipotentialité, le leadership durable et la souveraineté personnelle.">
+  <section class="section fond-noir tete">
+    <div class="conteneur tete__grille">
+      <div>
+        <span class="surtitre">La Bibliothèque</span>
+        <h1>S’informer et apprendre</h1>
+        <p class="chapo espace">
+          Des repères pour comprendre ce qui se joue derrière la réussite, et architecturer votre multiplicité.
+        </p>
+      </div>
+      <Photo src={afro} alt="" widths={[480, 720]} sizes="(max-width: 900px) 100vw, 30vw" class="tete__photo" loading="eager" />
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-label="Articles">
+    <div class="conteneur">
+      <ul class="liste">
+        {articles.map((a) => (
+          <li>
+            <a class="article" href={`/apprendre/${a.id}/`}>
+              <span class="surtitre">{a.data.theme} · <time datetime={a.data.date.toISOString()}>{date(a.data.date)}</time></span>
+              <span class="article__titre">{a.data.titre}</span>
+              <span class="article__resume">{a.data.resume}</span>
+              <span class="lien" aria-hidden="true">Lire</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section fond-ivoire" aria-labelledby="instagram">
+    <div class="conteneur centre insta">
+      <span class="surtitre">Au quotidien</span>
+      <h2 id="instagram">Le Cabinet sur Instagram</h2>
+      <p class="chapo espace">Réflexions, rendez-vous et coulisses du Cabinet.</p>
+      <a class="bouton bouton--contour espace" href={site.instagram} rel="noopener">Suivre {site.instagramHandle}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .espace { margin-top: var(--e-6); }
+  .tete { padding-top: var(--e-10); }
+  .tete__grille {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: var(--e-8);
+    align-items: end;
+  }
+  .tete h1 { margin-top: var(--e-4); }
+  :global(.tete__photo) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 60% 20%; }
+
+  .liste { margin: 0; padding: 0; list-style: none; }
+  .article {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr) auto;
+    gap: var(--e-3) var(--e-7);
+    align-items: baseline;
+    padding: var(--e-7) 0;
+    border-top: 1px solid var(--or);
+    text-decoration: none;
+  }
+  .article .surtitre { grid-column: 1 / -1; }
+  .article__titre { font-size: clamp(28px, 1.2vw + 22px, 38px); line-height: 1.15; }
+  .article__resume { color: var(--encre-douce); }
+  .article:hover .article__titre { color: var(--or-fonce); }
+  .insta { max-width: 40rem; }
+
+  @media (max-width: 900px) {
+    .tete__grille { grid-template-columns: 1fr; }
+    :global(.tete__photo) { aspect-ratio: 4 / 3; }
+    .article { grid-template-columns: 1fr; }
+  }
+</style>

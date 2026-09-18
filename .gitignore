@@ -1,0 +1,16 @@
+# Dépendances et constructions
+node_modules/
+dist/
+.vercel/
+.astro/
+
+# Environnement (secrets Keystatic, etc.)
+.env
+.env.*
+
+# Système
+.DS_Store
+._*
+
+# Documents de travail (restent dans le dossier du projet, hors dépôt)
+CONTENU-SOURCE.md

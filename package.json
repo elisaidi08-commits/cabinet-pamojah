@@ -1,0 +1,27 @@
+{
+  "name": "cabinet-pamojah",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.6",
+    "@astrojs/vercel": "^11.0.10",
+    "@fontsource/cinzel": "^5.3.0",
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@keystatic/astro": "^6.0.0",
+    "@keystatic/core": "^0.6.9",
+    "astro": "^7.3.3",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}

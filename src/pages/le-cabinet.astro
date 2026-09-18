@@ -1,0 +1,211 @@
+---
+// Le Cabinet : ce qu'il est, l'approche (4 piliers), la méthode (4 dimensions), à qui il s'adresse, le cadre de confiance.
+// Textes du brief de la fondatrice (p.2–4 et p.8). Le cadre « hybride (visio et présentiel) » n'est pas repris :
+// la Consultation d'Axe est en visio uniquement et aucune adresse n'est communiquée.
+import Photo from '../components/Photo.astro';
+import Base from '../layouts/Base.astro';
+import Titre from '../components/Titre.astro';
+import { site, disclaimer } from '../data/site';
+import cabinet from '../assets/images/cabinet/S1-cabinet.png';
+import bureau from '../assets/images/portraits/bureau.jpg';
+
+const piliers = [
+  { nom: 'Clinique et préventive', texte: 'Par l’écoute, la prévention de la surcharge, du burn-out et l’attention portée à la santé globale.' },
+  { nom: 'Multiculturelle', texte: 'Par la prise en compte de l’identité, des héritages, des contextes et des appartenances.' },
+  { nom: 'Stratégique', texte: 'Par la clarification des priorités, l’orchestration des talents et la structuration de l’impact.' },
+  { nom: 'Souveraine', texte: 'Par le développement d’une capacité à choisir, décider, agir et influencer sans se perdre.' },
+];
+const dimensions = [
+  { nom: 'Préserver l’humain derrière la fonction', texte: 'Prendre en compte la charge mentale, l’énergie, les limites et les conditions de soutenabilité.' },
+  { nom: 'S’aligner sur son identité profonde', texte: 'Mettre en cohérence identité, valeurs, ambition, contexte et contribution.' },
+  { nom: 'Orchestrer la multipotentialité', texte: 'Transformer la diversité des talents, des rôles et des projets en architecture lisible.' },
+  { nom: 'Influencer son environnement', texte: 'Développer une action stratégique, une présence juste et une capacité de transmission.' },
+];
+const profils = [
+  {
+    nom: 'Dirigeantes, cadres supérieures',
+    situation: 'En prise de poste, en transition professionnelle, en questionnement ou à un moment où votre niveau de responsabilité a évolué.',
+    besoins: ['clarifier votre prochaine étape', 'renforcer votre posture', 'rendre votre contribution plus lisible', 'décider sans vous suradapter', 'préserver votre énergie'],
+  },
+  {
+    nom: 'Entrepreneures et porteuses de projet',
+    situation: 'Vous avez une vision, plusieurs talents et peut-être plusieurs projets, mais vous souhaitez construire une activité plus structurée.',
+    besoins: ['transformer votre expertise en offre claire', 'clarifier votre positionnement', 'entreprendre avec impact', 'développer une organisation soutenable', 'devenir légitime dans votre rôle de dirigeante'],
+  },
+  {
+    nom: 'Femmes influentes et exposées',
+    situation: 'Vous exercez dans des environnements complexes, interculturels et parfois fortement exposés.',
+    besoins: ['déposer la charge', 'clarifier les enjeux', 'structurer votre influence', 'préparer des décisions ou des prises de parole', 'renforcer votre impact sans perdre votre discernement'],
+  },
+  {
+    nom: 'Fonctions publiques et institutionnelles',
+    situation: 'Vous portez une fonction publique, symbolique ou institutionnelle qui exige présence, représentation et maîtrise.',
+    besoins: ['clarifier votre mandat', 'choisir vos combats', 'structurer vos engagements', 'construire des alliances', 'protéger votre souveraineté', 'inscrire votre action dans la durée'],
+  },
+];
+const cadre = [
+  'confidentiel, avec un traitement prudent des informations sensibles',
+  'multiculturel',
+  'distinguant clairement accompagnement, conseil et représentation',
+  'respectueux des rythmes individuels',
+  'orienté vers la décision et l’action',
+  'attentif à la santé et à la prévention',
+];
+---
+<Base title="Le Cabinet" description="Le Cabinet Pamojah, clinique du leadership multi-talents : une approche clinique, multiculturelle, stratégique et souveraine, une méthode en quatre dimensions.">
+  <section class="section fond-noir tete">
+    <div class="conteneur deux-col deux-col--centre">
+      <div>
+        <span class="surtitre">Le Cabinet</span>
+        <h1>Une clinique du leadership multi-talents</h1>
+        <p class="chapo espace">
+          Le terme clinique désigne un espace d’écoute, de prévention, de discernement, de structuration du leadership et d’action.
+        </p>
+        <p class="espace-s">
+          Nous accompagnons les femmes leaders multipotentielles, dont la richesse de leurs talents, la diversité d’expériences
+          et la profondeur de leurs responsabilités nécessitent plus qu’une méthode standardisée de coaching professionnel.
+          Nous les aidons à construire une trajectoire souveraine et durable en reliant identité, leadership, influence, stratégie et préservation de leur énergie.
+        </p>
+      </div>
+      <Photo src={cabinet} alt="Le cabinet Pamojah au crépuscule : bureau de bois sombre, deux fauteuils, lumière douce." widths={[640, 960, 1440]} sizes="(max-width: 900px) 100vw, 50vw" class="image" loading="eager" />
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-labelledby="piliers">
+    <div class="conteneur">
+      <Titre surtitre="Notre approche" id="piliers">Clinique · Multiculturelle · Stratégique · Souveraine</Titre>
+      <ul class="quatre">
+        {piliers.map((p, i) => (
+          <li class="apparait" style={`--delai: ${i * 120}ms`}>
+            <h3>{p.nom}</h3>
+            <p>{p.texte}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section fond-ivoire" aria-labelledby="methode">
+    <div class="conteneur">
+      <Titre surtitre="La méthode du Cabinet Pamojah" id="methode">Nous ne cherchons pas à réduire votre multiplicité.</Titre>
+      <p class="chapo espace lecture">
+        Nous vous aidons à l’orchestrer pour qu’elle serve votre trajectoire, votre entreprise ou votre mission.
+        Un accompagnement rare qui repose sur quatre dimensions.
+      </p>
+      <ol class="quatre quatre--num">
+        {dimensions.map((d, i) => (
+          <li class="apparait" style={`--delai: ${i * 120}ms`}>
+            <span class="num" aria-hidden="true">{i + 1}</span>
+            <h3>{d.nom}</h3>
+            <p>{d.texte}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-labelledby="pour-qui">
+    <div class="conteneur">
+      <div class="deux-col deux-col--centre">
+        <div>
+          <Titre surtitre="À qui s’adresse le Cabinet" id="pour-qui">Aux femmes qui portent plusieurs dimensions d’elles-mêmes</Titre>
+          <p class="chapo espace">
+            Plusieurs responsabilités ou plusieurs projets, et le souhait de les articuler avec davantage de cohérence.
+          </p>
+        </div>
+        <Photo src={bureau} alt="" widths={[480, 720, 960]} sizes="(max-width: 900px) 100vw, 40vw" class="portrait" />
+      </div>
+      <div class="profils">
+        {profils.map((p) => (
+          <div class="profil apparait">
+            <h3>{p.nom}</h3>
+            <p class="profil__situation">{p.situation}</p>
+            <p class="surtitre">Vous cherchez à</p>
+            <ul class="liste-filets">
+              {p.besoins.map((b) => <li>{b}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section fond-noir" aria-labelledby="cadre">
+    <div class="conteneur deux-col">
+      <div>
+        <Titre surtitre="Le cadre de confiance" id="cadre">Un espace confidentiel</Titre>
+        <p class="espace">
+          Le cadre est clair : un travail de prévention, d’écoute, de structuration du leadership et d’orientation,
+          sans se substituer à un suivi médical ou psychothérapeutique lorsque celui-ci est nécessaire.
+        </p>
+        <p class="avertissement">{disclaimer}</p>
+      </div>
+      <ul class="liste-filets">
+        {cadre.map((c) => <li>{c}</li>)}
+      </ul>
+    </div>
+    <div class="conteneur centre fin">
+      <div class="ornement" aria-hidden="true"><span></span></div>
+      <p class="signature">{site.signature}</p>
+      <a class="bouton espace" href="/consultation-axe/#reserver">Réserver ma Consultation d’Axe</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .espace { margin-top: var(--e-6); }
+  .espace-s { margin-top: var(--e-4); }
+  .tete { padding-top: var(--e-10); }
+  .tete h1 { margin-top: var(--e-4); max-width: 16ch; }
+  .deux-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--e-8);
+    align-items: start;
+  }
+  .deux-col--centre { align-items: center; }
+  :global(.image) { width: 100%; height: auto; }
+  :global(.portrait) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 35%; }
+
+  .quatre {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--e-6);
+    margin: var(--e-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .quatre li { padding-top: var(--e-5); border-top: 1px solid var(--or); }
+  .quatre h3 { margin-bottom: var(--e-3); font-size: 26px; }
+  .num { display: block; margin-bottom: var(--e-3); font-family: var(--f-capitales); font-size: 15px; color: var(--or-fonce); }
+
+  .profils {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--e-8);
+    margin-top: var(--e-9);
+  }
+  .profil h3 { padding-top: var(--e-5); border-top: 1px solid var(--or); }
+  .profil__situation { margin: var(--e-3) 0 var(--e-5); }
+  .profil .liste-filets { margin-top: var(--e-3); font-size: 19px; }
+
+  .avertissement { margin-top: var(--e-6); font-size: 17px; color: rgba(244, 238, 232, 0.78); }
+  .fin { margin-top: var(--e-9); }
+  .signature {
+    font-family: var(--f-capitales);
+    font-size: 12.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+
+  @media (max-width: 1000px) {
+    .quatre { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 900px) {
+    .deux-col, .profils { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .quatre { grid-template-columns: 1fr; }
+  }
+</style>

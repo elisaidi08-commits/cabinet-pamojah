@@ -1,0 +1,126 @@
+---
+// L'architecte. Texte de la fondatrice (brief p.1–2), à la 1re personne, modifiable dans l'administration
+// (« L'architecte (Huguette) » → src/contenu/huguette.json), portrait compris.
+// Non publiés en attendant sa validation : le rôle en église, la formation de décoratrice, les autres entreprises.
+// Tant qu'aucun portrait n'est déposé, le Pilier du logo s'affiche : aucune photo de banque d'images ne la représente.
+import Photo from '../components/Photo.astro';
+import Base from '../layouts/Base.astro';
+import Titre from '../components/Titre.astro';
+import Logo from '../components/Logo.astro';
+import { site } from '../data/site';
+import villa from '../assets/images/cabinet/S0-villa.png';
+import h from '../contenu/huguette.json';
+
+// Le portrait déposé dans l'administration (src/assets/images/huguette/) est optimisé comme les autres images.
+const portraits = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/huguette/*.{jpg,jpeg,png,webp,avif}', { eager: true });
+const portrait = h.portrait ? portraits[h.portrait]?.default : undefined;
+
+---
+<Base title="L’architecte" description="Huguette Tolo-Tolo Ngemeyeme, architecte de souveraineté, fondatrice du Cabinet Pamojah : 17 ans d’infirmière, multi-entrepreneure.">
+  <section class="section fond-noir tete">
+    <div class="conteneur tete__grille">
+      <div>
+        <span class="surtitre">L’architecte</span>
+        <h1>Huguette Tolo-Tolo Ngemeyeme</h1>
+        <p class="devise espace-s">Architecte de souveraineté · Fondatrice du Cabinet Pamojah</p>
+        <p class="chapo espace">{h.presentation}</p>
+      </div>
+      {portrait
+        ? <Photo src={portrait} alt="Huguette Tolo-Tolo Ngemeyeme, fondatrice du Cabinet Pamojah" widths={[360, 540, 720]} sizes="(max-width: 900px) 80vw, 25vw" class="tete__portrait" loading="eager" />
+        : <Logo variant="pilier" decorative class="tete__pilier" />}
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-labelledby="souverainete">
+    <div class="conteneur deux-col">
+      <Titre surtitre="Ma posture" id="souverainete">Architecte de souveraineté</Titre>
+      <div>
+        {h.posture.map((p, i) => <p class:list={[i === 0 ? 'chapo' : 'espace-s']}>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section fond-ivoire" aria-labelledby="parcours">
+    <div class="conteneur">
+      <Titre surtitre="Mon parcours" id="parcours">Riche en expériences et en expertises</Titre>
+      <ul class="parcours">
+        {h.parcours.map((p, i) => (
+          <li class="apparait" style={`--delai: ${i * 100}ms`}>
+            <h3>{p.titre}</h3>
+            <p>{p.texte}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section fond-noir" aria-labelledby="genese">
+    <div class="conteneur deux-col">
+      <Titre surtitre="La genèse du Cabinet" id="genese">Pour la reconstruction d’une société en meilleure santé</Titre>
+      <div class="genese">
+        {h.genese.map((p) => <p>{p}</p>)}
+        <blockquote class="genese__citation">
+          <p>{h.citation}</p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="ensemble fond-sable" aria-labelledby="ensemble-titre">
+    <Photo src={villa} alt="" widths={[960, 1600, 2400]} sizes="100vw" class="ensemble__image" />
+    <div class="ensemble__voile" aria-hidden="true"></div>
+    <div class="conteneur centre ensemble__texte">
+      <Titre surtitre="Pamojah" id="ensemble-titre" centre>Pamojah signifie « ensemble ».</Titre>
+      <p class="chapo espace">{h.ensemble}</p>
+      <a class="bouton espace" href="/consultation-axe/#reserver">Réserver ma Consultation d’Axe</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .espace { margin-top: var(--e-6); }
+  .espace-s { margin-top: var(--e-4); }
+  .tete { padding-top: var(--e-10); }
+  .tete__grille {
+    display: grid;
+    grid-template-columns: minmax(0, 9fr) minmax(0, 3fr);
+    gap: var(--e-8);
+    align-items: center;
+  }
+  .tete h1 { margin-top: var(--e-4); max-width: 14ch; }
+  .tete .chapo { max-width: 40rem; }
+  .tete :global(.tete__pilier) { height: clamp(160px, 22vw, 300px); width: auto; margin-inline: auto; color: var(--ivoire); }
+  :global(.tete__portrait) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+
+  .deux-col {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--e-8);
+    align-items: start;
+  }
+  .parcours {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--e-7) var(--e-8);
+    margin: var(--e-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .parcours li { padding-top: var(--e-5); border-top: 1px solid var(--or); }
+  .parcours h3 { margin-bottom: var(--e-3); }
+
+  .genese p + p { margin-top: 1em; }
+  .genese__citation { margin: var(--e-7) 0 0; padding-left: var(--e-5); border-left: 1px solid var(--or); }
+  .genese__citation p { font-size: clamp(24px, 1.2vw + 18px, 32px); font-style: italic; line-height: 1.3; }
+
+  .ensemble { position: relative; overflow: hidden; color: var(--ivoire); padding-block: var(--section); }
+  :global(.ensemble__image) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ensemble__voile { position: absolute; inset: 0; background: rgba(13, 13, 13, 0.6); }
+  .ensemble__texte { position: relative; max-width: 46rem; }
+  .ensemble :global(.surtitre) { color: var(--or); }
+
+  @media (max-width: 900px) {
+    .tete__grille, .deux-col, .parcours { grid-template-columns: 1fr; }
+    .tete :global(.tete__pilier) { display: none; }
+  }
+</style>

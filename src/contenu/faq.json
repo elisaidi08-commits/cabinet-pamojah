@@ -1,0 +1,50 @@
+{
+  "accueil": [
+    {
+      "question": "Quel accompagnement est fait pour moi ?",
+      "reponse": "Vous n’avez pas besoin de le savoir aujourd’hui. La Consultation d’Axe est un diagnostic stratégique : elle permet de déterminer si votre cap relève d’un travail ponctuel de clarification, d’un réajustement de posture ou d’un accompagnement plus approfondi au sein d’un de nos programmes."
+    },
+    {
+      "question": "Puis-je m’inscrire directement à un programme ?",
+      "reponse": "Non. Le Bilan de soi et Madame la CEO sont accessibles uniquement après une Consultation d’Axe : c’est elle qui permet de déterminer le parcours adapté à votre situation."
+    },
+    {
+      "question": "Et le programme Leadership durable & Influence maîtrisée ?",
+      "reponse": "Il n’est pas proposé en accès direct. Il est accessible uniquement sur candidature, à l’issue d’une Consultation d’Axe."
+    },
+    {
+      "question": "Comment entre-t-on dans la Sphère de pouvoir ?",
+      "reponse": "La Sphère ne s’achète pas et ne s’ouvre pas par une inscription. Huguette en ouvre l’accès après votre Consultation d’Axe ; chaque accompagnement plus profond ouvre ensuite un cercle plus proche du centre."
+    },
+    {
+      "question": "Les séances sont-elles confidentielles ?",
+      "reponse": "Oui. La confidentialité est absolue. Les séances ont lieu en visio, où que vous soyez."
+    }
+  ],
+  "consultation": [
+    {
+      "question": "Comment se déroule la Consultation d’Axe ?",
+      "reponse": "La séance dure 75 minutes, en visio. Nous travaillons sur votre situation actuelle, votre architecture identitaire, les zones de rupture ou de surcharge, les mécanismes internes qui perturbent votre stabilité et l’axe qui doit être restauré. Vous repartez avec un axe clair, une décision stabilisée, une orientation précise pour l’étape d’après et un livret d’axe."
+    },
+    {
+      "question": "Est-ce du coaching ou une thérapie ?",
+      "reponse": "Ni l’un ni l’autre. Il ne s’agit ni de coaching, ni de thérapie, ni de motivation : c’est un travail clinique, précis et structuré, orienté décision et action stratégique. Si vous recherchez un accompagnement thérapeutique, un professionnel de santé sera le bon interlocuteur."
+    },
+    {
+      "question": "À qui s’adresse-t-elle ?",
+      "reponse": "Aux femmes africaines et afro-descendantes, multipotentielles en mission — fondatrices, dirigeantes, cadres supérieures, entrepreneures, leaders institutionnelles — qui évoluent dans des environnements exigeants et occupent ou visent des postes à haute responsabilité."
+    },
+    {
+      "question": "La séance peut-elle avoir lieu en présentiel ?",
+      "reponse": "La Consultation d’Axe se tient uniquement en visio. Les informations de connexion vous sont communiquées à la confirmation de votre réservation."
+    },
+    {
+      "question": "Comment ma réservation est-elle confirmée ?",
+      "reponse": "Votre créneau est confirmé par le paiement sécurisé de la séance au moment de la réservation. La ponctualité est indispensable : au-delà de 10 minutes de retard, la séance ne peut être maintenue."
+    },
+    {
+      "question": "Comment me préparer ?",
+      "reponse": "Installez-vous dans un espace calme, avec un carnet. Arrivez avec une intention claire : ce que vous souhaitez stabiliser aujourd’hui."
+    }
+  ]
+}

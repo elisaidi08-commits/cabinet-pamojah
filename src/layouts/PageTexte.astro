@@ -1,0 +1,48 @@
+---
+// Gabarit des pages de texte (légales, articles) : une colonne de lecture calme.
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  surtitre?: string;
+  noindex?: boolean;
+}
+const { title, description, surtitre, noindex } = Astro.props;
+---
+<Base title={title} description={description} noindex={noindex}>
+  <article class="page-texte">
+    <header class="page-texte__tete fond-noir">
+      <div class="conteneur">
+        {surtitre && <span class="surtitre">{surtitre}</span>}
+        <h1>{title}</h1>
+        <slot name="chapo" />
+      </div>
+    </header>
+    <div class="conteneur page-texte__corps prose">
+      <slot />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .page-texte__tete { padding-block: var(--e-10) var(--e-9); }
+  .page-texte__tete h1 { margin-top: var(--e-4); max-width: 20ch; font-size: clamp(38px, 3.4vw + 20px, 68px); }
+  .page-texte__corps { padding-block: var(--e-9) var(--section); }
+
+  .prose { max-width: calc(44rem + 2 * var(--gouttiere)); margin-inline: auto; }
+  .prose :global(h2) { font-size: clamp(28px, 1.4vw + 22px, 38px); margin: var(--e-8) 0 var(--e-4); }
+  .prose :global(h3) { margin: var(--e-6) 0 var(--e-3); }
+  .prose :global(p + p) { margin-top: 1em; }
+  .prose :global(ul) { margin: var(--e-4) 0; padding-left: 1.2em; }
+  .prose :global(li) { margin: 6px 0; }
+  .prose :global(li::marker) { color: var(--or); }
+  .prose :global(a:not(.bouton):not(.lien)) { color: var(--or-fonce); }
+  .prose :global(.a-completer) {
+    padding: 2px 6px;
+    background: rgba(179, 140, 61, 0.2);
+    font-family: var(--f-capitales);
+    font-size: 0.72em;
+    letter-spacing: 0.08em;
+  }
+</style>

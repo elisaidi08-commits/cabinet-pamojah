@@ -1,0 +1,101 @@
+---
+// Réservation : le module Calendly (paiement Stripe intégré) ne se charge qu'à la demande,
+// pour que la page reste légère et qu'aucun service tiers ne soit appelé sans action de la visiteuse.
+// Après la réservation, on renvoie vers /confirmation/.
+import { consultation } from '../data/consultation';
+import { site } from '../data/site';
+
+const url = `${site.calendly}?hide_gdpr_banner=1&background_color=f4eee8&text_color=0d0d0d&primary_color=b38c3d`;
+---
+<div class="resa" id="reserver" data-sans-barre>
+  <div class="resa__cadre">
+    <p class="surtitre">Cadre de la séance</p>
+    <ul class="liste-filets resa__conditions">
+      {consultation.conditions.map((c) => <li>{c}</li>)}
+    </ul>
+  </div>
+
+  <div class="resa__module" data-resa data-url={url}>
+    <div class="resa__attente" data-resa-attente>
+      <p class="chapo">Choisissez votre créneau, puis réglez la séance en ligne pour la confirmer.</p>
+      <button class="bouton" type="button" data-resa-ouvrir>Voir les créneaux disponibles</button>
+      <p class="resa__note">
+        Le calendrier est proposé par Calendly et le paiement par Stripe. Pour l’afficher automatiquement, acceptez les services externes dans « Gérer les cookies ».
+        Vous pouvez aussi <a href={site.calendly} target="_blank" rel="noopener">réserver sur la page Calendly</a> (nouvel onglet).
+      </p>
+    </div>
+    <div class="resa__widget" data-resa-widget hidden></div>
+  </div>
+</div>
+
+<style>
+  .resa {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--e-7);
+    align-items: start;
+  }
+  .resa__conditions { margin-top: var(--e-4); font-size: 19px; }
+  .resa__module {
+    min-height: 360px;
+    padding: var(--e-7) var(--e-6);
+    background: var(--ivoire);
+    border-top: 1px solid var(--or);
+  }
+  .resa__attente { display: grid; gap: var(--e-5); justify-items: start; max-width: 34rem; }
+  .resa__note { font-size: 17px; color: var(--encre-douce); }
+  .resa__widget { min-width: 320px; height: 760px; }
+  .resa__widget :global(iframe) { width: 100%; height: 100%; border: 0; }
+
+  @media (max-width: 900px) {
+    .resa { grid-template-columns: 1fr; }
+    .resa__module { padding: var(--e-6) var(--e-4); }
+    .resa__widget { height: 1000px; }
+  }
+</style>
+
+<script>
+  const module = document.querySelector<HTMLElement>('[data-resa]');
+  const ouvrir = document.querySelector<HTMLButtonElement>('[data-resa-ouvrir]');
+  const widget = document.querySelector<HTMLElement>('[data-resa-widget]');
+  const attente = document.querySelector<HTMLElement>('[data-resa-attente]');
+
+  let calendrierCharge = false;
+  const chargerCalendrier = () => {
+    if (calendrierCharge || !module || !widget || !attente || !ouvrir) return;
+    calendrierCharge = true;
+    ouvrir.disabled = true;
+    ouvrir.textContent = 'Chargement du calendrier…';
+    const iframe = document.createElement('iframe');
+    iframe.title = 'Réserver la Consultation d’Axe (Calendly)';
+    iframe.src = `${module.dataset.url}&embed_domain=${location.hostname}&embed_type=Inline`;
+    iframe.addEventListener('load', () => {
+      attente.hidden = true;
+      widget.hidden = false;
+      iframe.focus();
+    });
+    widget.append(iframe);
+  };
+  ouvrir?.addEventListener('click', chargerCalendrier);
+
+  // Services externes acceptés (bandeau cookies) : le calendrier s'affiche seul à l'approche de la section.
+  const siAccepte = () => {
+    const c = (window as unknown as { pamojahConsentement?: { services: boolean } }).pamojahConsentement;
+    if (!c?.services || !module) return;
+    const observer = new IntersectionObserver((entrees) => {
+      if (entrees.some((e) => e.isIntersecting)) {
+        chargerCalendrier();
+        observer.disconnect();
+      }
+    }, { rootMargin: '600px 0px' });
+    observer.observe(module);
+  };
+  siAccepte();
+  document.addEventListener('pamojah:consentement', siAccepte);
+
+  // Calendly signale une réservation confirmée : on passe à la page de confirmation.
+  window.addEventListener('message', (e) => {
+    if (e.origin !== 'https://calendly.com') return;
+    if (e.data?.event === 'calendly.event_scheduled') window.location.href = '/confirmation/';
+  });
+</script>

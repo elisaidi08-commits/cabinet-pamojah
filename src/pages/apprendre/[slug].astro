@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import PageTexte from '../../layouts/PageTexte.astro';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.brouillon);
+  return articles.map((article) => ({ params: { slug: article.id }, props: { article } }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const date = article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<PageTexte title={article.data.titre} description={article.data.resume} surtitre={`${article.data.theme} · ${date}`}>
+  <p slot="chapo" class="chapo chapo-article">{article.data.resume}</p>
+  <Content />
+  <aside class="fin-article">
+    <p class="surtitre">Aller plus loin</p>
+    <p>Toutes les portes du cabinet s’ouvrent par la Consultation d’Axe : 75 minutes en visio pour identifier ce qui mérite votre attention maintenant.</p>
+    <a class="bouton" href="/consultation-axe/#reserver">Réserver ma Consultation d’Axe</a>
+    <a class="lien" href="/apprendre/">Tous les articles</a>
+  </aside>
+</PageTexte>
+
+<style>
+  .chapo-article { margin-top: var(--e-6); max-width: 40rem; color: rgba(244, 238, 232, 0.85); }
+  .fin-article {
+    display: grid;
+    justify-items: start;
+    gap: var(--e-5);
+    margin-top: var(--e-9);
+    padding-top: var(--e-6);
+    border-top: 1px solid var(--or);
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+// ⚠️ La politique d'annulation, de report et de remboursement n'existe pas encore : à rédiger avec la fondatrice
+// (et à faire relire par un juriste) avant la mise en ligne. Seules les conditions du texte Calendly sont reprises.
+import PageTexte from '../layouts/PageTexte.astro';
+import { consultation } from '../data/consultation';
+import { site } from '../data/site';
+const aCompleter = (champ: string) => `<span class="a-completer">À compléter : ${champ}</span>`;
+---
+<PageTexte title="Conditions de la Consultation d’Axe" description="Durée, format, confirmation, ponctualité, annulation et report de la Consultation d’Axe." surtitre="Cadre de la séance" noindex>
+  <h2>Le cadre</h2>
+  <ul>
+    {consultation.conditions.map((c) => <li>{c}</li>)}
+  </ul>
+
+  <h2>Réservation et paiement</h2>
+  <p>
+    La réservation se fait en ligne, sur le site ou sur <a href={site.calendly} rel="noopener">la page Calendly du Cabinet</a>.
+    Le créneau est confirmé par le paiement sécurisé de la séance. Une confirmation contenant les informations
+    de connexion vous est envoyée par email.
+  </p>
+
+  <h2>Ponctualité</h2>
+  <p>La ponctualité est indispensable : au-delà de 10 minutes de retard, la séance ne peut être maintenue.</p>
+
+  <h2>Report et annulation</h2>
+  <p><Fragment set:html={aCompleter('délai de report ou d’annulation sans frais, conditions de remboursement, cas de la séance non honorée')} /></p>
+
+  <h2>Droit de rétractation</h2>
+  <p><Fragment set:html={aCompleter('modalités du droit de rétractation de 14 jours (et de la renonciation expresse si la séance a lieu avant la fin de ce délai) — à faire valider par un juriste')} /></p>
+
+  <h2>Nature de l’accompagnement</h2>
+  <p>
+    La Consultation d’Axe n’est ni du coaching, ni une thérapie, ni de la motivation : c’est un travail de clarification,
+    de repositionnement et de gouvernance personnelle. Les accompagnements du Cabinet Pamojah ne se substituent pas à des soins médicaux,
+    psychologiques ou psychiatriques. Lorsque la situation le nécessite, une orientation vers un professionnel compétent peut être recommandée.
+  </p>
+
+  <h2>Confidentialité</h2>
+  <p>La confidentialité est absolue : rien de ce qui est partagé pendant la séance n’est communiqué à des tiers.</p>
+</PageTexte>

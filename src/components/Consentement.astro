@@ -1,0 +1,158 @@
+---
+// Bandeau de consentement (recommandations CNIL) : refus par défaut, « Tout refuser » aussi visible que
+// « Tout accepter », choix conservé 6 mois, modifiable à tout moment (lien « Gérer les cookies » du pied de page).
+// Deux catégories :
+//  - mesure : mesure d'audience Vercel Analytics (sans cookie, statistiques agrégées) ;
+//  - services : services externes chargés automatiquement (calendrier Calendly et paiement Stripe).
+// Les autres composants écoutent l'évènement « pamojah:consentement » ou lisent window.pamojahConsentement.
+---
+<div class="consentement" data-consentement role="dialog" aria-labelledby="consentement-titre" aria-describedby="consentement-texte" hidden>
+  <p class="surtitre" id="consentement-titre">Votre confidentialité</p>
+  <p id="consentement-texte" class="consentement__texte">
+    Le Cabinet Pamojah n’utilise que le strict nécessaire. Avec votre accord, nous mesurons la fréquentation du site
+    (sans cookie publicitaire) et affichons directement le calendrier de réservation.{' '}
+    <a href="/confidentialite/">En savoir plus</a>
+  </p>
+
+  <div class="consentement__choix" data-choix hidden>
+    <label class="consentement__option">
+      <input type="checkbox" data-categorie="mesure" />
+      <span><strong>Mesure d’audience</strong> — statistiques de visite anonymes (Vercel Analytics).</span>
+    </label>
+    <label class="consentement__option">
+      <input type="checkbox" data-categorie="services" />
+      <span><strong>Services externes</strong> — calendrier de réservation Calendly et paiement Stripe, affichés sans clic supplémentaire.</span>
+    </label>
+  </div>
+
+  <div class="consentement__actions">
+    <button type="button" class="bouton bouton--contour" data-action="refuser">Tout refuser</button>
+    <button type="button" class="bouton" data-action="accepter">Tout accepter</button>
+    <button type="button" class="consentement__lien" data-action="personnaliser" aria-expanded="false">Personnaliser</button>
+    <button type="button" class="bouton" data-action="enregistrer" hidden>Enregistrer mes choix</button>
+  </div>
+</div>
+
+<style>
+  .consentement {
+    position: fixed;
+    left: var(--gouttiere);
+    bottom: calc(var(--gouttiere) + env(safe-area-inset-bottom));
+    z-index: 90;
+    width: min(460px, calc(100% - 2 * var(--gouttiere)));
+    max-height: calc(100dvh - 2 * var(--gouttiere));
+    overflow-y: auto;
+    padding: var(--e-6);
+    background: var(--noir);
+    color: var(--ivoire);
+    border: 1px solid rgba(244, 238, 232, 0.22);
+    border-top: 2px solid var(--or);
+    box-shadow: 0 12px 40px rgba(13, 13, 13, 0.35);
+  }
+  .consentement[hidden] { display: none; }
+  .consentement .surtitre { color: var(--or); }
+  .consentement__texte { margin-top: var(--e-3); font-size: 18px; line-height: 1.5; }
+  .consentement__texte a { color: var(--ivoire); }
+
+  .consentement__choix { display: grid; gap: var(--e-4); margin-top: var(--e-5); }
+  .consentement__choix[hidden] { display: none; }
+  .consentement__option { display: grid; grid-template-columns: 24px 1fr; gap: var(--e-3); align-items: start; font-size: 17px; line-height: 1.45; cursor: pointer; }
+  .consentement__option input { width: 20px; height: 20px; margin: 3px 0 0; accent-color: var(--or); }
+
+  .consentement__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e-3); margin-top: var(--e-5); }
+  .consentement__actions .bouton { min-height: 44px; padding: 10px 18px; font-size: 12.5px; flex: 1 1 auto; }
+  .consentement__actions .bouton[hidden] { display: none; }
+  .consentement .bouton--contour { color: var(--ivoire); }
+  .consentement__lien {
+    min-height: 44px;
+    padding: 8px 0;
+    border: 0;
+    background: none;
+    color: var(--ivoire);
+    font-family: var(--f-capitales);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
+  .consentement :focus-visible { outline: 2px solid var(--ivoire); outline-offset: 3px; }
+
+  @media (max-width: 860px) {
+    .consentement { left: 0; bottom: 0; width: 100%; padding: var(--e-5) var(--gouttiere) calc(var(--e-5) + env(safe-area-inset-bottom)); }
+  }
+</style>
+
+<script>
+  type Consentement = { mesure: boolean; services: boolean; date: number };
+  const CLE = 'pamojah-consentement';
+  const DUREE = 182 * 24 * 3600 * 1000; // 6 mois, puis on redemande
+
+  const bandeau = document.querySelector<HTMLElement>('[data-consentement]')!;
+  const choix = bandeau.querySelector<HTMLElement>('[data-choix]')!;
+  const cases = [...bandeau.querySelectorAll<HTMLInputElement>('[data-categorie]')];
+  const bouton = (action: string) => bandeau.querySelector<HTMLButtonElement>(`[data-action="${action}"]`)!;
+
+  const lire = (): Consentement | null => {
+    try {
+      const v = JSON.parse(localStorage.getItem(CLE) ?? 'null');
+      return v && Date.now() - v.date < DUREE ? v : null;
+    } catch {
+      return null;
+    }
+  };
+
+  // Mesure d'audience Vercel : chargée seulement après accord, et seulement sur le site en ligne.
+  let mesureChargee = false;
+  const chargerMesure = () => {
+    if (mesureChargee || ['localhost', '127.0.0.1'].includes(location.hostname)) return;
+    mesureChargee = true;
+    const w = window as unknown as { va?: (...a: unknown[]) => void; vaq?: unknown[] };
+    w.va = w.va || ((...a: unknown[]) => (w.vaq = w.vaq || []).push(a));
+    const s = document.createElement('script');
+    s.defer = true;
+    s.src = '/_vercel/insights/script.js';
+    document.head.append(s);
+  };
+
+  const appliquer = (c: Consentement) => {
+    (window as unknown as { pamojahConsentement: Consentement }).pamojahConsentement = c;
+    if (c.mesure) chargerMesure();
+    document.dispatchEvent(new CustomEvent('pamojah:consentement', { detail: c }));
+  };
+
+  const fermer = () => {
+    bandeau.hidden = true;
+    document.documentElement.classList.remove('consentement-ouvert');
+  };
+
+  const enregistrer = (mesure: boolean, services: boolean) => {
+    const c = { mesure, services, date: Date.now() };
+    try { localStorage.setItem(CLE, JSON.stringify(c)); } catch {}
+    appliquer(c);
+    fermer();
+  };
+
+  const ouvrir = (detail = false) => {
+    const actuel = lire();
+    cases.forEach((el) => (el.checked = Boolean(actuel?.[el.dataset.categorie as 'mesure' | 'services'])));
+    choix.hidden = !detail;
+    bouton('enregistrer').hidden = !detail;
+    bouton('personnaliser').setAttribute('aria-expanded', String(detail));
+    bandeau.hidden = false;
+    document.documentElement.classList.add('consentement-ouvert');
+  };
+
+  bouton('refuser').addEventListener('click', () => enregistrer(false, false));
+  bouton('accepter').addEventListener('click', () => enregistrer(true, true));
+  bouton('personnaliser').addEventListener('click', () => ouvrir(true));
+  bouton('enregistrer').addEventListener('click', () =>
+    enregistrer(cases.find((c) => c.dataset.categorie === 'mesure')!.checked, cases.find((c) => c.dataset.categorie === 'services')!.checked),
+  );
+  document.querySelectorAll('[data-gerer-cookies]').forEach((el) => el.addEventListener('click', () => ouvrir(true)));
+
+  const existant = lire();
+  if (existant) appliquer(existant);
+  else ouvrir(false);
+</script>

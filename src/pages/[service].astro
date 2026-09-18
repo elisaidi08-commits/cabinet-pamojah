@@ -1,0 +1,256 @@
+---
+// Gabarit commun des trois accompagnements (02-conception §9, adapté au film : lampe, ordinateur, livre).
+import Photo from '../components/Photo.astro';
+import Base from '../layouts/Base.astro';
+import Titre from '../components/Titre.astro';
+import Citations from '../components/Citations.astro';
+import { services, consultationCarte, ACCES, type Service } from '../data/services';
+import { avis } from '../data/avis';
+import { site } from '../data/site';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { service: service.slug }, props: { service } }));
+}
+
+const { service: s } = Astro.props as { service: Service };
+const autres = services.filter((x) => x.slug !== s.slug);
+const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
+---
+<Base title={s.nom} description={`${s.nom} — ${s.devise} ${s.description[0]}`}>
+  <section class="entree fond-noir">
+    <Photo
+      src={s.objet.image}
+      alt={s.objet.alt}
+      widths={[768, 1280, 1920, 2560]}
+      sizes="100vw"
+      class="entree__image"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="entree__voile" aria-hidden="true"></div>
+    <div class="conteneur entree__texte">
+      <span class="surtitre">Programme · {s.duree}</span>
+      <h1>{s.nom}</h1>
+      <p class="devise">{s.devise}</p>
+      <ul class="faits" aria-label="En bref">
+        <li>{s.duree}</li>
+        <li>{ACCES}</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section fond-sable">
+    <div class="conteneur description">
+      <p class="porte apparait">« {s.porte} »</p>
+      <div class="apparait" style="--delai: 120ms">
+        {s.description.map((p) => <p class="chapo">{p}</p>)}
+        {s.fondation && <p class="fondation">{s.fondation}</p>}
+        <p class="acces">
+          <strong>Ce programme est accessible uniquement après une Consultation d’Axe.</strong>
+          C’est elle qui permet de vérifier qu’il correspond à votre situation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fond-ivoire" aria-labelledby="pour-vous">
+    <div class="conteneur deux-col">
+      <Photo
+        src={s.photo.image}
+        alt=""
+        widths={[480, 720, 960]}
+        sizes="(max-width: 900px) 100vw, 40vw"
+        class="portrait"
+        style={`object-position: ${s.photo.position}`}
+      />
+      <div>
+        <Titre surtitre="Vous êtes au bon endroit si vous" id="pour-vous">Ce que vous traversez</Titre>
+        <ul class="liste-filets espace">
+          {s.pourVous.map((x) => <li>{x}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-labelledby="ensemble">
+    <div class="conteneur">
+      <Titre surtitre="Le parcours comprend" id="ensemble">Ce que nous construisons ensemble</Titre>
+      <ol class="etapes">
+        {s.construit.map((x, i) => (
+          <li class="apparait" style={`--delai: ${Math.min(i, 6) * 80}ms`}>
+            <span class="etapes__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span>{x}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section fond-noir" aria-labelledby="gains">
+    <div class="conteneur deux-col">
+      <div>
+        <Titre surtitre="Vos gains" id="gains">{s.transformation}</Titre>
+        <p class="espace">À l’issue du parcours, vous repartez avec :</p>
+      </div>
+      <ul class="liste-filets">
+        {s.gains.map((x) => <li>{x}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  {aDesAvis && (
+    <section class="section fond-ivoire" aria-labelledby="avis">
+      <div class="conteneur">
+        <Titre surtitre="Elles l’ont vécu" id="avis">Ce qu’elles en disent</Titre>
+        <div class="espace-l"><Citations filtre={[s.avis]} /></div>
+      </div>
+    </section>
+  )}
+
+  <section class="section fond-sable" aria-labelledby="ouverture">
+    <div class="conteneur centre ouverture">
+      <Titre surtitre="Une étape obligatoire" id="ouverture" centre>Ce programme s’ouvre par la Consultation d’Axe</Titre>
+      <p class="chapo espace">
+        Aucun programme ne s’ouvre sans elle. La Consultation d’Axe identifie ce qui mérite votre attention maintenant et,
+        lorsque cela est pertinent, le parcours Pamojah correspondant à votre situation.
+      </p>
+      <a class="bouton espace" href="/consultation-axe/#reserver">Réserver ma Consultation d’Axe</a>
+      <p class="signature">{site.signature}</p>
+    </div>
+  </section>
+
+  <nav class="autres fond-noir" aria-label="Les autres services du Cabinet">
+    <div class="conteneur autres__grille">
+      <a class="autre" href={consultationCarte.href}>
+        <Photo src={consultationCarte.objet.image} alt="" widths={[480, 800]} sizes="(max-width: 700px) 100vw, 50vw" class="autre__image" />
+        <span class="surtitre">Le point d’entrée</span>
+        <span class="autre__nom">{consultationCarte.nom}</span>
+        <span class="devise">{consultationCarte.devise}</span>
+      </a>
+      {autres.map((x) => (
+        <a class="autre" href={`/${x.slug}/`}>
+          <Photo src={x.objet.image} alt="" widths={[480, 800]} sizes="(max-width: 700px) 100vw, 50vw" class="autre__image" />
+          <span class="surtitre">Programme · {x.duree}</span>
+          <span class="autre__nom">{x.nom}</span>
+          <span class="devise">{x.devise}</span>
+        </a>
+      ))}
+    </div>
+  </nav>
+</Base>
+
+<style>
+  .entree {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: min(92vh, 900px);
+    overflow: hidden;
+  }
+  :global(.entree__image) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .entree__voile {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13, 13, 13, 0.9) 0%, rgba(13, 13, 13, 0.62) 50%, rgba(13, 13, 13, 0.18) 100%);
+  }
+  .entree__texte { position: relative; padding-block: var(--e-9) var(--e-8); }
+  .entree__texte h1 { margin: var(--e-4) 0 var(--e-5); max-width: 16ch; }
+  .entree__texte .faits { max-width: 36rem; }
+
+  .description {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--e-8);
+    align-items: start;
+  }
+  .porte {
+    font-size: clamp(28px, 1.8vw + 18px, 42px);
+    font-style: italic;
+    line-height: 1.25;
+  }
+  .description .chapo + .chapo { margin-top: var(--e-5); }
+  .fondation {
+    margin-top: var(--e-6);
+    padding-top: var(--e-4);
+    border-top: 1px solid var(--or);
+    font-family: var(--f-capitales);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--or-fonce);
+  }
+
+  .deux-col {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--e-8);
+    align-items: start;
+  }
+  :global(.portrait) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+
+  .etapes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--e-8);
+    margin: var(--e-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .etapes li {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--e-4);
+    padding: var(--e-4) 0;
+    border-top: 1px solid var(--filet-clair);
+    font-size: 22px;
+    line-height: 1.35;
+  }
+  .etapes__n {
+    font-family: var(--f-capitales);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    color: var(--or-fonce);
+    padding-top: 6px;
+  }
+
+  .acces {
+    margin-top: var(--e-5);
+    padding: var(--e-4) var(--e-5);
+    border-left: 2px solid var(--or);
+    background: rgba(179, 140, 61, 0.1);
+  }
+  .ouverture { max-width: 46rem; }
+  .signature {
+    margin-top: var(--e-7);
+    font-family: var(--f-capitales);
+    font-size: 12.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or-fonce);
+  }
+
+  .espace { margin-top: var(--e-6); }
+  .espace-l { margin-top: var(--e-8); }
+
+  .autres { padding-block: var(--e-9); }
+  .autres__grille { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-7); }
+  .autre { display: grid; gap: var(--e-3); text-decoration: none; }
+  :global(.autre__image) { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin-bottom: var(--e-3); transition: opacity var(--etat) var(--courbe); }
+  .autre:hover :global(.autre__image) { opacity: 0.85; }
+  .autre__nom { font-size: var(--t-h3); line-height: 1.2; }
+
+  @media (max-width: 900px) {
+    .description, .deux-col { grid-template-columns: 1fr; }
+    .etapes { grid-template-columns: 1fr; }
+    :global(.portrait) { aspect-ratio: 4 / 3; }
+  }
+  @media (max-width: 700px) {
+    .autres__grille { grid-template-columns: 1fr; }
+  }
+</style>

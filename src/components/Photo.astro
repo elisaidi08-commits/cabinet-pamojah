@@ -1,0 +1,10 @@
+---
+// Toutes les images du site passent par ici : AVIF puis WebP, repli en JPEG,
+// qualité élevée (les images du cabinet sont faites de matières fines : lin, travertin, laiton).
+import { Picture } from 'astro:assets';
+import type { ComponentProps } from 'astro/types';
+
+type Props = ComponentProps<typeof Picture>;
+const { formats = ['avif', 'webp'], fallbackFormat = 'jpg', quality = 82, ...rest } = Astro.props;
+---
+<Picture formats={formats} fallbackFormat={fallbackFormat} quality={quality} {...rest} />

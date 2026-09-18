@@ -1,0 +1,522 @@
+---
+// L'accueil : le film, la bienvenue, puis le parcours validé (02-conception §6–7) :
+// se reconnaître → comprendre son besoin → les trois accompagnements → la Consultation d'Axe →
+// l'architecte → les avis → la Sphère → apprendre → retour au seuil.
+import Photo from '../components/Photo.astro';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import FilmEntree from '../components/FilmEntree.astro';
+import Titre from '../components/Titre.astro';
+import Citations from '../components/Citations.astro';
+import Faq from '../components/Faq.astro';
+import Cercles from '../components/Cercles.astro';
+import { services, consultationCarte, leadershipDurable, ACCES } from '../data/services';
+import { faqAccueil } from '../data/faq';
+import { site, disclaimer } from '../data/site';
+import assise from '../assets/images/portraits/portrait-assise.jpg';
+import cabinet from '../assets/images/cabinet/S1-cabinet.png';
+import villa from '../assets/images/cabinet/S0-villa.png';
+// Tous les textes de l'accueil se modifient dans l'administration (« Page d'accueil » → src/contenu/accueil.json).
+import a from '../contenu/accueil.json';
+
+// Les trois services, dans l'ordre du parcours : la Consultation d'Axe (point d'entrée obligatoire), puis les deux programmes.
+const trois = [
+  {
+    id: 'consultation',
+    href: consultationCarte.href,
+    image: consultationCarte.objet.image,
+    porte: consultationCarte.porte,
+    surtitre: consultationCarte.surtitre,
+    nom: consultationCarte.nom,
+    devise: consultationCarte.devise,
+    texte: consultationCarte.description,
+    transformation: consultationCarte.transformation,
+    faits: ['75 min', 'Visio', 'Confidentialité absolue'],
+    lien: 'Découvrir la Consultation d’Axe',
+  },
+  ...services.map((s) => ({
+    id: s.slug,
+    href: `/${s.slug}/`,
+    image: s.objet.image,
+    porte: s.porte,
+    surtitre: `Programme · ${s.duree}`,
+    nom: s.nom,
+    devise: s.devise,
+    texte: s.description[0],
+    transformation: s.transformation,
+    faits: [ACCES],
+    lien: `Découvrir ${s.nom}`,
+  })),
+];
+
+const articles = (await getCollection('articles', ({ data }) => !data.brouillon))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+
+// « … : votre axe. » → la fin de la phrase est mise en valeur.
+const coupe = a.services.axe.lastIndexOf(' : ');
+const axeDebut = coupe > 0 ? a.services.axe.slice(0, coupe + 3) : a.services.axe;
+const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
+---
+<Base faq={faqAccueil} description="Le Cabinet Pamojah, clinique du leadership multi-talents pour les femmes leaders africaines et afro-descendantes. Consultation d’Axe en visio, 75 min.">
+  <FilmEntree slot="avant-entete" />
+
+  <!-- 1. Le Parvis : la phrase-miroir -->
+  <section id="bienvenue" class="parvis fond-noir" tabindex="-1">
+    <div class="conteneur parvis__grille">
+      <div class="parvis__texte">
+        <span class="surtitre">{a.parvis.surtitre}</span>
+        <h1>{a.parvis.titre}</h1>
+        <p class="chapo">{a.parvis.sousTexte}</p>
+        <p class="parvis__cible">{a.parvis.cible}</p>
+        <div class="parvis__actions">
+          <a class="bouton" href="/consultation-axe/#reserver">Réserver ma Consultation d’Axe</a>
+          <a class="lien" href="#vestibule">Entrer dans le cabinet</a>
+        </div>
+      </div>
+      <ul class="promesse" aria-label="Notre promesse">
+        {a.parvis.promesse.map((l) => <li>{l}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. Le Vestibule : se reconnaître -->
+  <section id="vestibule" class="section fond-sable" aria-labelledby="vestibule-titre">
+    <div class="conteneur vestibule">
+      <div class="vestibule__texte">
+        <Titre id="vestibule-titre">{a.vestibule.titre}</Titre>
+        <p class="chapo espace apparait">{a.vestibule.texte}</p>
+        <p class="espace-s apparait">{a.vestibule.texteSuite}</p>
+      </div>
+      <Photo
+        src={assise}
+        alt=""
+        widths={[480, 720, 960]}
+        sizes="(max-width: 900px) 100vw, 38vw"
+        class="vestibule__photo"
+      />
+    </div>
+    <ol class="conteneur situations" aria-label="Cinq situations">
+      {a.vestibule.situations.map((s, i) => (
+        <li class="situation apparait" style={`--delai: ${i * 120}ms`}>
+          <h3 class="situation__nom">{s.nom}</h3>
+          <p>{s.texte}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- 3. Le Passage : comprendre son besoin -->
+  <section class="section passage fond-noir" aria-label="Comprendre votre besoin">
+    <div class="conteneur passage__texte">
+      <p class="passage__fort apparait">{a.passage.fort}</p>
+      <p class="passage__fort passage__fort--or apparait">{a.passage.fortSuite}</p>
+      <div class="ornement" aria-hidden="true"><span></span></div>
+      {a.passage.paragraphes.map((p) => <p class="chapo apparait">{p}</p>)}
+      <p class="passage__nature apparait">{a.passage.nature}</p>
+    </div>
+  </section>
+
+  <!-- 4. Les trois services -->
+  <section id="accompagnements" class="section fond-ivoire" aria-labelledby="accompagnements-titre">
+    <div class="conteneur">
+      <div class="accomp__intro">
+        <Titre surtitre={a.services.surtitre} id="accompagnements-titre">{a.services.titre}</Titre>
+        <p class="chapo espace">{a.services.intro}</p>
+        <p class="accomp__question">{a.services.question}</p>
+      </div>
+
+      <div class="accomp__liste">
+        {trois.map((s, i) => (
+          <article class:list={['accomp', { 'accomp--inverse': i % 2 === 1 }]} aria-labelledby={`accomp-${s.id}`}>
+            <a class="accomp__image" href={s.href} tabindex="-1" aria-hidden="true">
+              <Photo
+                src={s.image}
+                alt=""
+                widths={[640, 960, 1440]}
+                sizes="(max-width: 900px) 100vw, 55vw"
+              />
+            </a>
+            <div class="accomp__texte">
+              <p class="accomp__porte">« {s.porte} »</p>
+              <span class="surtitre">{s.surtitre}</span>
+              <h3 id={`accomp-${s.id}`} class="accomp__nom">{s.nom}</h3>
+              <p class="devise">{s.devise}</p>
+              <p class="espace-s">{s.texte}</p>
+              <p class="accomp__transformation">{s.transformation}</p>
+              <ul class="faits">
+                {s.faits.map((f) => <li>{f}</li>)}
+              </ul>
+              <a class="lien espace-s" href={s.href}>{s.lien}</a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <p class="accomp__axe">{axeDebut}{axeFin && <strong>{axeFin}</strong>}</p>
+      <p class="accomp__ld">{leadershipDurable.mention}</p>
+    </div>
+  </section>
+
+  <!-- 5. Le Seuil : la Consultation d'Axe -->
+  <section id="consultation" class="section fond-noir" aria-labelledby="seuil-titre" data-sans-barre>
+    <div class="conteneur seuil">
+      <div class="seuil__texte">
+        <Titre surtitre={a.seuil.surtitre} id="seuil-titre">{a.seuil.titre}</Titre>
+        <p class="chapo espace">{a.seuil.sousTitre}</p>
+        <p class="espace"><strong>{a.seuil.pointEntree}</strong>{' '}{a.seuil.texte}</p>
+        <p class="seuil__moments" aria-label={a.seuil.moments.join(', ')}>
+          {a.seuil.moments.map((m) => <span>{m}</span>)}
+        </p>
+      </div>
+      <Photo
+        src={cabinet}
+        alt="Le cabinet : un bureau de bois sombre sur l’axe, deux fauteuils vides face à lui, la lumière douce du soir."
+        widths={[640, 960, 1440]}
+        sizes="(max-width: 900px) 100vw, 45vw"
+        class="seuil__image"
+      />
+    </div>
+
+    <div class="conteneur">
+      <p class="surtitre espace-l">Ensemble, nous clarifions</p>
+      <ol class="clarifions">
+        {a.seuil.clarifions.map((c, i) => (
+          <li class="apparait" style={`--delai: ${i * 120}ms`}>
+            <h3>{c.titre}</h3>
+            <p>{c.texte}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="seuil__issue">{a.seuil.issue}</p>
+
+      <div class="seuil__action">
+        <ul class="faits">
+          <li>{site.consultation.duration}</li>
+          <li>{site.consultation.format}</li>
+          <li>Confidentialité absolue</li>
+        </ul>
+        <a class="bouton" href="/consultation-axe/#reserver">Réserver ma Consultation d’Axe</a>
+        <a class="lien" href="/consultation-axe/">Tout savoir sur la Consultation</a>
+        <p class="seuil__signature">{site.signature}</p>
+        <p class="seuil__sphere">{a.seuil.sphere}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. L'architecte -->
+  <section class="section fond-sable" aria-labelledby="architecte-titre">
+    <div class="conteneur architecte">
+      <div>
+        <Titre surtitre="L’architecte" id="architecte-titre">Huguette Tolo-Tolo Ngemeyeme</Titre>
+        <p class="devise espace-s">Architecte de souveraineté · Fondatrice du Cabinet Pamojah</p>
+      </div>
+      <div class="architecte__texte">
+        <blockquote class="architecte__citation apparait">
+          <p>« {a.architecte.citation} »</p>
+        </blockquote>
+        <p class="espace apparait">{a.architecte.texte}</p>
+        <p class="espace-s apparait">{a.architecte.ensemble}</p>
+        <a class="lien espace" href="/huguette/">Découvrir son parcours</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Les avis -->
+  <section class="section fond-ivoire" aria-labelledby="avis-titre">
+    <div class="conteneur">
+      <Titre surtitre="Elles en parlent" id="avis-titre">{a.avisTitre}</Titre>
+      <div class="espace-l"><Citations /></div>
+    </div>
+  </section>
+
+  <!-- 8. La Sphère de pouvoir -->
+  <section class="section fond-noir" aria-labelledby="sphere-titre">
+    <div class="conteneur sphere">
+      <Cercles />
+      <div>
+        <Titre surtitre="Le cœur du cabinet" id="sphere-titre">{a.sphere.titre}</Titre>
+        <p class="chapo espace">{a.sphere.accroche}</p>
+        <p class="espace-s">{a.sphere.texte}</p>
+        <a class="lien espace" href="/la-sphere/">Comprendre la Sphère</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Apprendre -->
+  <section class="section fond-sable" aria-labelledby="apprendre-titre">
+    <div class="conteneur">
+      <div class="apprendre__tete">
+        <Titre surtitre="S’informer et apprendre" id="apprendre-titre">La Bibliothèque</Titre>
+        <a class="lien" href="/apprendre/">Tous les articles</a>
+      </div>
+      <ul class="articles">
+        {articles.map((a) => (
+          <li class="apparait">
+            <a class="article" href={`/apprendre/${a.id}/`}>
+              <span class="surtitre">{a.data.theme}</span>
+              <span class="article__titre">{a.data.titre}</span>
+              <span class="article__resume">{a.data.resume}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="instagram">
+        Suivre le Cabinet au quotidien sur Instagram :{' '}
+        <a href={site.instagram} rel="noopener">{site.instagramHandle}</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 10. Retour au seuil -->
+  <section class="section retour fond-noir" aria-labelledby="retour-titre">
+    <Photo
+      src={villa}
+      alt=""
+      widths={[960, 1600, 2400]}
+      sizes="100vw"
+      class="retour__image"
+    />
+    <div class="retour__voile" aria-hidden="true"></div>
+    <div class="conteneur centre retour__texte">
+      <Titre surtitre={site.signature} id="retour-titre" centre>{a.retour}</Titre>
+      <a class="bouton espace" href="/consultation-axe/#reserver">Réserver ma Consultation d’Axe</a>
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-labelledby="questions-titre">
+    <div class="conteneur questions">
+      <Titre surtitre="Questions fréquentes" id="questions-titre">Avant d’entrer</Titre>
+      <div>
+        <Faq questions={faqAccueil} />
+        <p class="avertissement">{disclaimer}</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .espace { margin-top: var(--e-6); }
+  .espace-s { margin-top: var(--e-4); }
+  .espace-l { margin-top: var(--e-8); }
+
+  /* 1. Parvis */
+  .parvis { padding-block: var(--e-10) var(--section); }
+  .parvis:focus { outline: none; }
+  .parvis__grille {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: var(--e-8);
+    align-items: end;
+  }
+  .parvis h1 { margin-top: var(--e-5); max-width: 17ch; }
+  .parvis .chapo { margin-top: var(--e-6); max-width: 34rem; }
+  .parvis__cible { margin-top: var(--e-5); max-width: 34rem; color: rgba(244, 238, 232, 0.8); }
+  .parvis__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e-5) var(--e-6); margin-top: var(--e-7); }
+  .promesse {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--or);
+  }
+  .promesse li {
+    padding: var(--e-3) 0 var(--e-3) var(--e-5);
+    font-family: var(--f-capitales);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    line-height: 1.6;
+    text-transform: uppercase;
+  }
+
+  /* 2. Vestibule */
+  .vestibule {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--e-8);
+    align-items: center;
+  }
+  .vestibule :global(h2) { max-width: 14ch; }
+  :global(.vestibule__photo) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 30%; }
+  .situations {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--e-6);
+    margin-top: var(--e-9);
+    list-style: none;
+  }
+  .situation { padding-top: var(--e-5); border-top: 1px solid var(--or); }
+  .situation__nom {
+    margin-bottom: var(--e-3);
+    font-family: var(--f-capitales);
+    font-size: 14px;
+    letter-spacing: 0.16em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+  .situation p { font-size: 19px; line-height: 1.45; }
+
+  /* 3. Passage */
+  .passage__texte { max-width: 50rem; }
+  .passage__fort { font-size: var(--t-h2); line-height: 1.12; }
+  .passage__fort--or { color: var(--or); margin-top: var(--e-3); }
+  .passage__texte .chapo + .chapo { margin-top: var(--e-5); }
+  .passage__nature {
+    margin-top: var(--e-8);
+    padding-top: var(--e-5);
+    border-top: 1px solid rgba(244, 238, 232, 0.2);
+    font-family: var(--f-capitales);
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    line-height: 1.7;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+  .passage .ornement { margin-inline: 0; }
+
+  /* 4. Accompagnements */
+  .accomp__intro { max-width: 46rem; }
+  .accomp__question {
+    margin-top: var(--e-7);
+    font-size: var(--t-h3);
+    font-style: italic;
+  }
+  .accomp__liste { display: grid; gap: var(--e-10); margin-top: var(--e-9); }
+  .accomp {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--e-8);
+    align-items: center;
+  }
+  .accomp--inverse .accomp__image { order: 2; }
+  .accomp__image { display: block; overflow: hidden; }
+  .accomp__image :global(img) {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    transition: transform 1200ms var(--courbe);
+  }
+  .accomp__image:hover :global(img) { transform: scale(1.02); }
+  .accomp__porte {
+    margin-bottom: var(--e-6);
+    font-size: clamp(24px, 1vw + 19px, 30px);
+    font-style: italic;
+    line-height: 1.3;
+  }
+  .accomp__nom { margin: var(--e-3) 0 var(--e-3); }
+  .accomp__transformation { margin-top: var(--e-4); font-style: italic; color: var(--or-fonce); }
+  .accomp__axe {
+    margin-top: var(--e-10);
+    text-align: center;
+    font-size: var(--t-h3);
+  }
+  .accomp__axe strong { font-weight: 600; color: var(--or-fonce); }
+  .accomp__ld {
+    max-width: 40rem;
+    margin: var(--e-6) auto 0;
+    text-align: center;
+    font-style: italic;
+    color: var(--encre-douce);
+  }
+
+  /* 5. Seuil */
+  .seuil {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    gap: var(--e-8);
+    align-items: center;
+  }
+  :global(.seuil__image) { width: 100%; height: auto; }
+  .seuil__moments { display: flex; flex-wrap: wrap; gap: 6px 0; margin-top: var(--e-6); font-style: italic; color: rgba(244, 238, 232, 0.85); }
+  .seuil__moments span:not(:last-child)::after { content: '→'; margin: 0 10px; color: var(--or); font-style: normal; }
+  .clarifions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--e-6);
+    margin: var(--e-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .clarifions li { padding-top: var(--e-5); border-top: 1px solid var(--or); }
+  .clarifions h3 { font-size: 26px; margin-bottom: var(--e-3); }
+  .seuil__issue { max-width: 44rem; margin-top: var(--e-8); }
+  .seuil__action { display: grid; justify-items: start; gap: var(--e-5); margin-top: var(--e-8); }
+  .seuil__action .faits { margin-top: 0; }
+  .seuil__signature {
+    font-family: var(--f-capitales);
+    font-size: 12.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+  .seuil__sphere { font-style: italic; color: rgba(244, 238, 232, 0.8); }
+
+  /* 6. Architecte */
+  .architecte {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--e-8);
+    align-items: start;
+  }
+  .architecte__citation { margin: 0; }
+  .architecte__citation p { font-size: clamp(26px, 1.4vw + 19px, 36px); font-style: italic; line-height: 1.3; }
+
+  /* 8. Sphère */
+  .sphere {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--e-8);
+    align-items: center;
+  }
+
+  /* 9. Apprendre */
+  .apprendre__tete { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--e-5); }
+  .articles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--e-7);
+    margin: var(--e-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .article {
+    display: grid;
+    gap: var(--e-3);
+    padding-top: var(--e-5);
+    border-top: 1px solid var(--or);
+    text-decoration: none;
+  }
+  .article__titre { font-size: 28px; line-height: 1.2; }
+  .article:hover .article__titre { color: var(--or-fonce); }
+  .article__resume { font-size: 19px; color: var(--encre-douce); }
+  .instagram { margin-top: var(--e-8); }
+  .instagram a { color: var(--or-fonce); }
+
+  /* 10. Retour au seuil */
+  .retour { position: relative; overflow: hidden; }
+  :global(.retour__image) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .retour__voile { position: absolute; inset: 0; background: rgba(13, 13, 13, 0.6); }
+  .retour__texte { position: relative; max-width: 50rem; padding-block: var(--e-8); }
+
+  .questions {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--e-8);
+    align-items: start;
+  }
+  .avertissement { margin-top: var(--e-7); font-size: 17px; color: var(--encre-douce); }
+
+  @media (max-width: 1100px) {
+    .situations { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .clarifions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 900px) {
+    .parvis__grille, .vestibule, .accomp, .seuil, .architecte, .sphere, .questions { grid-template-columns: 1fr; }
+    .accomp--inverse .accomp__image { order: 0; }
+    .articles { grid-template-columns: 1fr; }
+    .accomp__liste { gap: var(--e-9); }
+  }
+  @media (max-width: 560px) {
+    .situations, .clarifions { grid-template-columns: 1fr; }
+  }
+</style>

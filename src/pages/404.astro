@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+---
+<Base title="Page introuvable" description="Cette page n’existe pas." noindex>
+  <section class="section fond-noir introuvable">
+    <div class="conteneur centre">
+      <Logo variant="pilier" decorative class="introuvable__pilier" />
+      <h1>Cette porte n’existe pas.</h1>
+      <p class="chapo">La page que vous cherchez a peut-être changé d’adresse.</p>
+      <div class="actions">
+        <a class="bouton" href="/">Revenir à l’accueil</a>
+        <a class="lien" href="/consultation-axe/">La Consultation d’Axe</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .introuvable { min-height: 70vh; display: grid; align-items: center; }
+  .introuvable :global(.introuvable__pilier) { height: 120px; width: auto; margin: 0 auto var(--e-7); color: var(--ivoire); }
+  h1 { margin-bottom: var(--e-5); }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--e-6); margin-top: var(--e-7); }
+</style>

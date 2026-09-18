@@ -1,0 +1,25 @@
+---
+// Titre de section : surtitre en capitales, titre en Cormorant, filet doré optionnel.
+interface Props {
+  surtitre?: string;
+  niveau?: 'h1' | 'h2' | 'h3';
+  centre?: boolean;
+  filet?: boolean;
+  id?: string;
+  class?: string;
+}
+const { surtitre, niveau = 'h2', centre = false, filet = false, id, class: className } = Astro.props;
+const Balise = niveau;
+---
+<div class:list={['titre', { centre }, className]}>
+  {surtitre && <span class="surtitre">{surtitre}</span>}
+  <Balise class="titre__texte" id={id}><slot /></Balise>
+  {filet && <hr class="filet" />}
+</div>
+
+<style>
+  .titre__texte { margin-top: var(--e-4); max-width: 22ch; }
+  .centre .titre__texte { margin-inline: auto; }
+  .surtitre + .titre__texte { margin-top: var(--e-4); }
+  .titre > .titre__texte:first-child { margin-top: 0; }
+</style>

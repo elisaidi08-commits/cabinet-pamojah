@@ -1,0 +1,65 @@
+---
+// Page de retour après la réservation Calendly (redirection automatique depuis le module intégré ;
+// à régler aussi dans Calendly : « Rediriger vers une page externe » → /confirmation/).
+// Le texte « Avant et après la séance » de la V1 n'a pas été retrouvé : version rédigée à partir du texte Calendly.
+import Base from '../layouts/Base.astro';
+import Titre from '../components/Titre.astro';
+import { consultation } from '../data/consultation';
+import { site } from '../data/site';
+
+const etapes = [
+  { titre: 'Avant la séance', texte: 'Vous recevez par email la confirmation et les informations de connexion à la visio. Installez-vous dans un espace calme, avec un carnet.' },
+  { titre: 'Pendant la séance', texte: 'Arrivez avec une intention claire : ce que vous souhaitez stabiliser aujourd’hui. Nous clarifions ce qui se joue, ce qui doit être décidé et ce qui doit être structuré.' },
+  { titre: 'Après la séance', texte: 'Vous repartez avec un axe clair, une décision stabilisée, une orientation précise pour l’étape d’après et votre livret d’axe.' },
+];
+---
+<Base title="Votre Consultation d’Axe est réservée" description="Confirmation de votre Consultation d’Axe." noindex>
+  <section class="section fond-noir">
+    <div class="conteneur confirmation">
+      <span class="surtitre">Confirmation</span>
+      <h1>Votre Consultation d’Axe est réservée.</h1>
+      <p class="chapo espace">Merci pour votre confiance. Un email de confirmation vient de vous être envoyé.</p>
+      <ul class="faits">
+        <li>{site.consultation.name}</li>
+        <li>{site.consultation.duration}</li>
+        <li>{site.consultation.format}</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-labelledby="deroule">
+    <div class="conteneur">
+      <Titre surtitre="Avant et après la séance" id="deroule">Ce qui vous attend</Titre>
+      <ol class="etapes">
+        {etapes.map((e, i) => (
+          <li>
+            <span class="num" aria-hidden="true">{['I', 'II', 'III'][i]}</span>
+            <h3>{e.titre}</h3>
+            <p>{e.texte}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="rappel">{consultation.conditions.find((c) => c.startsWith('Ponctualité'))}.</p>
+      <a class="lien" href="/">Retour au cabinet</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .espace { margin-top: var(--e-6); }
+  .confirmation { max-width: 50rem; padding-top: var(--e-8); }
+  .confirmation h1 { margin-top: var(--e-4); }
+  .etapes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--e-7);
+    margin: var(--e-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .etapes li { padding-top: var(--e-5); border-top: 1px solid var(--or); }
+  .etapes h3 { margin: var(--e-3) 0; }
+  .num { font-family: var(--f-capitales); font-size: 15px; letter-spacing: 0.2em; color: var(--or-fonce); }
+  .rappel { margin: var(--e-8) 0 var(--e-5); font-style: italic; }
+  @media (max-width: 900px) { .etapes { grid-template-columns: 1fr; } }
+</style>

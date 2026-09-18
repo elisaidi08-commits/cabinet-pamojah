@@ -1,0 +1,37 @@
+---
+// ⚠️ Aucune donnée légale n'existe dans le dossier : tous les champs « À compléter » doivent être remplis avant la mise en ligne.
+import PageTexte from '../layouts/PageTexte.astro';
+import { site } from '../data/site';
+const aCompleter = (champ: string) => `<span class="a-completer">À compléter : ${champ}</span>`;
+---
+<PageTexte title="Mentions légales" description="Mentions légales du site du Cabinet Pamojah." surtitre="Informations légales" noindex>
+  <h2>Éditrice du site</h2>
+  <p>
+    <strong>{site.name}</strong><br />
+    <Fragment set:html={aCompleter('raison sociale et forme juridique')} /><br />
+    <Fragment set:html={aCompleter('adresse du siège')} /><br />
+    SIRET : <Fragment set:html={aCompleter('numéro SIRET')} /><br />
+    <Fragment set:html={aCompleter('RCS / RNE, capital, n° de TVA intracommunautaire le cas échéant')} /><br />
+    Contact : <a href={`mailto:${site.email}`}>{site.email}</a>
+  </p>
+  <p>Directrice de la publication : Huguette Tolo-Tolo Ngemeyeme.</p>
+
+  <h2>Hébergement</h2>
+  <p>Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis — <a href="https://vercel.com" rel="noopener">vercel.com</a>.</p>
+
+  <h2>Propriété intellectuelle</h2>
+  <p>
+    L’ensemble des contenus de ce site (textes, logos, images, vidéos, éléments graphiques) est la propriété du Cabinet Pamojah
+    ou fait l’objet d’une autorisation d’utilisation. Toute reproduction ou représentation, totale ou partielle, sans autorisation écrite préalable est interdite.
+  </p>
+  <p>
+    Les images du cabinet ont été créées pour le Cabinet Pamojah. Les photographies de personnes proviennent de la banque d’images Pexels
+    (licence Pexels) ; elles ne représentent ni des clientes du Cabinet ni sa fondatrice.
+  </p>
+
+  <h2>Nature des accompagnements</h2>
+  <p>
+    Les accompagnements du Cabinet Pamojah ne se substituent pas à des soins médicaux, psychologiques ou psychiatriques.
+    Lorsque la situation le nécessite, une orientation vers un professionnel compétent peut être recommandée.
+  </p>
+</PageTexte>

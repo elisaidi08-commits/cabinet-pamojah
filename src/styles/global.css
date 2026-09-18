@@ -1,0 +1,291 @@
+/* Le Cabinet Pamojah — fondations.
+   Référence : 09_SITE_V2/02-conception-site-public.md §8 (couleurs, contrastes) et §10 (mouvement).
+   Règles : l'or n'est jamais du texte courant sur fond clair (or foncé à la place) ;
+   ni carte, ni angle arrondi, ni dégradé décoratif ; seul ornement : le filet et le losange dorés. */
+
+:root {
+  /* Couleurs de la charte */
+  --noir: #0D0D0D;
+  --or: #B38C3D;
+  --or-fonce: #614C24;      /* texte doré sur fond clair : 5,4:1 sur sable */
+  --sable: #DFD0C6;
+  --ivoire: #F4EEE8;
+  --blanc: #FFFFFF;
+  --encre-douce: #3B3530;   /* texte secondaire sur sable/ivoire */
+  --filet-clair: rgba(13, 13, 13, 0.14);
+
+  /* Typographie */
+  --f-capitales: "Cinzel", "Trajan Pro", Georgia, serif;
+  --f-texte: "Cormorant Garamond", Georgia, serif;
+  --t-corps: clamp(20px, 0.35vw + 18.6px, 22px);
+  --t-chapo: clamp(23px, 0.6vw + 20px, 27px);
+  --t-h1: clamp(40px, 4.4vw + 22px, 80px);
+  --t-h2: clamp(32px, 2.6vw + 22px, 56px);
+  --t-h3: clamp(25px, 0.9vw + 21px, 32px);
+  --t-surtitre: 13px;
+
+  /* Espacements (grille 4 px) */
+  --e-1: 4px; --e-2: 8px; --e-3: 12px; --e-4: 16px; --e-5: 24px; --e-6: 32px;
+  --e-7: 48px; --e-8: 64px; --e-9: 96px; --e-10: 128px; --e-11: 160px;
+  --section: clamp(96px, 9vw + 40px, 176px);
+  --gouttiere: clamp(16px, 4vw, 48px);
+  --largeur: 1280px;
+  --lecture: 38rem;
+
+  /* Mouvement */
+  --courbe: cubic-bezier(0.2, 0, 0.3, 1);
+  --geste: 200ms;
+  --etat: 450ms;
+  --recit: 1000ms;
+
+  --entete: 72px;
+}
+
+/* ---------- Base ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--entete) + 16px);
+}
+
+body {
+  margin: 0;
+  background: var(--sable);
+  color: var(--noir);
+  font-family: var(--f-texte);
+  font-weight: 500;
+  font-size: var(--t-corps);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+}
+
+img, video, svg { display: block; max-width: 100%; }
+img { height: auto; }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+h1 { font-size: var(--t-h1); letter-spacing: -0.01em; }
+h2 { font-size: var(--t-h2); }
+h3 { font-size: var(--t-h3); line-height: 1.2; }
+
+p { margin: 0; text-wrap: pretty; }
+p + p { margin-top: 1em; }
+
+a { color: inherit; }
+
+::selection { background: var(--or); color: var(--noir); }
+
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -200px;
+  z-index: 100;
+  padding: 12px 16px;
+  background: var(--ivoire);
+  color: var(--noir);
+  font-family: var(--f-capitales);
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+}
+.skip-link:focus { top: 16px; outline: 2px solid var(--noir); }
+
+/* ---------- Mise en page ---------- */
+
+.conteneur {
+  width: 100%;
+  max-width: calc(var(--largeur) + 2 * var(--gouttiere));
+  margin-inline: auto;
+  padding-inline: var(--gouttiere);
+}
+
+.section { padding-block: var(--section); }
+.section--serree { padding-block: calc(var(--section) * 0.66); }
+.fond-sable { background: var(--sable); color: var(--noir); }
+.fond-ivoire { background: var(--ivoire); color: var(--noir); }
+.fond-noir { background: var(--noir); color: var(--ivoire); }
+
+.lecture { max-width: var(--lecture); }
+.centre { text-align: center; margin-inline: auto; }
+
+.grille {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(16px, 2.4vw, 40px);
+  row-gap: var(--e-7);
+}
+
+/* ---------- Éléments éditoriaux ---------- */
+
+.surtitre {
+  display: block;
+  font-family: var(--f-capitales);
+  font-size: var(--t-surtitre);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  line-height: 1.6;
+  text-transform: uppercase;
+  color: var(--or-fonce);
+}
+.fond-noir .surtitre { color: var(--or); }  /* or sur noir : 6,2:1 */
+
+.titre-section { margin-top: var(--e-4); }
+
+.chapo {
+  font-size: var(--t-chapo);
+  line-height: 1.45;
+}
+
+.devise {
+  font-family: var(--f-capitales);
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.filet {
+  display: block;
+  width: 64px;
+  height: 1px;
+  border: 0;
+  margin: var(--e-6) 0;
+  background: var(--or);
+}
+.centre .filet, .filet--centre { margin-inline: auto; }
+
+/* Le losange de la charte, sur le filet. */
+.ornement {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(220px, 60%);
+  margin: var(--e-6) auto;
+  color: var(--or);
+}
+.ornement::before, .ornement::after { content: ""; flex: 1; height: 1px; background: currentColor; }
+.ornement span { width: 7px; height: 7px; background: currentColor; transform: rotate(45deg); }
+
+.faits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-3) var(--e-6);
+  margin: var(--e-6) 0 0;
+  padding: var(--e-5) 0 0;
+  border-top: 1px solid var(--or);
+  list-style: none;
+  font-family: var(--f-capitales);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.liste-filets {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.liste-filets li {
+  padding: var(--e-4) 0;
+  border-top: 1px solid var(--filet-clair);
+}
+.liste-filets li:last-child { border-bottom: 1px solid var(--filet-clair); }
+.fond-noir .liste-filets li { border-color: rgba(244, 238, 232, 0.18); }
+
+/* ---------- Actions ---------- */
+
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 16px 30px;
+  border: 1px solid var(--or);
+  background: var(--or);
+  color: var(--noir);             /* noir sur aplat doré : 6,2:1 */
+  font-family: var(--f-capitales);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--geste) var(--courbe), border-color var(--geste) var(--courbe);
+}
+.bouton:hover { background: #C49B4A; border-color: #C49B4A; }
+.bouton:active { background: #9E7B33; border-color: #9E7B33; }
+.bouton:focus-visible { outline: 2px solid var(--noir); outline-offset: 3px; }
+.fond-noir .bouton:focus-visible { outline-color: var(--ivoire); }
+
+.bouton--contour {
+  background: transparent;
+  border-color: currentColor;
+  color: inherit;
+}
+.bouton--contour:hover { background: rgba(179, 140, 61, 0.14); border-color: var(--or); }
+
+/* Lien texte : un filet doré qui s'étire au survol. */
+.lien {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding-block: 8px;
+  font-family: var(--f-capitales);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: linear-gradient(var(--or), var(--or)) no-repeat 0 calc(100% - 6px) / 32px 1px;
+  transition: background-size var(--etat) var(--courbe);
+}
+.lien:hover, .lien:focus-visible { background-size: 100% 1px; }
+.lien::after { content: "→"; font-family: var(--f-texte); font-size: 18px; letter-spacing: 0; }
+
+/* ---------- Navigation fluide ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+
+  /* Changement de page : fondu enchaîné de 450 ms (navigateurs compatibles ; les autres changent de page normalement). */
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--etat);
+    animation-timing-function: var(--courbe);
+  }
+}
+
+/* ---------- Apparitions du récit ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .apparait {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--recit) var(--courbe), transform var(--recit) var(--courbe);
+    transition-delay: var(--delai, 0ms);
+  }
+  .apparait.est-visible { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+}

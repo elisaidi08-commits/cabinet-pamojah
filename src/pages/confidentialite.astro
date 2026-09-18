@@ -1,0 +1,79 @@
+---
+// Politique de confidentialité et cookies. Décrit le fonctionnement réel du site :
+// aucun cookie ni mesure d'audience déposés par le site, polices hébergées sur le site,
+// Calendly (et Stripe) chargés uniquement quand la visiteuse ouvre le calendrier. À relire par un juriste.
+import PageTexte from '../layouts/PageTexte.astro';
+import { site } from '../data/site';
+const aCompleter = (champ: string) => `<span class="a-completer">À compléter : ${champ}</span>`;
+---
+<PageTexte title="Confidentialité et cookies" description="Comment le Cabinet Pamojah protège vos données personnelles." surtitre="Vos données" noindex>
+  <p>
+    La confidentialité est au cœur du Cabinet Pamojah. Cette page explique quelles données sont traitées lorsque vous utilisez ce site,
+    pourquoi, et comment exercer vos droits.
+  </p>
+
+  <h2>Responsable du traitement</h2>
+  <p>
+    {site.name} — <Fragment set:html={aCompleter('raison sociale et adresse')} /> — <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+
+  <h2>Cookies et consentement</h2>
+  <p>
+    Le site ne dépose aucun cookie publicitaire. À votre première visite, un bandeau vous permet d’accepter ou de refuser,
+    en un clic et avec la même facilité, deux catégories. Sans choix de votre part, tout est refusé.
+  </p>
+  <ul>
+    <li><strong>Mesure d’audience</strong> : Vercel Analytics, qui produit des statistiques de visite agrégées et anonymes, sans cookie.</li>
+    <li><strong>Services externes</strong> : affichage automatique du calendrier de réservation Calendly (et du paiement Stripe), qui peuvent déposer leurs propres cookies.</li>
+  </ul>
+  <p>
+    Votre choix est conservé 6 mois dans votre navigateur. Vous pouvez le modifier à tout moment :
+    <button type="button" class="bouton-texte" data-gerer-cookies>gérer mes cookies</button>.
+  </p>
+  <p>Les polices de caractères sont hébergées sur le site lui-même : aucune donnée n’est transmise à Google Fonts.</p>
+
+  <h2>Réservation de la Consultation d’Axe</h2>
+  <p>
+    Lorsque vous cliquez sur « Voir les créneaux disponibles », le calendrier de réservation de <strong>Calendly</strong> s’affiche dans la page.
+    Les informations que vous y saisissez (nom, adresse email, réponses éventuelles) sont traitées par Calendly pour organiser la séance,
+    et le paiement est traité par <strong>Stripe</strong>. Ces services peuvent déposer leurs propres cookies, nécessaires à la réservation et au paiement.
+    Leurs politiques de confidentialité s’appliquent :{' '}
+    <a href="https://calendly.com/privacy" rel="noopener">Calendly</a> et <a href="https://stripe.com/fr/privacy" rel="noopener">Stripe</a>.
+  </p>
+  <p>
+    Ces données servent uniquement à organiser votre consultation, à la facturer et à vous recontacter à son sujet.
+    Durée de conservation : <Fragment set:html={aCompleter('durée (ex. 3 ans après le dernier contact ; 10 ans pour les pièces comptables)')} />.
+  </p>
+
+  <h2>Contact par email</h2>
+  <p>Si vous nous écrivez, votre message et votre adresse email sont conservés le temps nécessaire pour vous répondre et assurer le suivi de votre demande.</p>
+
+  <h2>Liens vers Instagram</h2>
+  <p>Le lien vers le compte Instagram du Cabinet ouvre le site d’Instagram, qui applique sa propre politique de confidentialité.</p>
+
+  <h2>Vos droits</h2>
+  <p>
+    Conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés, vous disposez d’un droit d’accès,
+    de rectification, d’effacement, de limitation, d’opposition et de portabilité de vos données. Pour l’exercer, écrivez à{' '}
+    <a href={`mailto:${site.email}`}>{site.email}</a>. Vous pouvez également adresser une réclamation à la CNIL (<a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>).
+  </p>
+
+  <h2>Hébergement</h2>
+  <p>
+    Le site est hébergé par Vercel Inc. (États-Unis), qui peut conserver des journaux techniques de connexion
+    (adresse IP, date, page consultée) pour assurer la sécurité du service.
+  </p>
+</PageTexte>
+
+<style>
+  .bouton-texte {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--or-fonce);
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+</style>

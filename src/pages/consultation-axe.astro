@@ -1,0 +1,244 @@
+---
+import Photo from '../components/Photo.astro';
+import Base from '../layouts/Base.astro';
+import Titre from '../components/Titre.astro';
+import Citations from '../components/Citations.astro';
+import Faq from '../components/Faq.astro';
+import Reservation from '../components/Reservation.astro';
+import { consultation as c } from '../data/consultation';
+import { faqConsultation } from '../data/faq';
+import { site, disclaimer } from '../data/site';
+import { leadershipDurable } from '../data/services';
+import carnet from '../assets/images/portraits/carnet.jpg';
+import cabinet from '../assets/images/cabinet/S1-cabinet.png';
+
+const romains = ['I', 'II', 'III'];
+---
+<Base
+  faq={faqConsultation}
+  title="La Consultation d’Axe"
+  description="La Consultation d’Axe : 75 minutes en visio pour clarifier ce qui se joue, ce qui doit être décidé et ce qui doit être structuré."
+>
+  <section class="ouverture fond-noir">
+    <div class="conteneur ouverture__grille">
+      <div class="ouverture__texte">
+        <span class="surtitre">La porte d’entrée du cabinet</span>
+        <h1>La Consultation d’Axe</h1>
+        <p class="chapo">{c.definition}</p>
+        <ul class="faits" aria-label="En bref">
+          <li>{site.consultation.duration}</li>
+          <li>{site.consultation.format}</li>
+          <li>Confidentialité absolue</li>
+        </ul>
+        <a class="bouton ouverture__bouton" href="#reserver">Réserver ma Consultation d’Axe</a>
+      </div>
+      <Photo
+        src={carnet}
+        alt=""
+        widths={[480, 720, 960]}
+        sizes="(max-width: 900px) 100vw, 40vw"
+        class="ouverture__photo"
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  <section class="section fond-sable">
+    <div class="conteneur miroir">
+      <p class="miroir__ligne apparait">{c.pourQui}</p>
+      <p class="miroir__ligne apparait" style="--delai: 120ms">{c.decalage}</p>
+      <p class="miroir__ligne apparait" style="--delai: 240ms">{c.periode}</p>
+    </div>
+  </section>
+
+  <section class="section fond-ivoire" aria-labelledby="trois-temps">
+    <div class="conteneur">
+      <Titre surtitre="Trois dimensions" id="trois-temps">Ce que la consultation permet de clarifier</Titre>
+      <ol class="temps">
+        {c.temps.map((t, i) => (
+          <li class="temps__item apparait" style={`--delai: ${i * 120}ms`}>
+            <span class="temps__chiffre" aria-hidden="true">{romains[i]}</span>
+            <h3>{t.titre}</h3>
+            <p>{t.texte}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-labelledby="ensemble">
+    <div class="conteneur deux-col">
+      <div>
+        <Titre surtitre="Ce que nous faisons ensemble" id="ensemble">Renforcer l’axe qui organise votre manière d’agir</Titre>
+        <p class="chapo espace">{c.axe.intro}</p>
+        <ul class="verbes">
+          {c.axe.verbes.map((v) => <li>{v}</li>)}
+        </ul>
+      </div>
+      <div>
+        <p class="surtitre">Nous travaillons sur</p>
+        <ul class="liste-filets espace-s">
+          {c.travail.map((t) => <li>{t}</li>)}
+        </ul>
+        <p class="nature">{c.nature}</p>
+        <p>{c.clinique}</p>
+        <p>{c.approche}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fond-noir" aria-labelledby="pour-qui">
+    <div class="conteneur deux-col">
+      <div>
+        <Titre surtitre="Pour qui" id="pour-qui">Pour les femmes qui souhaitent</Titre>
+        <p class="espace">{c.attention} {c.cible}</p>
+        <ul class="liste-filets espace-s">
+          {c.souhaits.map((s) => <li>{s}</li>)}
+        </ul>
+      </div>
+      <div>
+        <Titre surtitre="Pour qui ce n’est pas adapté" niveau="h3">Cette consultation n’est pas adaptée si vous recherchez</Titre>
+        <ul class="liste-filets espace-s">
+          {c.pasPourVous.map((s) => <li>{s}</li>)}
+        </ul>
+        <p class="espace">{c.cadreOriente}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fond-ivoire" aria-labelledby="sortie">
+    <div class="conteneur deux-col deux-col--image">
+      <Photo
+        src={cabinet}
+        alt="Le cabinet Pamojah : un bureau de bois sombre, deux fauteuils face à lui, une œuvre aux pigments de terre au mur."
+        widths={[640, 960, 1280]}
+        sizes="(max-width: 900px) 100vw, 50vw"
+        class="image-cabinet"
+      />
+      <div>
+        <Titre surtitre="Ce que vous recevrez en sortie" id="sortie">Un axe clair, une décision stabilisée</Titre>
+        <ul class="liste-filets espace-s">
+          {c.sortie.map((s) => <li>{s}</li>)}
+        </ul>
+        <p class="espace"><strong>Cette consultation est un diagnostic stratégique.</strong> {c.diagnostic.intro}</p>
+        <ul class="liste-filets espace-s">
+          {c.diagnostic.options.map((s) => <li>{s}</li>)}
+        </ul>
+        <p class="espace-s note-ld">{leadershipDurable.mention}</p>
+        <a class="lien espace" href="/#accompagnements">Découvrir les programmes</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-labelledby="temoignage">
+    <div class="conteneur">
+      <Titre surtitre="Elles l’ont vécue" id="temoignage">Un véritable moment de bascule</Titre>
+      <div class="espace-l"><Citations filtre={['consultation']} /></div>
+    </div>
+  </section>
+
+  <section class="section fond-ivoire" aria-labelledby="reserver-titre">
+    <div class="conteneur">
+      <Titre surtitre={`${site.consultation.duration} · ${site.consultation.format}`} id="reserver-titre">
+        Réserver ma Consultation d’Axe
+      </Titre>
+      <div class="espace-l"><Reservation /></div>
+      <div class="preparation">
+        <p class="surtitre">Préparation avant la séance</p>
+        {c.preparation.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-labelledby="questions">
+    <div class="conteneur deux-col">
+      <Titre surtitre="Questions fréquentes" id="questions">Avant de réserver</Titre>
+      <Faq questions={faqConsultation} />
+    </div>
+    <p class="conteneur avertissement">{disclaimer}</p>
+  </section>
+</Base>
+
+<style>
+  .ouverture { padding-block: var(--e-9) var(--section); }
+  .ouverture__grille {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--e-8);
+    align-items: end;
+  }
+  .ouverture__texte h1 { margin-top: var(--e-4); }
+  .ouverture__texte .chapo { margin-top: var(--e-6); max-width: 36rem; }
+  .ouverture__texte .faits { border-color: var(--or); }
+  .ouverture__bouton { margin-top: var(--e-7); }
+  .ouverture :global(.ouverture__photo) img, :global(.ouverture__photo) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .miroir { max-width: 52rem; display: grid; gap: var(--e-6); }
+  .miroir__ligne { font-size: clamp(26px, 1.6vw + 18px, 38px); line-height: 1.3; }
+
+  .temps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--e-7);
+    margin: var(--e-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .temps__item { padding-top: var(--e-5); border-top: 1px solid var(--or); }
+  .temps__chiffre {
+    display: block;
+    font-family: var(--f-capitales);
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    color: var(--or-fonce);
+  }
+  .temps__item h3 { margin: var(--e-4) 0 var(--e-3); }
+
+  .deux-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--e-8);
+    align-items: start;
+  }
+  .deux-col--image { align-items: center; }
+  :global(.image-cabinet) { width: 100%; height: auto; }
+
+  .verbes {
+    margin: var(--e-5) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: clamp(28px, 1.4vw + 20px, 40px);
+    line-height: 1.25;
+  }
+  .verbes li::before { content: '— '; color: var(--or); }
+
+  .note-ld { font-size: 18px; font-style: italic; color: var(--encre-douce); }
+  .nature { margin-top: var(--e-6); font-size: var(--t-chapo); font-style: italic; }
+
+  .espace { margin-top: var(--e-6); }
+  .espace-s { margin-top: var(--e-4); }
+  .espace-l { margin-top: var(--e-8); }
+
+  .preparation {
+    max-width: var(--lecture);
+    margin-top: var(--e-8);
+    padding-top: var(--e-5);
+    border-top: 1px solid var(--or);
+  }
+  .preparation .surtitre { margin-bottom: var(--e-4); }
+
+  .avertissement {
+    margin-top: var(--e-9);
+    font-size: 17px;
+    color: var(--encre-douce);
+  }
+
+  @media (max-width: 900px) {
+    .ouverture__grille, .deux-col { grid-template-columns: 1fr; }
+    .temps { grid-template-columns: 1fr; }
+  }
+</style>

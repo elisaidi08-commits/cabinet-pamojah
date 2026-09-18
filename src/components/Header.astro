@@ -1,0 +1,210 @@
+---
+// En-tête discret : se cache quand on descend, revient quand on remonte, toujours visible au clavier.
+// Sur l'accueil il est placé après le film : il n'apparaît qu'une fois le film traversé.
+import Logo from './Logo.astro';
+import { nav, site } from '../data/site';
+
+const current = Astro.url.pathname;
+---
+<header class="entete" data-entete>
+  <div class="conteneur entete__rang">
+    <a class="entete__logo" href="/" aria-label="Le Cabinet Pamojah, accueil">
+      <Logo variant="horizontal" decorative />
+    </a>
+
+    <nav class="entete__nav" aria-label="Navigation principale">
+      <ul>
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} aria-current={current === item.href ? 'page' : undefined}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a class="bouton entete__action" href="/consultation-axe/#reserver">{site.consultation.name}</a>
+
+    <button class="entete__menu" type="button" aria-haspopup="dialog" aria-controls="menu" data-ouvre-menu>
+      <span>Menu</span>
+      <span class="entete__traits" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<dialog class="menu" id="menu" aria-label="Menu" data-menu>
+  <div class="menu__haut">
+    <Logo variant="pilier" decorative class="menu__pilier" />
+    <button class="menu__fermer" type="button" data-ferme-menu>Fermer</button>
+  </div>
+  <nav aria-label="Menu principal">
+    <ul class="menu__liens">
+      <li><a href="/">Accueil</a></li>
+      {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      <li><a href="/la-sphere/">La Sphère de pouvoir</a></li>
+    </ul>
+  </nav>
+  <div class="menu__bas">
+    <a class="bouton" href="/consultation-axe/#reserver">Réserver ma {site.consultation.name}</a>
+    <p class="menu__signature">{site.signature}</p>
+  </div>
+</dialog>
+
+<style>
+  .entete {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--entete);
+    background: var(--sable);
+    border-bottom: 1px solid var(--filet-clair);
+    transition: transform var(--etat) var(--courbe);
+  }
+  .entete.est-cache:not(:focus-within) { transform: translateY(-100%); }
+
+  .entete__rang {
+    display: flex;
+    align-items: center;
+    gap: var(--e-6);
+    height: 100%;
+  }
+
+  .entete__logo { display: block; color: var(--noir); margin-right: auto; }
+  .entete__logo :global(.logo) { height: 38px; width: auto; }
+
+  .entete__nav ul {
+    display: flex;
+    gap: clamp(16px, 2vw, 32px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .entete__nav a {
+    display: inline-block;
+    padding: 12px 0;
+    font-family: var(--f-capitales);
+    font-size: 12.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(var(--or), var(--or)) no-repeat 0 calc(100% - 8px) / 0 1px;
+    transition: background-size var(--etat) var(--courbe);
+  }
+  .entete__nav a:hover,
+  .entete__nav a:focus-visible,
+  .entete__nav a[aria-current='page'] { background-size: 100% 1px; }
+
+  .entete__action { min-height: 44px; padding: 12px 20px; font-size: 12.5px; }
+
+  .entete__menu {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 8px 0 8px 12px;
+    border: 0;
+    background: none;
+    color: var(--noir);
+    font-family: var(--f-capitales);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .entete__traits {
+    width: 22px;
+    height: 7px;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+  }
+
+  @media (max-width: 1080px) {
+    .entete__nav { display: none; }
+    .entete__menu { display: inline-flex; }
+  }
+  @media (max-width: 640px) {
+    .entete__action { display: none; }
+    .entete__logo :global(.logo) { height: 32px; }
+  }
+
+  /* Menu plein écran (dialog natif : focus piégé et Échap gérés par le navigateur). */
+  .menu {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: var(--e-5) var(--gouttiere) calc(var(--e-6) + env(safe-area-inset-bottom));
+    border: 0;
+    background: var(--noir);
+    color: var(--ivoire);
+  }
+  .menu[open] { display: flex; flex-direction: column; }
+  .menu::backdrop { background: var(--noir); }
+
+  .menu__haut { display: flex; align-items: center; justify-content: space-between; }
+  .menu__haut :global(.menu__pilier) { height: 48px; width: auto; color: var(--ivoire); }
+  .menu__fermer {
+    min-height: 44px;
+    padding: 8px 0 8px 12px;
+    border: 0;
+    background: none;
+    color: var(--ivoire);
+    font-family: var(--f-capitales);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .menu__liens {
+    margin: auto 0;
+    padding: var(--e-7) 0;
+    list-style: none;
+  }
+  .menu__liens a {
+    display: block;
+    padding: 10px 0;
+    font-size: clamp(30px, 7vw, 48px);
+    line-height: 1.15;
+    text-decoration: none;
+  }
+  .menu__liens a:hover, .menu__liens a:focus-visible { color: var(--or); }
+
+  .menu__bas { display: grid; gap: var(--e-5); }
+  .menu__signature {
+    font-family: var(--f-capitales);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .menu[open] { animation: menu-entre var(--etat) var(--courbe); }
+    @keyframes menu-entre { from { opacity: 0; } to { opacity: 1; } }
+  }
+</style>
+
+<script>
+  const entete = document.querySelector<HTMLElement>('[data-entete]');
+  const menu = document.querySelector<HTMLDialogElement>('[data-menu]');
+
+  document.querySelector('[data-ouvre-menu]')?.addEventListener('click', () => menu?.showModal());
+  document.querySelector('[data-ferme-menu]')?.addEventListener('click', () => menu?.close());
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => menu.close()));
+
+  // Se cache en descendant, revient en remontant.
+  let dernier = window.scrollY;
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!entete) return;
+      const y = window.scrollY;
+      const colle = entete.getBoundingClientRect().top <= 0;
+      entete.classList.toggle('est-cache', colle && y > dernier + 4 && y > 200);
+      if (y < dernier - 4) entete.classList.remove('est-cache');
+      dernier = y;
+    },
+    { passive: true },
+  );
+</script>

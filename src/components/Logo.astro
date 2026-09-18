@@ -1,0 +1,22 @@
+---
+// Logos vectorisés depuis la charte : le Pilier et le texte prennent la couleur courante,
+// la bande reste dorée. Variantes : principal (vertical, avec la signature), horizontal, pilier.
+import principal from '../assets/logos/logo-principal.svg?raw';
+import horizontal from '../assets/logos/logo-horizontal.svg?raw';
+import pilier from '../assets/logos/pilier.svg?raw';
+
+interface Props {
+  variant?: 'principal' | 'horizontal' | 'pilier';
+  class?: string;
+  decorative?: boolean;
+}
+
+const { variant = 'horizontal', class: className = '', decorative = false } = Astro.props;
+const source = { principal, horizontal, pilier }[variant];
+const a11y = decorative ? 'aria-hidden="true" focusable="false"' : 'aria-label="Le Cabinet Pamojah"';
+const svg = source
+  .replace(/\s(width|height)="[^"]*"/g, '')
+  .replace('role="img"', decorative ? '' : 'role="img"')
+  .replace('<svg ', `<svg class="logo logo--${variant} ${className}" ${a11y} `);
+---
+<Fragment set:html={svg} />

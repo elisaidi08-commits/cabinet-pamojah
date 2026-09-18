@@ -1,0 +1,113 @@
+---
+import '@fontsource/cinzel/400.css';
+import '@fontsource/cinzel/500.css';
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/500-italic.css';
+import '@fontsource/cormorant-garamond/600.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import Consentement from '../components/Consentement.astro';
+import { site } from '../data/site';
+// Les deux polices les plus utilisées sont préchargées : le texte s'affiche sans « saut ».
+import policeTexte from '@fontsource/cormorant-garamond/files/cormorant-garamond-latin-500-normal.woff2?url';
+import policeCapitales from '@fontsource/cinzel/files/cinzel-latin-400-normal.woff2?url';
+
+interface Props {
+  title?: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+  faq?: { question: string; reponse: string }[];
+}
+
+const { title, description, image = '/film/affiche-ordinateur.jpg', noindex = false, faq } = Astro.props;
+
+// Données structurées pour les moteurs de recherche (schema.org).
+const organisation = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  description: `${site.name}, ${site.baseline.toLowerCase()} pour les femmes leaders africaines et afro-descendantes.`,
+  url: Astro.site?.href,
+  logo: new URL('/favicon.svg', Astro.site).href,
+  image: new URL('/film/affiche-ordinateur.jpg', Astro.site).href,
+  email: site.email,
+  founder: { '@type': 'Person', name: 'Huguette Tolo-Tolo Ngemeyeme', jobTitle: 'Architecte de souveraineté' },
+  sameAs: [site.instagram],
+};
+const faqSchema = faq?.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((q) => ({ '@type': 'Question', name: q.question, acceptedAnswer: { '@type': 'Answer', text: q.reponse } })),
+    }
+  : null;
+const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.baseline}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+// Tant que le site n'est pas officiellement lancé, les moteurs de recherche ne l'indexent pas.
+// Au lancement : variable d'environnement PUBLIC_INDEXER=oui sur Vercel.
+const indexable = import.meta.env.PUBLIC_INDEXER === 'oui';
+const hasBefore = Astro.slots.has('avant-entete');
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={policeTexte} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={policeCapitales} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#0D0D0D" />
+    {(noindex || !indexable) && <meta name="robots" content="noindex" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(organisation)} />
+    {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <Consentement />
+    <slot name="avant-entete" />
+    <Header />
+    <main id="contenu" tabindex="-1" class:list={{ 'apres-film': hasBefore }}>
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+
+    <script>
+      // Apparitions calmes du récit : une seule fois, à l'entrée dans l'écran.
+      const elements = document.querySelectorAll('.apparait');
+      if ('IntersectionObserver' in window && elements.length) {
+        const observer = new IntersectionObserver(
+          (entrees) => {
+            entrees.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('est-visible');
+                observer.unobserve(e.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -10% 0px' },
+        );
+        elements.forEach((el) => observer.observe(el));
+      } else {
+        elements.forEach((el) => el.classList.add('est-visible'));
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  main:focus { outline: none; }
+</style>

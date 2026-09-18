@@ -1,0 +1,114 @@
+---
+import Logo from './Logo.astro';
+import { disclaimer, legal, nav, site } from '../data/site';
+
+const annee = new Date().getFullYear();
+---
+<footer class="pied fond-noir">
+  <div class="conteneur">
+    <div class="pied__haut">
+      <a class="pied__logo" href="/" aria-label="Le Cabinet Pamojah, accueil">
+        <Logo variant="principal" decorative />
+      </a>
+
+      <nav class="pied__col" aria-label="Pied de page">
+        <p class="surtitre">Le cabinet</p>
+        <ul>
+          {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+          <li><a href="/la-sphere/">La Sphère de pouvoir</a></li>
+        </ul>
+      </nav>
+
+      <div class="pied__col">
+        <p class="surtitre">Nous écrire</p>
+        <ul>
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><a href={`mailto:${site.email}?subject=Institutions%20et%20presse`}>Institutions et presse</a></li>
+          {site.instagram && <li><a href={site.instagram} rel="noopener">Instagram</a></li>}
+        </ul>
+      </div>
+
+      <div class="pied__col pied__action">
+        <p class="surtitre">Toutes les portes s’ouvrent par</p>
+        <a class="bouton" href="/consultation-axe/#reserver">La {site.consultation.name}</a>
+      </div>
+    </div>
+
+    <div class="ornement" aria-hidden="true"><span></span></div>
+    <p class="pied__signature">{site.signature}</p>
+
+    <div class="pied__bas">
+      <p class="pied__avertissement">{disclaimer}</p>
+      <ul class="pied__legal">
+        {legal.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        <li><button type="button" class="pied__cookies" data-gerer-cookies>Gérer les cookies</button></li>
+      </ul>
+      <p>© {annee} {site.name}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .pied { padding-block: var(--e-9) calc(var(--e-8) + env(safe-area-inset-bottom)); }
+
+  .pied__haut {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    gap: var(--e-7);
+    align-items: start;
+  }
+  .pied__logo { color: var(--ivoire); width: 180px; }
+  .pied__logo :global(.logo) { width: 100%; height: auto; }
+
+  .pied__col ul { margin: var(--e-4) 0 0; padding: 0; list-style: none; }
+  .pied__col li + li { margin-top: 6px; }
+  .pied__col a {
+    display: inline-block;
+    padding: 4px 0;
+    text-decoration: none;
+    font-size: 19px;
+  }
+  .pied__col a:hover, .pied__col a:focus-visible { color: var(--or); }
+  .pied__action .bouton { margin-top: var(--e-4); }
+
+  .pied__signature {
+    text-align: center;
+    font-family: var(--f-capitales);
+    font-size: 12.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+
+  .pied__bas {
+    display: grid;
+    gap: var(--e-4);
+    margin-top: var(--e-8);
+    padding-top: var(--e-6);
+    border-top: 1px solid rgba(244, 238, 232, 0.16);
+    font-size: 16px;
+    color: rgba(244, 238, 232, 0.78);
+  }
+  .pied__avertissement { max-width: 60rem; }
+  .pied__legal { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0; padding: 0; list-style: none; }
+  .pied__legal a { display: inline-block; padding: 6px 0; }
+  .pied__cookies {
+    min-height: 32px;
+    padding: 6px 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 900px) {
+    .pied__haut { grid-template-columns: 1fr 1fr; }
+    .pied__logo { grid-column: 1 / -1; width: 150px; }
+  }
+  @media (max-width: 560px) {
+    .pied__haut { grid-template-columns: 1fr; }
+  }
+</style>
