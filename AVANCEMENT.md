@@ -3,6 +3,15 @@
 > Site codé sur mesure avec **Astro 7** : des pages statiques, sans base de données, déposables chez n'importe quel hébergeur.
 > Références : `09_SITE_V2/02-conception-site-public.md` (architecture, sections, interactions) · `09_SITE_V2/05-film-d-entree.md` (film) · `CONTENU-SOURCE.md` (textes des sources, cités mot pour mot).
 
+## En ligne
+
+| | |
+|---|---|
+| **Site** | https://cabinet-pamojah.vercel.app (fermé aux moteurs de recherche jusqu'au lancement) |
+| **Administration** | https://cabinet-pamojah.vercel.app/keystatic — à activer (voir `ADMIN.md`) |
+| **Code** | dépôt privé https://github.com/elisaidi08-commits/cabinet-pamojah |
+| **Hébergement** | Vercel, projet `cabinet-pamojah` (compte elisaidi08-5994) ; chaque envoi sur la branche `main` remet le site en ligne automatiquement |
+
 ## Utiliser le site
 
 | Action | Commande (dans ce dossier) |
@@ -28,7 +37,8 @@ Mise en ligne : déposer le contenu de `dist/` chez l'hébergeur (Netlify, Verce
 - **Réservation** : le calendrier Calendly (paiement Stripe) ne se charge que quand la visiteuse clique sur « Voir les créneaux disponibles » ; après la réservation, elle est renvoyée vers `/confirmation/`.
 - **Logos vectorisés** depuis la charte (`src/assets/logos/`) : le Pilier prend la couleur du texte, la bande reste dorée. Icône d'onglet : le Pilier.
 - **Photos Pexels choisies par la cliente**, étalonnées (chaud, désaturé) : portraits de la cible, jamais présentées comme clientes ni comme Huguette.
-- **Aucun cookie ni mesure d'audience** déposés par le site ; polices hébergées sur le site (pas de Google Fonts) : pas de bandeau cookies nécessaire.
+- **Bandeau cookies** conforme CNIL (refus par défaut, choix conservé 6 mois, « Gérer les cookies » dans le pied de page) : mesure d'audience Vercel Analytics et affichage automatique du calendrier seulement après accord. Polices hébergées sur le site (pas de Google Fonts).
+- **Administration Keystatic** (`/keystatic`) : Huguette modifie les textes de l'accueil et du film, sa page et son portrait, la Consultation, les deux programmes, les articles, la FAQ, les avis et les coordonnées. Mode d'emploi : `ADMIN.md`.
 - **Vérifié dans Brave**, ordinateur (1440 px) et téléphone (390 px) : 17 pages sans erreur, aucun lien interne cassé, film testé dans les deux sens, menu mobile (focus gardé, fermeture par Échap).
 - **Accessibilité** : audit axe-core WCAG 2.2 AA — **0 violation** sur les 13 pages auditées.
 
