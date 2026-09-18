@@ -58,6 +58,7 @@ Mise en ligne : déposer le contenu de `dist/` chez l'hébergeur (Netlify, Verce
 ## Décisions prises en construisant (main libre donnée par Sady)
 
 - Les textes du film sont réglés sur des fenêtres de temps (`data-debut` / `data-fin` en secondes). Si le film est régénéré (2K, correctif de l'ordinateur), il faudra recaler ces fenêtres.
+- **Téléphone : plus de barre de réservation fixe en bas de l'écran** (jugée trop présente par Sady). Le bouton « Réserver » est dans l'en-tête, qui se cache en descendant et revient en remontant ; les boutons dans la page et dans le menu restent.
 - Les pages des programmes affichent la liste complète du brief (7 et 9 points), plutôt qu'une sélection de 6.
 - Texte Calendly : « qui protège du burn-out » devient « qui aide à prévenir l'épuisement » (promesse de santé trop affirmative).
 - Non publiés sur la page de l'architecte, en attendant sa validation : le rôle en église, la formation de décoratrice, les autres entreprises (Pamojaah, Madame Afya).

@@ -1,6 +1,8 @@
 ---
 // En-tête discret : se cache quand on descend, revient quand on remonte, toujours visible au clavier.
 // Sur l'accueil il est placé après le film : il n'apparaît qu'une fois le film traversé.
+// Sur téléphone, le bouton de réservation vit ici (version courte « Réserver ») plutôt que dans une barre fixe
+// en bas de l'écran, jugée trop présente pendant la lecture (Sady, 18/09/2026).
 import Logo from './Logo.astro';
 import { nav, site } from '../data/site';
 
@@ -22,10 +24,13 @@ const current = Astro.url.pathname;
       </ul>
     </nav>
 
-    <a class="bouton entete__action" href="/consultation-axe/#reserver">{site.consultation.name}</a>
+    <a class="bouton entete__action" href="/consultation-axe/#reserver" aria-label={`Réserver ma ${site.consultation.name}`}>
+      <span class="entete__action-long">{site.consultation.name}</span>
+      <span class="entete__action-court" aria-hidden="true">Réserver</span>
+    </a>
 
-    <button class="entete__menu" type="button" aria-haspopup="dialog" aria-controls="menu" data-ouvre-menu>
-      <span>Menu</span>
+    <button class="entete__menu" type="button" aria-haspopup="dialog" aria-controls="menu" aria-label="Menu" data-ouvre-menu>
+      <span class="entete__menu-mot">Menu</span>
       <span class="entete__traits" aria-hidden="true"></span>
     </button>
   </div>
@@ -94,6 +99,7 @@ const current = Astro.url.pathname;
   .entete__nav a[aria-current='page'] { background-size: 100% 1px; }
 
   .entete__action { min-height: 44px; padding: 12px 20px; font-size: 12.5px; }
+  .entete__action-court { display: none; }
 
   .entete__menu {
     display: none;
@@ -122,8 +128,15 @@ const current = Astro.url.pathname;
     .entete__menu { display: inline-flex; }
   }
   @media (max-width: 640px) {
-    .entete__action { display: none; }
-    .entete__logo :global(.logo) { height: 32px; }
+    .entete__rang { gap: var(--e-3); }
+    .entete__action { padding: 10px 14px; font-size: 11.5px; }
+    .entete__action-long { display: none; }
+    .entete__action-court { display: inline; }
+    .entete__logo :global(.logo) { height: 30px; }
+  }
+  @media (max-width: 400px) {
+    .entete__menu-mot { display: none; }   /* l'icône suffit ; « Menu » reste annoncé aux lecteurs d'écran */
+    .entete__menu { padding-left: 8px; }
   }
 
   /* Menu plein écran (dialog natif : focus piégé et Échap gérés par le navigateur). */

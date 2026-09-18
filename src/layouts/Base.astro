@@ -7,7 +7,6 @@ import '@fontsource/cormorant-garamond/600.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import MobileBar from '../components/MobileBar.astro';
 import Consentement from '../components/Consentement.astro';
 import { site } from '../data/site';
 // Les deux polices les plus utilisées sont préchargées : le texte s'affiche sans « saut ».
@@ -83,7 +82,6 @@ const hasBefore = Astro.slots.has('avant-entete');
       <slot />
     </main>
     <Footer />
-    <MobileBar />
 
     <script>
       // Apparitions calmes du récit : une seule fois, à l'entrée dans l'écran.
