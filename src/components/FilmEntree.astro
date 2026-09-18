@@ -29,7 +29,7 @@ const programmes = [
       alt=""
       fetchpriority="high"
     />
-    <video class="film__video" muted playsinline preload="none" aria-hidden="true"></video>
+    <video class="film__video" muted playsinline preload="auto" aria-hidden="true"></video>
     <div class="film__voile" aria-hidden="true"></div>
     <div class="film__ombre" aria-hidden="true"></div>
 
@@ -368,16 +368,35 @@ const programmes = [
       legendes.forEach((l) => l.el.removeAttribute('style'));
     };
 
+    // Attend un évènement de la vidéo ; renvoie false si rien n'arrive dans le délai.
+    const attendre = (el: HTMLVideoElement, evenement: string, delai: number) =>
+      new Promise<boolean>((ok, ko) => {
+        const minuterie = setTimeout(() => ok(false), delai);
+        el.addEventListener(evenement, () => { clearTimeout(minuterie); ok(true); }, { once: true });
+        el.addEventListener('error', () => { clearTimeout(minuterie); ko(new Error('vidéo illisible')); }, { once: true });
+      });
+
+    const amorcer = (el: HTMLVideoElement) => el.play().then(() => el.pause()).catch(() => {});
+
     // Chargée en mémoire, une vidéo se parcourt dans les deux sens chez tous les hébergeurs.
+    // Safari (iPhone) ne charge rien tant qu'on ne le lui demande pas explicitement : preload « auto »,
+    // load(), puis une lecture muette aussitôt mise en pause (autorisée), qui déclenche aussi l'affichage des images.
     const remplir = async (el: HTMLVideoElement, url: string) => {
       const reponse = await fetch(url);
       if (!reponse.ok) throw new Error(`HTTP ${reponse.status}`);
+      el.preload = 'auto';
       el.src = URL.createObjectURL(await reponse.blob());
-      await new Promise((ok, ko) => {
-        el.addEventListener('loadeddata', ok, { once: true });
-        el.addEventListener('error', ko, { once: true });
+      el.load();
+      const charge = attendre(el, 'loadeddata', 6000);
+      amorcer(el);
+      if (await charge) return;
+      // iPhone en mode économie d'énergie : même la lecture muette est bloquée jusqu'au premier toucher de l'écran.
+      await new Promise<void>((ok) => {
+        const auToucher = () => amorcer(el);
+        window.addEventListener('touchend', auToucher, { once: true, passive: true });
+        window.addEventListener('click', auToucher, { once: true });
+        el.addEventListener('loadeddata', () => ok(), { once: true });
       });
-      await el.play().then(() => el.pause()).catch(() => {});  // iOS
     };
 
     // Pas de HD en mode économie de données ou sur une connexion lente.
