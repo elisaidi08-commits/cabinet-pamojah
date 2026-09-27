@@ -219,8 +219,23 @@ const f = accueil.film;
   .film__passer:hover, .film__passer:focus-visible { opacity: 1; }
   .film:not(.est-anime) .film__passer { display: none; }
 
+  /* Téléphone : la légende de la Consultation est la plus longue ; on la resserre pour qu'elle tienne
+     entièrement à l'écran, y compris sur les petits téléphones (360 × 640). */
   @media (max-width: 700px) {
-    .film__service { bottom: calc(88px + env(safe-area-inset-bottom)); }
+    .film__service {
+      bottom: calc(76px + env(safe-area-inset-bottom));
+      gap: var(--e-2);
+    }
+    .film__nom { font-size: clamp(28px, 5.5vw + 10px, 40px); line-height: 1.1; }
+    .film__service .film__description { margin-top: var(--e-2); font-size: 17px; line-height: 1.45; }
+    .film__acces { line-height: 1.45; }
+    .film__actions { margin-top: var(--e-2); }
+  }
+
+  @media (max-height: 700px) and (max-width: 700px) {
+    .film__service { bottom: calc(64px + env(safe-area-inset-bottom)); }
+    .film__service .devise { font-size: 15px; }
+    .film__service .film__description { font-size: 16px; }
   }
 </style>
 

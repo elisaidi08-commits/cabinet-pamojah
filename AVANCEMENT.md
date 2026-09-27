@@ -17,7 +17,7 @@
 | Action | Commande (dans ce dossier) |
 |---|---|
 | Voir le site en travaillant (rechargement automatique) | `npm run dev` puis ouvrir http://localhost:4321 |
-| Construire la version à mettre en ligne | `npm run build` → dossier `dist/` (≈ 69 Mo, dont 51 Mo de film) |
+| Construire la version à mettre en ligne | `npm run build` → dossier `dist/` (dont ≈ 29 Mo de film) |
 | Voir la version construite | `npx astro preview` |
 
 Mise en ligne : déposer le contenu de `dist/` chez l'hébergeur (Netlify, Vercel, OVH, Hostinger…), puis faire pointer le domaine. Si Odoo garde le domaine principal, le mettre sur un sous-domaine (ex. `gestion.`) pour le CRM et la facturation.
@@ -37,7 +37,7 @@ Elles remplacent les décisions du 18/09/2026 et priment en cas de conflit avec 
 
 **18 pages** : accueil · **Accompagnements** · Consultation d'Axe · Bilan de soi · Madame la CEO · **Leadership durable & Influence maîtrisée** · La Sphère de pouvoir · L'architecte · Le Cabinet · Apprendre + 3 articles · mentions légales · confidentialité et cookies · conditions de la Consultation · confirmation de réservation · page 404. Plus `robots.txt` et `sitemap.xml`.
 
-- **Film d'entrée** piloté par le scroll, avec ses textes (demande de Sady) : devant la villa, un texte pour situer le lieu ; logo et « Bienvenue chez Pamojah » à l'arrivée dans le cabinet ; puis chaque service quand la caméra se pose sur son objet (lampe → Bilan de soi, ordinateur → Madame la CEO, livre = livret d'axe → la Consultation d'Axe, avec le bouton de réservation). Pas d'écran de clôture : après le livre, on entre directement dans le site. Le film ralentit à ces moments pour laisser lire (réglage `RYTHME` dans `FilmEntree.astro`). Flèche pour passer le film ; image fixe sans JavaScript ou si le mouvement est réduit ; bande centrale sur téléphone.
+- **Film d'entrée** piloté par le scroll (voir la section « Film d'entrée : l'hôtel particulier » plus bas).
 - **Accueil** dans l'ordre validé : phrase-miroir → « Elles tiennent. Elles réussissent. Elles avancent. » et les 5 situations → le Passage → les 3 services (Consultation d'Axe, Bilan de soi, Madame la CEO) et la mention de Leadership durable → la Consultation d'Axe → l'architecte → les avis → la Sphère → la Bibliothèque → retour au seuil et questions fréquentes.
 - **Réservation** : le calendrier Calendly (paiement Stripe) ne se charge que quand la visiteuse clique sur « Voir les créneaux disponibles » ; après la réservation, elle est renvoyée vers `/confirmation/`.
 - **Logos vectorisés** depuis la charte (`src/assets/logos/`) : le Pilier prend la couleur du texte, la bande reste dorée. Icône d'onglet : le Pilier.
@@ -59,6 +59,39 @@ Elles remplacent les décisions du 18/09/2026 et priment en cas de conflit avec 
 - **« Passer le film »** saute immédiatement dans le site ; **retour à l'accueil pendant la même visite** (logo, menu) : on arrive directement après le film.
 - **Pages préchargées au survol** des liens, **fondu enchaîné de 450 ms** entre les pages (Chrome, Edge, Safari récents), défilement doux vers les ancres, polices préchargées. Tout est désactivé si la visiteuse demande moins d'animations.
 - **Données structurées** (schema.org) : fiche du Cabinet sur toutes les pages, questions fréquentes sur l'accueil et la page Consultation.
+
+## Film d'entrée : l'hôtel particulier (28/09/2026)
+
+Le film de la villa (arrêts lampe, ordinateur, livre) est remplacé par un film court tourné dans un **hôtel particulier parisien**. Trois temps seulement, et le film ralentit à chacun pour laisser lire :
+
+1. **L'ouverture** — « Le Cabinet Pamojah », « Un espace confidentiel pour les femmes leaders multipotentielles. »
+2. **L'arrivée** — le logo et « Bienvenue ».
+3. **L'ordinateur du bureau d'accueil** — « Le point d'entrée de notre univers » : la Consultation d'Axe, sa devise, sa description et les deux boutons. La légende reste jusqu'à la fin, puis on entre directement dans le site.
+
+**Deux montages**, choisis selon le format de l'écran (`MONTAGES` dans `FilmEntree.astro`) :
+
+| Format | Contenu | Durée | Poids (léger → HD) |
+|---|---|---|---|
+| Téléphone 720 × 1280 | enfilade d'arches (0 → 15 s), fondu, bureau d'accueil (14 → 29 s) | 29,04 s | 3,1 Mo → 12 Mo |
+| Ordinateur 1280 × 720 | bureau d'accueil seul, en attendant l'enfilade en 16:9 | 15,04 s | 2,5 Mo → 11 Mo |
+
+Réglages par montage : `duree`, `rythme` (`[début, fin, poids]`, poids 3 = la caméra se pose) et `legendes` (`[apparition, disparition]` par légende nommée). La section du film mesure 700vh. Le reste du mécanisme est inchangé : version légère puis HD, compatibilité Safari et iPhone, flèche « Passer le film », mémorisation de la visite, affiche fixe sans JavaScript ou en mouvement réduit.
+
+### Quand l'enfilade en 16:9 arrivera
+
+Sources attendues : `enfilade-16x9.mp4` et `bureau-16x9.mp4`, 15 s chacune.
+
+```bash
+X="-c:v libx264 -preset slow -pix_fmt yuv420p -g 6 -keyint_min 6 -sc_threshold 0 -bf 0 -movflags +faststart -an"
+ffmpeg -i enfilade-16x9.mp4 -i bureau-16x9.mp4 -filter_complex \
+ "[0:v]settb=AVTB,fps=24,format=yuv420p[a];[1:v]settb=AVTB,fps=24,format=yuv420p[b];[a][b]xfade=transition=fade:duration=1:offset=14,setsar=1[v]" \
+ -map "[v]" -c:v libx264 -crf 12 -preset slow -an master-ordinateur.mp4
+ffmpeg -i master-ordinateur.mp4 $X -crf 19 public/film/film-ordinateur.mp4
+ffmpeg -i master-ordinateur.mp4 -vf scale=960:540 $X -crf 26 public/film/film-ordinateur-leger.mp4
+ffmpeg -i master-ordinateur.mp4 -frames:v 1 -q:v 3 public/film/affiche-ordinateur.jpg
+```
+
+Ensuite, dans `MONTAGES`, copier le montage `telephone` dans `ordinateur` (mêmes durées, rythme et légendes).
 
 ## Retours de la cliente (28/09/2026) — ce qui est fait
 
@@ -139,7 +172,7 @@ Ce sont ses mots ; rien n'a été changé sans son accord. La mention « qui aid
 
 ## Décisions prises en construisant (main libre donnée par Sady)
 
-- Les textes du film sont réglés sur des fenêtres de temps (`data-debut` / `data-fin` en secondes). Si le film est régénéré (2K, correctif de l'ordinateur), il faudra recaler ces fenêtres.
+- Les textes du film sont réglés par montage, dans `MONTAGES` (`FilmEntree.astro`) : une fenêtre `[apparition, disparition]` par légende nommée. Si un montage change, ce sont les seules valeurs à recaler.
 - **Téléphone : plus de barre de réservation fixe en bas de l'écran** (jugée trop présente par Sady). Le bouton « Réserver » est dans l'en-tête, qui se cache en descendant et revient en remontant ; les boutons dans la page et dans le menu restent.
 - Les pages des programmes affichent la liste complète du brief (7 et 9 points), plutôt qu'une sélection de 6.
 - Texte Calendly : « qui protège du burn-out » est devenu « qui aide à prévenir l'épuisement » le 18/09, puis la mention a été retirée le 28/09 à la demande de la cliente.
@@ -159,8 +192,8 @@ Ce sont ses mots ; rien n'a été changé sans son accord. La mention « qui aid
 
 ## Points ouverts côté production
 
-- **Film** : l'ordinateur pivote tout seul entre la lampe et l'ordinateur (correctif ≈ 430 crédits OpenArt) ; passage de porte un peu rapide. Version 2K possible avec Kling 4K (≈ 2 500 crédits, recharge nécessaire).
-- **Poids du film** : version légère (6,5 Mo ordinateur, 2,3 Mo téléphone) à l'arrivée sur l'accueil ; la HD (41 Mo / 10 Mo) seulement si la visiteuse fait défiler le film.
+- **Film** : l'enfilade en 16:9 reste à générer (le format ordinateur montre seulement le bureau d'accueil) ; le bureau exécutif en 9:16 et l'upscale 1080p des plans horizontaux restent à faire.
+- **Poids du film** : version légère (2,5 Mo ordinateur, 3,1 Mo téléphone) à l'arrivée sur l'accueil ; la HD (11 Mo / 12 Mo) seulement si la visiteuse fait défiler le film.
 
 ## Structure du code
 
