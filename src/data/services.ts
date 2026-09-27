@@ -34,7 +34,8 @@ export type Service = {
   construit: string[];
   gains: string[];
   transformation: string;
-  objet: { image: ImageMetadata; alt: string; nom: string };
+  image: ImageMetadata;     // l'image de la carte et du haut de page (décor actuel)
+  alt: string;
   photo: { image: ImageMetadata; position: string };
   avis: Avis['accompagnement'];
 };
@@ -46,33 +47,27 @@ export const services: Service[] = [
   {
     slug: 'bilan-de-soi',
     ...texteDe(bilanJson),
-    objet: {
-      image: lampe,
-      nom: 'La lampe',
-      alt: 'Gros plan sur la lampe de laiton du cabinet, allumée, qui éclaire le bureau de bois sombre.',
-    },
+    // Décor à venir : le salon de l'hôtel particulier.
+    image: lampe,
+    alt: 'Gros plan sur la lampe de laiton du cabinet, allumée, qui éclaire le bureau de bois sombre.',
     photo: { image: sourire, position: '50% 12%' },
     avis: 'bilan-de-soi',
   },
   {
     slug: 'madame-la-ceo',
     ...texteDe(ceoJson),
-    objet: {
-      image: ordinateur,
-      nom: 'L’ordinateur',
-      alt: 'Gros plan sur l’ordinateur ouvert du cabinet, écran en veille où se reflète la lumière de la lampe.',
-    },
+    // Décor à venir : la table à manger, qui sert de table de réunion.
+    image: livre,
+    alt: 'Gros plan sur le livre relié de lin du cabinet, son signet de laiton posé sur le bureau.',
     photo: { image: travail, position: '40% 30%' },
     avis: 'madame-la-ceo',
   },
   {
     slug: 'leadership-durable',
     ...texteDe(leadershipJson),
-    objet: {
-      image: cabinet,
-      nom: 'Le cabinet',
-      alt: 'Le cabinet Pamojah : un bureau de bois sombre sur l’axe, deux fauteuils vides face à lui, la lumière douce du soir.',
-    },
+    // Décor à venir : le bureau exécutif et son petit salon privatif.
+    image: cabinet,
+    alt: 'Le cabinet Pamojah : un bureau de bois sombre sur l’axe, deux fauteuils vides face à lui, la lumière douce du soir.',
     photo: { image: tailleur, position: '50% 20%' },
     avis: 'leadership-durable',
   },
@@ -84,9 +79,9 @@ export const consultationCarte = {
   surtitre: 'Le point d’entrée · 75 min · Visio ou présentiel',
   ...consultationJson.carte,
   href: '/consultation-axe/',
-  objet: {
-    image: livre,
-    nom: 'Le livret d’axe',
-    alt: 'Gros plan sur le livre relié de lin du cabinet, son signet de laiton posé sur le bureau : le livret d’axe.',
-  },
+  // Décor à venir : le bureau d'accueil de l'hôtel particulier.
+  image: ordinateur,
+  alt: 'Gros plan sur l’ordinateur ouvert du cabinet, écran en veille où se reflète la lumière de la lampe.',
+  // L'objet du film (le livre), cité dans la légende de la vidéo.
+  objet: { nom: 'Le livret d’axe' },
 };

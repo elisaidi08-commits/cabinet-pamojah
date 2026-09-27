@@ -9,7 +9,7 @@ const cartes = [
   {
     id: 'consultation',
     href: consultationCarte.href,
-    image: consultationCarte.objet.image,
+    image: consultationCarte.image,
     porte: consultationCarte.porte,
     surtitre: consultationCarte.surtitre,
     nom: consultationCarte.nom,
@@ -22,7 +22,7 @@ const cartes = [
   ...services.map((s) => ({
     id: s.slug,
     href: `/${s.slug}/`,
-    image: s.objet.image,
+    image: s.image,
     porte: s.porte,
     surtitre: `Programme · ${s.duree}`,
     nom: s.nom,
