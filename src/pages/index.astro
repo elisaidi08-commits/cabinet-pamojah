@@ -8,9 +8,9 @@ import Base from '../layouts/Base.astro';
 import FilmEntree from '../components/FilmEntree.astro';
 import Titre from '../components/Titre.astro';
 import Citations from '../components/Citations.astro';
+import CartesServices from '../components/CartesServices.astro';
 import Faq from '../components/Faq.astro';
 import Cercles from '../components/Cercles.astro';
-import { services, consultationCarte, ACCES, ACCES_COURT } from '../data/services';
 import { faqAccueil } from '../data/faq';
 import { avis } from '../data/avis';
 import { site, disclaimer, citer } from '../data/site';
@@ -19,36 +19,6 @@ import cabinet from '../assets/images/cabinet/S1-cabinet.png';
 import villa from '../assets/images/cabinet/S0-villa.png';
 // Tous les textes de l'accueil se modifient dans l'administration (« Page d'accueil » → src/contenu/accueil.json).
 import a from '../contenu/accueil.json';
-
-// L'offre, dans l'ordre du parcours : la Consultation d'Axe (point d'entrée obligatoire), puis les trois programmes.
-const cartes = [
-  {
-    id: 'consultation',
-    href: consultationCarte.href,
-    image: consultationCarte.objet.image,
-    porte: consultationCarte.porte,
-    surtitre: consultationCarte.surtitre,
-    nom: consultationCarte.nom,
-    devise: consultationCarte.devise,
-    texte: consultationCarte.description,
-    transformation: consultationCarte.transformation,
-    faits: ['75 min', 'Visio ou présentiel sur demande', 'Confidentialité absolue'],
-    lien: 'Découvrir la Consultation d’Axe',
-  },
-  ...services.map((s) => ({
-    id: s.slug,
-    href: `/${s.slug}/`,
-    image: s.objet.image,
-    porte: s.porte,
-    surtitre: `Programme · ${s.duree}`,
-    nom: s.nom,
-    devise: s.devise,
-    texte: s.description[0],
-    transformation: s.transformation,
-    faits: [ACCES_COURT],
-    lien: `Découvrir ${s.nom}`,
-  })),
-];
 
 const articles = (await getCollection('articles', ({ data }) => !data.brouillon))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -128,35 +98,9 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
         <p class="accomp__question">{a.services.question}</p>
       </div>
 
-      <div class="accomp__liste">
-        {cartes.map((s, i) => (
-          <article class:list={['accomp', { 'accomp--inverse': i % 2 === 1 }]} aria-labelledby={`accomp-${s.id}`}>
-            <a class="accomp__image" href={s.href} tabindex="-1" aria-hidden="true">
-              <Photo
-                src={s.image}
-                alt=""
-                widths={[640, 960, 1440]}
-                sizes="(max-width: 900px) 100vw, 55vw"
-              />
-            </a>
-            <div class="accomp__texte">
-              <p class="accomp__porte">« {citer(s.porte)} »</p>
-              <span class="surtitre">{s.surtitre}</span>
-              <h3 id={`accomp-${s.id}`} class="accomp__nom">{s.nom}</h3>
-              <p class="devise">{s.devise}</p>
-              <p class="espace-s">{s.texte}</p>
-              <p class="accomp__transformation">{s.transformation}</p>
-              <ul class="faits">
-                {s.faits.map((f) => <li>{f}</li>)}
-              </ul>
-              <a class="lien espace-s" href={s.href}>{s.lien}</a>
-            </div>
-          </article>
-        ))}
-      </div>
+      <CartesServices />
 
       <p class="accomp__axe">{axeDebut}{axeFin && <strong>{axeFin}</strong>}</p>
-      <p class="accomp__acces">{ACCES}</p>
     </div>
   </section>
 
@@ -382,43 +326,12 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
     font-size: var(--t-h3);
     font-style: italic;
   }
-  .accomp__liste { display: grid; gap: var(--e-10); margin-top: var(--e-9); }
-  .accomp {
-    display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: var(--e-8);
-    align-items: center;
-  }
-  .accomp--inverse .accomp__image { order: 2; }
-  .accomp__image { display: block; overflow: hidden; }
-  .accomp__image :global(img) {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    transition: transform 1200ms var(--courbe);
-  }
-  .accomp__image:hover :global(img) { transform: scale(1.02); }
-  .accomp__porte {
-    margin-bottom: var(--e-6);
-    font-size: clamp(24px, 1vw + 19px, 30px);
-    font-style: italic;
-    line-height: 1.3;
-  }
-  .accomp__nom { margin: var(--e-3) 0 var(--e-3); }
-  .accomp__transformation { margin-top: var(--e-4); font-style: italic; color: var(--or-fonce); }
   .accomp__axe {
     margin-top: var(--e-10);
     text-align: center;
     font-size: var(--t-h3);
   }
   .accomp__axe strong { font-weight: 600; color: var(--or-fonce); }
-  .accomp__acces {
-    max-width: 40rem;
-    margin: var(--e-6) auto 0;
-    text-align: center;
-    font-style: italic;
-    color: var(--encre-douce);
-  }
 
   /* 5. Seuil */
   .seuil {
@@ -512,10 +425,8 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
     .clarifions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 900px) {
-    .parvis__grille, .vestibule, .accomp, .seuil, .architecte, .sphere, .questions { grid-template-columns: 1fr; }
-    .accomp--inverse .accomp__image { order: 0; }
+    .parvis__grille, .vestibule, .seuil, .architecte, .sphere, .questions { grid-template-columns: 1fr; }
     .articles { grid-template-columns: 1fr; }
-    .accomp__liste { gap: var(--e-9); }
   }
   @media (max-width: 560px) {
     .situations, .clarifions { grid-template-columns: 1fr; }

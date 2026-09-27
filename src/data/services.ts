@@ -1,17 +1,19 @@
-// Les services du Cabinet (décision de Sady, 18/09/2026) : la Consultation d'Axe, le Bilan de soi, Madame la CEO.
-// La Consultation d'Axe est le point d'entrée obligatoire : aucun programme ne s'ouvre sans elle.
-// Leadership durable & Influence maîtrisée n'est pas un service public : il est seulement mentionné,
-// accessible sur candidature après une Consultation d'Axe.
+// L'offre du Cabinet (décisions du 28/09/2026) : la Consultation d'Axe, point d'entrée obligatoire,
+// puis trois programmes — Bilan de soi, Madame la CEO, Leadership durable & Influence maîtrisée.
+// Les programmes sont accessibles sur candidature, à l'issue d'une Consultation d'Axe.
 // Textes : optimisation éditoriale ynn design (p.6, p.8) et brief fondatrice (p.5–7), voir CONTENU-SOURCE.md.
 import type { ImageMetadata } from 'astro';
+import cabinet from '../assets/images/cabinet/S1-cabinet.png';
 import lampe from '../assets/images/cabinet/S2-lampe.png';
 import ordinateur from '../assets/images/cabinet/S3-ordinateur.png';
 import livre from '../assets/images/cabinet/S4-livre.png';
 import sourire from '../assets/images/portraits/portrait-sourire.jpg';
 import travail from '../assets/images/portraits/ordinateur.jpg';
+import tailleur from '../assets/images/portraits/portrait-tailleur.jpg';
 import type { Avis } from './avis';
 import bilanJson from '../contenu/programme-bilan-de-soi.json';
 import ceoJson from '../contenu/programme-madame-la-ceo.json';
+import leadershipJson from '../contenu/programme-leadership-durable.json';
 import consultationJson from '../contenu/consultation.json';
 
 // Phrase unique d'accès aux programmes (décision du 28/09/2026), reprise partout.
@@ -21,7 +23,7 @@ export const ACCES_COURT = 'Sur candidature, après une Consultation d’Axe';
 
 // Les programmes (une page chacun).
 export type Service = {
-  slug: 'bilan-de-soi' | 'madame-la-ceo';
+  slug: 'bilan-de-soi' | 'madame-la-ceo' | 'leadership-durable';
   nom: string;
   devise: string;
   duree: string;
@@ -62,6 +64,17 @@ export const services: Service[] = [
     },
     photo: { image: travail, position: '40% 30%' },
     avis: 'madame-la-ceo',
+  },
+  {
+    slug: 'leadership-durable',
+    ...texteDe(leadershipJson),
+    objet: {
+      image: cabinet,
+      nom: 'Le cabinet',
+      alt: 'Le cabinet Pamojah : un bureau de bois sombre sur l’axe, deux fauteuils vides face à lui, la lumière douce du soir.',
+    },
+    photo: { image: tailleur, position: '50% 20%' },
+    avis: 'leadership-durable',
   },
 ];
 

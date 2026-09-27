@@ -21,7 +21,7 @@ export const site = {
 };
 
 export const nav = [
-  { href: '/#accompagnements', label: 'Accompagnements' },
+  { href: '/accompagnements/', label: 'Accompagnements' },
   { href: '/consultation-axe/', label: 'La Consultation' },
   { href: '/le-cabinet/', label: 'Le Cabinet' },
   { href: '/huguette/', label: 'L’architecte' },

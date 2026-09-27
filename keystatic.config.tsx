@@ -52,7 +52,7 @@ export default config({
     brand: { name: 'Le Cabinet Pamojah' },
     navigation: {
       Pages: ['accueil', 'huguette'],
-      Services: ['consultation', 'bilanDeSoi', 'madameLaCeo'],
+      Services: ['consultation', 'bilanDeSoi', 'madameLaCeo', 'leadershipDurable'],
       Contenus: ['articles', 'faq', 'avis'],
       Réglages: ['reglages'],
     },
@@ -224,6 +224,7 @@ export default config({
 
     bilanDeSoi: programme('Bilan de soi', 'programme-bilan-de-soi'),
     madameLaCeo: programme('Madame la CEO', 'programme-madame-la-ceo'),
+    leadershipDurable: programme('Leadership durable & Influence maîtrisée', 'programme-leadership-durable'),
 
     faq: singleton({
       label: 'Questions fréquentes',
