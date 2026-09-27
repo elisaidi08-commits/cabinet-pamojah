@@ -16,7 +16,7 @@ export const site = {
   consultation: {
     name: 'Consultation d’Axe',
     duration: '75 min',
-    format: 'Visio',
+    format: 'Visio ou présentiel sur demande',
   },
 };
 

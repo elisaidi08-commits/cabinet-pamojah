@@ -68,7 +68,7 @@ export const services: Service[] = [
 // La Consultation d'Axe, présentée comme le premier des trois services (le livre = le livret d'axe).
 export const consultationCarte = {
   nom: 'La Consultation d’Axe',
-  surtitre: 'Le point d’entrée · 75 min · Visio',
+  surtitre: 'Le point d’entrée · 75 min · Visio ou présentiel',
   ...consultationJson.carte,
   href: '/consultation-axe/',
   objet: {
@@ -76,10 +76,4 @@ export const consultationCarte = {
     nom: 'Le livret d’axe',
     alt: 'Gros plan sur le livre relié de lin du cabinet, son signet de laiton posé sur le bureau : le livret d’axe.',
   },
-};
-
-// Leadership durable & Influence maîtrisée : mentionné, jamais présenté comme un service.
-export const leadershipDurable = {
-  nom: 'Leadership durable & Influence maîtrisée',
-  mention: consultationJson.mentionLeadership,
 };

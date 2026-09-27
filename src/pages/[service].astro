@@ -4,7 +4,7 @@ import Photo from '../components/Photo.astro';
 import Base from '../layouts/Base.astro';
 import Titre from '../components/Titre.astro';
 import Citations from '../components/Citations.astro';
-import { services, consultationCarte, ACCES, type Service } from '../data/services';
+import { services, consultationCarte, ACCES, ACCES_COURT, type Service } from '../data/services';
 import { avis } from '../data/avis';
 import { site, resume, citer } from '../data/site';
 
@@ -34,7 +34,7 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
       <p class="devise">{s.devise}</p>
       <ul class="faits" aria-label="En bref">
         <li>{s.duree}</li>
-        <li>{ACCES}</li>
+        <li>{ACCES_COURT}</li>
       </ul>
     </div>
   </section>
@@ -46,8 +46,8 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
         {s.description.map((p) => <p class="chapo">{p}</p>)}
         {s.fondation && <p class="fondation">{s.fondation}</p>}
         <p class="acces">
-          <strong>Ce programme est accessible uniquement après une Consultation d’Axe.</strong>{' '}
-          C’est elle qui permet de vérifier qu’il correspond à votre situation.
+          <strong>{ACCES}</strong>{' '}
+          C’est elle qui permet de vérifier que le programme correspond à votre situation.
         </p>
       </div>
     </div>

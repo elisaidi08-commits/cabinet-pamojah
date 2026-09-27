@@ -219,7 +219,6 @@ export default config({
         sortie: liste('Ce que vous recevrez', 'Point'),
         diagnostic: fields.object({ intro: texte('Introduction'), options: liste('Options', 'Option') }, { label: 'Diagnostic stratégique' }),
         preparation: liste('Préparation avant la séance', 'Paragraphe'),
-        mentionLeadership: texte('Mention du programme Leadership durable'),
       },
     }),
 
