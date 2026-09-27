@@ -51,7 +51,7 @@ export default config({
   ui: {
     brand: { name: 'Le Cabinet Pamojah' },
     navigation: {
-      Pages: ['accueil', 'huguette'],
+      Pages: ['accueil', 'huguette', 'leCabinet'],
       Services: ['consultation', 'bilanDeSoi', 'madameLaCeo', 'leadershipDurable'],
       Contenus: ['articles', 'faq', 'avis'],
       Réglages: ['reglages'],
@@ -182,6 +182,22 @@ export default config({
         parcours: titreTexte('Mon parcours', 'Étape'),
         genese: liste('La genèse du Cabinet', 'Paragraphe'),
         citation: texte('Citation', 'Seule parole à la première personne de la page, affichée entre guillemets et signée.'),
+      },
+    }),
+
+    leCabinet: singleton({
+      label: 'Le Cabinet',
+      path: 'src/contenu/le-cabinet',
+      format: { data: 'json' },
+      schema: {
+        identite: fields.object(
+          {
+            titre: ligne('Titre'),
+            phraseForte: texte('Phrase forte'),
+            ensemble: texte('Ce que signifie Pamojah'),
+          },
+          { label: 'Le Cabinet Pamojah (bandeau)' },
+        ),
       },
     }),
 
