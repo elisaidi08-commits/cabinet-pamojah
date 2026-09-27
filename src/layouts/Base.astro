@@ -9,6 +9,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Consentement from '../components/Consentement.astro';
 import { site } from '../data/site';
+import { services, consultationCarte } from '../data/services';
 // Les deux polices les plus utilisées sont préchargées : le texte s'affiche sans « saut ».
 import policeTexte from '@fontsource/cormorant-garamond/files/cormorant-garamond-latin-500-normal.woff2?url';
 import policeCapitales from '@fontsource/cinzel/files/cinzel-latin-400-normal.woff2?url';
@@ -35,6 +36,20 @@ const organisation = {
   email: site.email,
   founder: { '@type': 'Person', name: 'Huguette Tolo-Tolo Ngemeyeme', jobTitle: 'Architecte de souveraineté' },
   sameAs: [site.instagram],
+  // La Consultation d'Axe et les trois programmes (aucun prix n'est publié).
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Les accompagnements du Cabinet Pamojah',
+    itemListElement: [
+      { '@type': 'Service', name: consultationCarte.nom, description: consultationCarte.description, url: new URL(consultationCarte.href, Astro.site).href },
+      ...services.map((s) => ({
+        '@type': 'Service',
+        name: s.nom,
+        description: s.description[0],
+        url: new URL(`/${s.slug}/`, Astro.site).href,
+      })),
+    ],
+  },
 };
 const faqSchema = faq?.length
   ? {
