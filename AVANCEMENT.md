@@ -75,15 +75,19 @@ Branche `retours-huguette-2809`, un commit par bloc. Construction sans erreur, 0
 | **G — La Sphère** | Textes de la cliente mot pour mot, éditables ; « La Sphère » dans le menu, doublons retirés ; accueil aligné | `contenu/la-sphere.json`, `pages/la-sphere.astro`, `data/site.ts`, `components/Header.astro`, `components/Footer.astro` |
 | **H — Contrôles** | Présentiel dans les questions fréquentes (adresse cliquable) ; données structurées avec les quatre accompagnements ; vérifications globales (aucun prix, aucun lien `#accompagnements`, aucune mention « pas proposé en accès direct ») | `contenu/faq.json`, `components/Faq.astro`, `layouts/Base.astro` |
 
-### À compléter par Huguette
+### Textes complétés le 28/09/2026 (accord de Sady) — à relire par Huguette
 
-| Où | Quoi |
+| Où | Ce qui a été écrit |
 |---|---|
-| `contenu/consultation.json` → `diagnostic.intro` | La suite de « Cette consultation est un diagnostic stratégique. » : le texte actuel (« Conçue pour initier un nouveau cycle, elle permet de déterminer si votre cap intérieur relève… ») est conservé en attendant la phrase complète. |
-| `contenu/accueil.json` → `services.intro` (repris sur `/accompagnements/`) | La phrase « … vous permettre de construire une trajectoire cohérente et alignée avec… » est tronquée ; le texte le plus proche est resté en place. |
-| `pages/le-cabinet.astro` → `piliers` | « Notre approche » : texte inchangé, à confirmer. |
-| `contenu/programme-leadership-durable.json` | Textes repris du brief (p.7) et de l'optimisation éditoriale (p.6) : à relire et valider. Aucun champ n'est vide. |
-| Pages légales | Raison sociale, adresse du siège, SIRET, politique d'annulation et de remboursement. |
+| `contenu/consultation.json` → `diagnostic.intro` | Rien à compléter : le texte du site est déjà celui de Calendly, en entier (voir CONTENU-SOURCE B9). |
+| `contenu/accueil.json` → `services.intro` | Phrase complétée avec ses propres mots : « …une trajectoire **cohérente et alignée** avec qui vous êtes, ce que vous portez et l'impact que vous souhaitez créer. » |
+| `pages/le-cabinet.astro` → pilier « Clinique et préventive » et article « Clinique du leadership » | « la prévention de la surcharge, du burn-out » devient « l'attention portée aux signaux de surcharge et à l'équilibre global », dans la même logique que le retrait de « prévenir l'épuisement ». |
+| `contenu/consultation.json` → `souhaits` | « structurer leur intensité pour éviter l'épuisement » devient « …pour préserver leur énergie ». |
+| `pages/conditions-consultation.astro` | **Projet** de politique de report, d'annulation et de rétractation (48 h sans frais, report unique sous 3 mois, séance non honorée due, rétractation de 14 jours avec exécution immédiate demandée). **À faire relire par un juriste avant le lancement.** |
+| `pages/confidentialite.astro` | Durées de conservation : trois ans après le dernier contact, dix ans pour les pièces comptables. |
+| `contenu/programme-leadership-durable.json` | Textes repris du brief (p.7) et de l'optimisation éditoriale (p.6) : à relire, aucun champ vide. |
+
+**Reste à fournir par Huguette** (données réelles, impossibles à écrire à sa place) : raison sociale et forme juridique, adresse du siège, numéro SIRET, RCS/RNE et TVA le cas échéant — dans les mentions légales et la page Confidentialité.
 
 ### À valider par Sady
 
@@ -145,8 +149,8 @@ Ce sont ses mots ; rien n'a été changé sans son accord. La mention « qui aid
 
 ## À fournir ou valider par la cliente avant la mise en ligne
 
-1. **Mentions légales** : raison sociale, adresse, SIRET, hébergeur (champs « À compléter » dans les 3 pages légales).
-2. **Politique d'annulation, de report et de remboursement** de la Consultation, et modalités du droit de rétractation (à faire relire par un juriste).
+1. **Mentions légales** : raison sociale, adresse du siège, SIRET (seuls champs « À compléter » restants, dans les mentions légales et la page Confidentialité).
+2. **Politique d'annulation, de report et de remboursement** : un projet complet est en ligne depuis le 28/09/2026 (page Conditions de la Consultation) — à faire relire par un juriste et valider par Huguette.
 3. **Le domaine** : `lecabinetpamojah.com` (carte de visite) ou `cabinetpamojah.com` (email, Calendly).
 4. **Portrait d'Huguette** (shooting) : la page L'architecte est prête à l'accueillir.
 5. **Validation des textes** : les textes ynn design (« en attente de validation finale »), la page La Sphère et les 3 articles de départ, composés à partir de ses propres textes.

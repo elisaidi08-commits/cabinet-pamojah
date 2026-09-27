@@ -12,7 +12,7 @@ Nous accompagnons les femmes leaders multipotentielles, dont la richesse des tal
 
 ## Une approche à la fois
 
-- **clinique et préventive**, par l’écoute, la prévention de la surcharge, du burn-out et l’attention portée à la santé globale ;
+- **clinique et préventive**, par l’écoute, l’attention portée aux signaux de surcharge et à l’équilibre global ;
 - **multiculturelle**, par la prise en compte de l’identité, des héritages, des contextes et des appartenances ;
 - **stratégique**, par la clarification des priorités, l’orchestration des talents et la structuration de l’impact ;
 - **souveraine**, par le développement d’une capacité à choisir, décider, agir et influencer sans se perdre.
