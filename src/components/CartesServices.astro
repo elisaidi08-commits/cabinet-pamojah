@@ -5,6 +5,13 @@ import Photo from './Photo.astro';
 import { services, consultationCarte, ACCES, ACCES_COURT } from '../data/services';
 import { citer } from '../data/site';
 
+// Niveau de titre des cartes : h3 sous le titre de section de l'accueil, h2 quand elles suivent directement le titre de la page.
+interface Props {
+  niveau?: 'h2' | 'h3';
+}
+const { niveau = 'h3' } = Astro.props;
+const NomDeCarte = niveau;
+
 const cartes = [
   {
     id: 'consultation',
@@ -43,7 +50,7 @@ const cartes = [
       <div class="accomp__texte">
         <p class="accomp__porte">« {citer(s.porte)} »</p>
         <span class="surtitre">{s.surtitre}</span>
-        <h3 id={`accomp-${s.id}`} class="accomp__nom">{s.nom}</h3>
+        <NomDeCarte id={`accomp-${s.id}`} class="accomp__nom">{s.nom}</NomDeCarte>
         <p class="devise">{s.devise}</p>
         <p class="espace-s">{s.texte}</p>
         <p class="accomp__transformation">{s.transformation}</p>
@@ -81,7 +88,7 @@ const cartes = [
     font-style: italic;
     line-height: 1.3;
   }
-  .accomp__nom { margin: var(--e-3) 0 var(--e-3); }
+  .accomp__nom { margin: var(--e-3) 0 var(--e-3); font-size: var(--t-h3); }
   .accomp__transformation { margin-top: var(--e-4); font-style: italic; color: var(--or-fonce); }
   .accomp__acces {
     max-width: 40rem;

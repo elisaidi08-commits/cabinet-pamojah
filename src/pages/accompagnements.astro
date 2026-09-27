@@ -7,7 +7,7 @@ import Photo from '../components/Photo.astro';
 import CartesServices from '../components/CartesServices.astro';
 import { site, resume } from '../data/site';
 import a from '../contenu/accueil.json';
-import cabinet from '../assets/images/cabinet/S1-cabinet.png';
+import villa from '../assets/images/cabinet/S0-villa.png';
 ---
 <Base title="Les accompagnements" description={resume(a.services.intro)}>
   <section class="section fond-noir tete">
@@ -19,7 +19,7 @@ import cabinet from '../assets/images/cabinet/S1-cabinet.png';
         <p class="espace question">{a.services.question}</p>
       </div>
       <Photo
-        src={cabinet}
+        src={villa}
         alt=""
         widths={[480, 720, 960]}
         sizes="(max-width: 900px) 100vw, 35vw"
@@ -31,7 +31,7 @@ import cabinet from '../assets/images/cabinet/S1-cabinet.png';
 
   <section class="section fond-ivoire" aria-label="La Consultation d’Axe et les trois programmes">
     <div class="conteneur">
-      <CartesServices />
+      <CartesServices niveau="h2" />
     </div>
   </section>
 
