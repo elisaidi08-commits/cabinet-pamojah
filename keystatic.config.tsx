@@ -181,8 +181,7 @@ export default config({
         posture: liste('Architecte de souveraineté', 'Paragraphe'),
         parcours: titreTexte('Mon parcours', 'Étape'),
         genese: liste('La genèse du Cabinet', 'Paragraphe'),
-        citation: texte('Citation'),
-        ensemble: texte('Pamojah = ensemble'),
+        citation: texte('Citation', 'Seule parole à la première personne de la page, affichée entre guillemets et signée.'),
       },
     }),
 

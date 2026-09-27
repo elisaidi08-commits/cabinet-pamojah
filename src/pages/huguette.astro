@@ -1,5 +1,6 @@
 ---
-// L'architecte. Texte de la fondatrice (brief p.1–2), à la 1re personne, modifiable dans l'administration
+// L'architecte. Texte de la fondatrice (brief p.1–2), écrit à la 3e personne (décision du 28/09/2026),
+// modifiable dans l'administration
 // (« L'architecte (Huguette) » → src/contenu/huguette.json), portrait compris.
 // Non publiés en attendant sa validation : le rôle en église, la formation de décoratrice, les autres entreprises.
 // Tant qu'aucun portrait n'est déposé, le Pilier du logo s'affiche : aucune photo de banque d'images ne la représente.
@@ -9,10 +10,14 @@ import Titre from '../components/Titre.astro';
 import Logo from '../components/Logo.astro';
 import villa from '../assets/images/cabinet/S0-villa.png';
 import h from '../contenu/huguette.json';
+import accueil from '../contenu/accueil.json';
+import { site, citer } from '../data/site';
 
-// Le portrait déposé dans l'administration (src/assets/images/huguette/) est optimisé comme les autres images.
-const portraits = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/huguette/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}', { eager: true });
-const portrait = h.portrait ? portraits[h.portrait]?.default : undefined;
+// Le portrait : celui déposé dans l'administration (src/assets/images/huguette/), sinon la photo fournie par Sady
+// (src/assets/images/portraits/huguette.jpg). Tant qu'aucun des deux n'existe, le Pilier du logo s'affiche.
+const deposes = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/huguette/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}', { eager: true });
+const fournis = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/portraits/huguette.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG}', { eager: true });
+const portrait = (h.portrait ? deposes[h.portrait]?.default : undefined) ?? Object.values(fournis)[0]?.default;
 
 ---
 <Base title="Huguette Tolo-Tolo Ngemeyeme" description="Huguette Tolo-Tolo Ngemeyeme, architecte de souveraineté et fondatrice du Cabinet Pamojah : infirmière pendant 17 ans, multi-entrepreneure.">
@@ -25,14 +30,14 @@ const portrait = h.portrait ? portraits[h.portrait]?.default : undefined;
         <p class="chapo espace">{h.presentation}</p>
       </div>
       {portrait
-        ? <Photo src={portrait} alt="Huguette Tolo-Tolo Ngemeyeme, fondatrice du Cabinet Pamojah" widths={[360, 540, 720]} sizes="(max-width: 900px) 80vw, 25vw" class="tete__portrait" loading="eager" />
+        ? <Photo src={portrait} alt="Portrait d’Huguette Tolo-Tolo Ngemeyeme, fondatrice du Cabinet Pamojah." widths={[360, 540, 720]} sizes="(max-width: 900px) 80vw, 25vw" class="tete__portrait" loading="eager" />
         : <Logo variant="pilier" decorative class="tete__pilier" />}
     </div>
   </section>
 
   <section class="section fond-sable" aria-labelledby="souverainete">
     <div class="conteneur deux-col">
-      <Titre surtitre="Ma posture" id="souverainete">Architecte de souveraineté</Titre>
+      <Titre surtitre="Sa posture" id="souverainete">Architecte de souveraineté</Titre>
       <div>
         {h.posture.map((p, i) => <p class:list={[i === 0 ? 'chapo' : 'espace-s']}>{p}</p>)}
       </div>
@@ -41,7 +46,7 @@ const portrait = h.portrait ? portraits[h.portrait]?.default : undefined;
 
   <section class="section fond-ivoire" aria-labelledby="parcours">
     <div class="conteneur">
-      <Titre surtitre="Mon parcours" id="parcours">Riche en expériences et en expertises</Titre>
+      <Titre surtitre="Son parcours" id="parcours">Riche en expériences et en expertises</Titre>
       <ul class="parcours">
         {h.parcours.map((p, i) => (
           <li class="apparait" style={`--delai: ${i * 100}ms`}>
@@ -59,7 +64,8 @@ const portrait = h.portrait ? portraits[h.portrait]?.default : undefined;
       <div class="genese">
         {h.genese.map((p) => <p>{p}</p>)}
         <blockquote class="genese__citation">
-          <p>{h.citation}</p>
+          <p>« {citer(h.citation)} »</p>
+          <footer class="genese__signature">— Huguette Tolo-Tolo Ngemeyeme</footer>
         </blockquote>
       </div>
     </div>
@@ -69,8 +75,7 @@ const portrait = h.portrait ? portraits[h.portrait]?.default : undefined;
     <Photo src={villa} alt="" widths={[960, 1600, 2400]} sizes="100vw" class="ensemble__image" />
     <div class="ensemble__voile" aria-hidden="true"></div>
     <div class="conteneur centre ensemble__texte">
-      <Titre surtitre="Pamojah" id="ensemble-titre" centre>Pamojah signifie « ensemble ».</Titre>
-      <p class="chapo espace">{h.ensemble}</p>
+      <Titre surtitre={site.signature} id="ensemble-titre" centre>{accueil.retour}</Titre>
       <a class="bouton espace" href="/consultation-axe/#reserver">Réserver ma Consultation d’Axe</a>
     </div>
   </section>
@@ -109,6 +114,7 @@ const portrait = h.portrait ? portraits[h.portrait]?.default : undefined;
   .parcours h3 { margin-bottom: var(--e-3); }
 
   .genese p + p { margin-top: 1em; }
+  .genese__signature { margin-top: var(--e-4); font-style: normal; font-size: 17px; color: var(--or); }
   .genese__citation { margin: var(--e-7) 0 0; padding-left: var(--e-5); border-left: 1px solid var(--or); }
   .genese__citation p { font-size: clamp(24px, 1.2vw + 18px, 32px); font-style: italic; line-height: 1.3; }
 
