@@ -14,7 +14,10 @@ import bilanJson from '../contenu/programme-bilan-de-soi.json';
 import ceoJson from '../contenu/programme-madame-la-ceo.json';
 import consultationJson from '../contenu/consultation.json';
 
-export const ACCES = 'Accessible uniquement après une Consultation d’Axe';
+// Phrase unique d'accès aux programmes (décision du 28/09/2026), reprise partout.
+export const ACCES = 'Les programmes sont accessibles uniquement sur candidature, à l’issue d’une Consultation d’Axe.';
+// Version courte, pour les listes « en bref » des cartes et des pages.
+export const ACCES_COURT = 'Sur candidature, après une Consultation d’Axe';
 
 // Les programmes (une page chacun).
 export type Service = {

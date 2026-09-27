@@ -10,7 +10,7 @@ import Titre from '../components/Titre.astro';
 import Citations from '../components/Citations.astro';
 import Faq from '../components/Faq.astro';
 import Cercles from '../components/Cercles.astro';
-import { services, consultationCarte, leadershipDurable, ACCES } from '../data/services';
+import { services, consultationCarte, ACCES, ACCES_COURT } from '../data/services';
 import { faqAccueil } from '../data/faq';
 import { avis } from '../data/avis';
 import { site, disclaimer, citer } from '../data/site';
@@ -20,8 +20,8 @@ import villa from '../assets/images/cabinet/S0-villa.png';
 // Tous les textes de l'accueil se modifient dans l'administration (« Page d'accueil » → src/contenu/accueil.json).
 import a from '../contenu/accueil.json';
 
-// Les trois services, dans l'ordre du parcours : la Consultation d'Axe (point d'entrée obligatoire), puis les deux programmes.
-const trois = [
+// L'offre, dans l'ordre du parcours : la Consultation d'Axe (point d'entrée obligatoire), puis les trois programmes.
+const cartes = [
   {
     id: 'consultation',
     href: consultationCarte.href,
@@ -32,7 +32,7 @@ const trois = [
     devise: consultationCarte.devise,
     texte: consultationCarte.description,
     transformation: consultationCarte.transformation,
-    faits: ['75 min', 'Visio', 'Confidentialité absolue'],
+    faits: ['75 min', 'Visio ou présentiel sur demande', 'Confidentialité absolue'],
     lien: 'Découvrir la Consultation d’Axe',
   },
   ...services.map((s) => ({
@@ -45,7 +45,7 @@ const trois = [
     devise: s.devise,
     texte: s.description[0],
     transformation: s.transformation,
-    faits: [ACCES],
+    faits: [ACCES_COURT],
     lien: `Découvrir ${s.nom}`,
   })),
 ];
@@ -119,7 +119,7 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
     </div>
   </section>
 
-  <!-- 4. Les trois services -->
+  <!-- 4. La Consultation d'Axe et les trois programmes -->
   <section id="accompagnements" class="section fond-ivoire" aria-labelledby="accompagnements-titre">
     <div class="conteneur">
       <div class="accomp__intro">
@@ -129,7 +129,7 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
       </div>
 
       <div class="accomp__liste">
-        {trois.map((s, i) => (
+        {cartes.map((s, i) => (
           <article class:list={['accomp', { 'accomp--inverse': i % 2 === 1 }]} aria-labelledby={`accomp-${s.id}`}>
             <a class="accomp__image" href={s.href} tabindex="-1" aria-hidden="true">
               <Photo
@@ -156,7 +156,7 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
       </div>
 
       <p class="accomp__axe">{axeDebut}{axeFin && <strong>{axeFin}</strong>}</p>
-      <p class="accomp__ld">{leadershipDurable.mention}</p>
+      <p class="accomp__acces">{ACCES}</p>
     </div>
   </section>
 
@@ -412,7 +412,7 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
     font-size: var(--t-h3);
   }
   .accomp__axe strong { font-weight: 600; color: var(--or-fonce); }
-  .accomp__ld {
+  .accomp__acces {
     max-width: 40rem;
     margin: var(--e-6) auto 0;
     text-align: center;
