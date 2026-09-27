@@ -45,7 +45,6 @@ const current = Astro.url.pathname;
     <ul class="menu__liens">
       <li><a href="/">Accueil</a></li>
       {nav.map((item) => <li><a href={item.href} aria-current={current === item.href ? 'page' : undefined}>{item.label}</a></li>)}
-      <li><a href="/la-sphere/">La Sphère de pouvoir</a></li>
     </ul>
   </nav>
   <div class="menu__bas">

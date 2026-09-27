@@ -51,7 +51,7 @@ export default config({
   ui: {
     brand: { name: 'Le Cabinet Pamojah' },
     navigation: {
-      Pages: ['accueil', 'huguette', 'leCabinet'],
+      Pages: ['accueil', 'huguette', 'leCabinet', 'laSphere'],
       Services: ['consultation', 'bilanDeSoi', 'madameLaCeo', 'leadershipDurable'],
       Contenus: ['articles', 'faq', 'avis'],
       Réglages: ['reglages'],
@@ -198,6 +198,22 @@ export default config({
           },
           { label: 'Le Cabinet Pamojah (bandeau)' },
         ),
+      },
+    }),
+
+    laSphere: singleton({
+      label: 'La Sphère de pouvoir',
+      path: 'src/contenu/la-sphere',
+      format: { data: 'json' },
+      schema: {
+        surtitre: ligne('Surtitre'),
+        titre: ligne('Titre'),
+        chapo: texte('Chapô'),
+        reservee: texte('À qui elle est réservée'),
+        entrez: liste('Vous y entrez pour', 'Raison'),
+        inclutTitre: ligne('Titre de la liste des contenus'),
+        inclut: liste('Ce que le cercle inclut', 'Élément'),
+        acces: texte('Comment elle s’ouvre'),
       },
     }),
 

@@ -26,6 +26,7 @@ export const nav = [
   { href: '/le-cabinet/', label: 'Le Cabinet' },
   { href: '/huguette/', label: 'L’architecte' },
   { href: '/apprendre/', label: 'Apprendre' },
+  { href: '/la-sphere/', label: 'La Sphère' },
 ];
 
 export const legal = [

@@ -1,31 +1,25 @@
 ---
-// La Sphère de pouvoir : visible mais fermée. Aucun formulaire, aucune inscription.
-// Texte composé à partir du brief V2 (§ Sphère de pouvoir) et des décisions du 18/09/2026 — à valider par Huguette.
+// La Sphère de pouvoir : page vitrine, visible mais fermée. Aucun formulaire, aucune inscription, aucun espace membre.
+// Textes de la cliente (28/09/2026), modifiables dans l'administration (« La Sphère de pouvoir » → src/contenu/la-sphere.json).
 import Base from '../layouts/Base.astro';
 import Titre from '../components/Titre.astro';
 import Cercles from '../components/Cercles.astro';
 import { site } from '../data/site';
+import s from '../contenu/la-sphere.json';
 
 const cercles = [
   { nom: 'Le premier cercle', texte: 'Il s’ouvre après votre Consultation d’Axe. Huguette vous en donne l’accès.' },
   { nom: 'Les cercles intérieurs', texte: 'Chaque accompagnement plus profond ouvre un cercle plus proche du centre.' },
   { nom: 'Sur invitation', texte: 'Certains accès s’ouvrent sur invitation d’Huguette, à un moment choisi de votre parcours.' },
 ];
-const espace = [
-  'apprendre',
-  'comprendre votre fonctionnement',
-  'mieux saisir votre manière d’exercer votre influence',
-  'prendre conscience de vos mécanismes',
-  'développer une forme de maîtrise',
-];
 ---
-<Base title="La Sphère de pouvoir" description="La Sphère de pouvoir, le cœur du Cabinet Pamojah. Elle ne s’achète pas : elle s’ouvre après votre Consultation d’Axe.">
+<Base title={s.titre} description="La Sphère de pouvoir : un cercle privé de continuité, de réflexion stratégique et d’élévation, réservé aux femmes accompagnées par le Cabinet Pamojah.">
   <section class="section fond-noir sphere-tete">
     <div class="conteneur sphere-tete__grille">
       <div>
-        <span class="surtitre">Le cœur du cabinet</span>
-        <h1>La Sphère de pouvoir</h1>
-        <p class="chapo espace">Elle ne s’achète pas. Elle s’ouvre après votre Consultation d’Axe.</p>
+        <span class="surtitre">{s.surtitre}</span>
+        <h1>{s.titre}</h1>
+        <p class="chapo espace">{s.chapo}</p>
       </div>
       <Cercles />
     </div>
@@ -35,9 +29,13 @@ const espace = [
     <div class="conteneur deux-col">
       <Titre surtitre="Un espace réservé" id="espace-titre">Un lieu pour approfondir ce que l’accompagnement a ouvert</Titre>
       <div>
-        <p class="chapo">La Sphère est réservée aux femmes accompagnées par le Cabinet Pamojah. Vous y venez pour :</p>
+        <p class="chapo">{s.reservee}</p>
         <ul class="liste-filets espace">
-          {espace.map((e) => <li>{e}</li>)}
+          {s.entrez.map((e) => <li>{e}</li>)}
+        </ul>
+        <p class="surtitre espace">{s.inclutTitre}</p>
+        <ul class="liste-filets espace-s">
+          {s.inclut.map((e) => <li>{e}</li>)}
         </ul>
       </div>
     </div>
@@ -61,6 +59,7 @@ const espace = [
   <section class="section fond-noir" aria-labelledby="entrer-titre">
     <div class="conteneur centre entrer">
       <Titre surtitre={site.signature} id="entrer-titre" centre>La première porte est la Consultation d’Axe.</Titre>
+      <p class="chapo espace">{s.acces}</p>
       <a class="bouton espace" href="/consultation-axe/#reserver">Réserver ma Consultation d’Axe</a>
     </div>
   </section>
@@ -68,6 +67,7 @@ const espace = [
 
 <style>
   .espace { margin-top: var(--e-6); }
+  .espace-s { margin-top: var(--e-4); }
   .sphere-tete__grille {
     display: grid;
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
