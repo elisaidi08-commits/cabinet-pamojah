@@ -124,7 +124,7 @@ Branche `retours-huguette-2809`, un commit par bloc. Construction sans erreur, 0
 
 ### À valider par Sady
 
-- **Surtitre de l'accueil** : ancien « Le Cabinet Pamojah · Clinique du leadership multi-talents » → nouveau « Un espace confidentiel pour les femmes leaders multipotentielles ».
+- **Surtitre de l'accueil** : tranché le 28/09 par Sady — « Un espace confidentiel pour les femmes leaders multipotentielles » reste **dans le film** (texte d'ouverture) et le Parvis reprend « Le Cabinet Pamojah · Clinique du leadership multi-talents ». La phrase n'apparaît qu'à un seul endroit.
 - **Citation de la page L'architecte** : seule parole à la 1re personne, entre guillemets et signée « — Huguette Tolo-Tolo Ngemeyeme ».
 - **Images provisoires** : Madame la CEO (le livre) et Leadership durable (le cabinet) en attendant le décor « hôtel particulier ».
 - **Titre de section** ajouté sur la page Consultation : « À qui s'adresse la Consultation d'Axe » (l'ancien « Pour les femmes qui souhaitent » faisait doublon avec la nouvelle introduction).
