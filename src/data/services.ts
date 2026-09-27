@@ -82,6 +82,4 @@ export const consultationCarte = {
   // Décor à venir : le bureau d'accueil de l'hôtel particulier.
   image: ordinateur,
   alt: 'Gros plan sur l’ordinateur ouvert du cabinet, écran en veille où se reflète la lumière de la lampe.',
-  // L'objet du film (le livre), cité dans la légende de la vidéo.
-  objet: { nom: 'Le livret d’axe' },
 };

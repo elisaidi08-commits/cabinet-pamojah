@@ -1,64 +1,43 @@
 ---
-// Le film d'entrée (09_SITE_V2/05-film-d-entree.md) : la villa, le cabinet, la lampe, l'ordinateur, le livre.
-// Le scroll pilote le temps de la vidéo. Les textes apparaissent quand la caméra se pose :
-// devant la villa, un texte pour situer le lieu ; « Bienvenue chez Pamojah » à l'arrivée dans le cabinet ;
-// puis les trois services sur leur objet : lampe → Bilan de soi, ordinateur → Madame la CEO,
-// livre (le livret d'axe) → la Consultation d'Axe, point d'entrée obligatoire. Pas d'écran de clôture :
-// après le livre, on entre directement dans le site.
-// À ces moments, le film ralentit (plus de scroll pour la même durée) pour laisser le temps de lire.
-// Un seul film 16:9 : le téléphone en reçoit la bande centrale.
-// Sans JavaScript ou avec le mouvement réduit : l'image de la villa et le texte d'ouverture.
+// Le film d'entrée : l'hôtel particulier parisien du Cabinet (retours d'Huguette, 28/09/2026).
+// Le scroll pilote le temps de la vidéo. Trois temps, et le film ralentit à chacun pour laisser lire :
+// l'ouverture (où sommes-nous ?), « Bienvenue » avec le logo à l'arrivée, puis l'approche de l'ordinateur
+// du bureau d'accueil : la Consultation d'Axe, le point d'entrée de notre univers. Pas d'écran de clôture.
+// Deux montages : téléphone (vertical) = enfilade d'arches → bureau d'accueil ; ordinateur (16:9) =
+// bureau d'accueil seul, en attendant l'enfilade en 16:9 (il suffira alors de copier le montage téléphone).
+// Sans JavaScript ou avec le mouvement réduit : l'affiche et le texte d'ouverture.
 import Logo from './Logo.astro';
-import { services, consultationCarte, ACCES } from '../data/services';
+import { consultationCarte } from '../data/services';
 import accueil from '../contenu/accueil.json';
 const f = accueil.film;
-
-// Fenêtres d'apparition, en secondes du film assemblé (20,7 s) : la caméra est posée sur le sujet.
-const [bilan, ceo] = services;
-const programmes = [
-  { s: bilan, debut: 9.8, fin: 11.4 },   // la lampe
-  { s: ceo, debut: 15.0, fin: 16.3 },    // l'ordinateur
-];
 ---
-<section class="film" id="film" aria-label="Film d’entrée : la villa et le cabinet Pamojah" data-film>
+<section class="film" id="film" aria-label="Film d’entrée : l’hôtel particulier du Cabinet Pamojah" data-film>
   <div class="film__scene">
     <picture>
-      <source media="(max-width: 860px) and (orientation: portrait)" srcset="/film/affiche-telephone.jpg" width="608" height="1080" />
-      <img class="film__affiche" src="/film/affiche-ordinateur.jpg" width="1920" height="1080" alt="" fetchpriority="high" />
+      <source media="(max-width: 860px) and (orientation: portrait)" srcset="/film/affiche-telephone.jpg" width="720" height="1280" />
+      <img class="film__affiche" src="/film/affiche-ordinateur.jpg" width="1280" height="720" alt="" fetchpriority="high" />
     </picture>
     <video class="film__video" muted playsinline preload="auto" aria-hidden="true"></video>
     <div class="film__voile" aria-hidden="true"></div>
     <div class="film__ombre" aria-hidden="true"></div>
 
-    <!-- Devant la villa : où sommes-nous ? -->
-    <div class="film__legende film__ouverture" data-legende data-voile="0.35" data-debut="-1" data-fin="2.4">
+    <!-- L'ouverture : où sommes-nous ? -->
+    <div class="film__legende film__ouverture" data-legende="ouverture" data-voile="0.35">
       <p class="surtitre">{f.ouvertureSurtitre}</p>
       <p class="film__lieu">{f.ouvertureTitre}</p>
       <p class="film__description">{f.ouvertureTexte}</p>
       <p class="film__indice" aria-hidden="true">{f.ouvertureIndice}</p>
     </div>
 
-    <!-- Arrivée dans le cabinet -->
-    <div class="film__legende film__bienvenue" data-legende data-voile="0.5" data-debut="4.85" data-fin="6.05">
+    <!-- L'arrivée : le logo et « Bienvenue » -->
+    <div class="film__legende film__bienvenue" data-legende="bienvenue" data-voile="0.5">
       <Logo variant="principal" class="film__logo" />
       <p class="film__bienvenue-texte">{f.bienvenue}</p>
     </div>
 
-    <!-- Les deux programmes, chacun sur son objet -->
-    {programmes.map(({ s, debut, fin }) => (
-      <div class="film__legende film__service" data-legende data-debut={debut} data-fin={fin} data-ombre>
-        <p class="surtitre">Programme · {s.duree}</p>
-        <p class="film__nom">{s.nom}</p>
-        <p class="devise">{s.devise}</p>
-        <p class="film__description">{s.description[0]}</p>
-        <p class="film__acces">{ACCES}</p>
-        <a class="lien" href={`/${s.slug}/`} aria-label={`Découvrir le programme ${s.nom}`}>Découvrir le programme</a>
-      </div>
-    ))}
-
-    <!-- Le livre : la Consultation d'Axe, porte d'entrée de tout le Cabinet (reste jusqu'à la fin du film) -->
-    <div class="film__legende film__service" data-legende data-debut="19.3" data-fin="99" data-ombre>
-      <p class="surtitre">Le point d’entrée · {consultationCarte.objet.nom}</p>
+    <!-- L'ordinateur du bureau d'accueil : la Consultation d'Axe (reste jusqu'à la fin du film) -->
+    <div class="film__legende film__service" data-legende="consultation" data-ombre>
+      <p class="surtitre">Le point d’entrée de notre univers</p>
       <p class="film__nom">{consultationCarte.nom}</p>
       <p class="devise">{consultationCarte.devise}</p>
       <p class="film__description">{consultationCarte.description}</p>
@@ -93,7 +72,7 @@ const programmes = [
 </script>
 
 <style>
-  /* État par défaut (sans animation) : l'image de la villa et le texte d'ouverture. */
+  /* État par défaut (sans animation) : l'affiche et le texte d'ouverture. */
   .film {
     --p: 0;     /* avancement du film, 0 → 1 */
     position: relative;
@@ -105,7 +84,7 @@ const programmes = [
     height: 88dvh;
     overflow: hidden;
   }
-  .film.est-anime { height: 1000vh; }
+  .film.est-anime { height: 700vh; }
   .film.est-anime .film__scene { position: sticky; top: 0; height: 100vh; height: 100dvh; }
 
   .film__affiche,
@@ -121,7 +100,7 @@ const programmes = [
   .film.est-pret .film__video--hd { opacity: 0; }
   .film.est-pret .film__video--hd.est-visible { opacity: 1; }
 
-  /* Voile plein (bienvenue, clôture) et ombre basse (légendes des accompagnements) : réglés par le script. */
+  /* Voile plein (ouverture, bienvenue) et ombre basse (légende de la Consultation) : réglés par le script. */
   .film__voile, .film__ombre { position: absolute; inset: 0; pointer-events: none; }
   .film__voile { background: var(--noir); opacity: 0.35; }
   .film.est-anime .film__voile { opacity: 0; }
@@ -240,8 +219,23 @@ const programmes = [
   .film__passer:hover, .film__passer:focus-visible { opacity: 1; }
   .film:not(.est-anime) .film__passer { display: none; }
 
+  /* Téléphone : la légende de la Consultation est la plus longue ; on la resserre pour qu'elle tienne
+     entièrement à l'écran, y compris sur les petits téléphones (360 × 640). */
   @media (max-width: 700px) {
-    .film__service { bottom: calc(88px + env(safe-area-inset-bottom)); }
+    .film__service {
+      bottom: calc(76px + env(safe-area-inset-bottom));
+      gap: var(--e-2);
+    }
+    .film__nom { font-size: clamp(28px, 5.5vw + 10px, 40px); line-height: 1.1; }
+    .film__service .film__description { margin-top: var(--e-2); font-size: 17px; line-height: 1.45; }
+    .film__acces { line-height: 1.45; }
+    .film__actions { margin-top: var(--e-2); }
+  }
+
+  @media (max-height: 700px) and (max-width: 700px) {
+    .film__service { bottom: calc(64px + env(safe-area-inset-bottom)); }
+    .film__service .devise { font-size: 15px; }
+    .film__service .film__description { font-size: 16px; }
   }
 </style>
 
@@ -251,11 +245,32 @@ const programmes = [
     let video = film.querySelector<HTMLVideoElement>('.film__video')!;
     const voile = film.querySelector<HTMLElement>('.film__voile')!;
     const ombre = film.querySelector<HTMLElement>('.film__ombre')!;
+    const telephone = window.matchMedia('(max-width: 860px) and (orientation: portrait)').matches;
+
+    // Les deux montages, en secondes de film. rythme : [début, fin, poids] ; poids 3 = la caméra se pose,
+    // il faut plus de scroll pour la même durée (le temps de lire). legendes : [apparition, disparition].
+    type Montage = { duree: number; rythme: [number, number, number][]; legendes: Record<string, [number, number]> };
+    const MONTAGES: Record<'ordinateur' | 'telephone', Montage> = {
+      // Bureau d'accueil seul (15 s).
+      ordinateur: {
+        duree: 15.04,
+        rythme: [[0, 3, 2], [3, 4, 1], [4, 7, 3], [7, 11.5, 1], [11.5, 99, 3]],
+        legendes: { ouverture: [-1, 3], bienvenue: [4, 7], consultation: [11.5, 99] },
+      },
+      // Enfilade d'arches (0 → 15 s), fondu de 14 à 15 s, bureau d'accueil (14 → 29 s).
+      telephone: {
+        duree: 29.04,
+        rythme: [[0, 3, 2], [3, 10.5, 0.8], [10.5, 13.5, 3], [13.5, 25.5, 0.8], [25.5, 99, 3]],
+        legendes: { ouverture: [-1, 3], bienvenue: [10.5, 13.5], consultation: [25.5, 99] },
+      },
+    };
+    const montage = telephone ? MONTAGES.telephone : MONTAGES.ordinateur;
+
     const legendes = [...film.querySelectorAll<HTMLElement>('[data-legende]')].map((el) => ({
       el,
-      debut: Number(el.dataset.debut),
-      fin: Number(el.dataset.fin),
-      ombre: el.hasAttribute('data-ombre'),       // ombre basse (textes des services)
+      debut: montage.legendes[el.dataset.legende!]?.[0] ?? -1,
+      fin: montage.legendes[el.dataset.legende!]?.[1] ?? -1,
+      ombre: el.hasAttribute('data-ombre'),       // ombre basse (légende de la Consultation)
       voile: Number(el.dataset.voile ?? 0),       // voile plein (ouverture, bienvenue)
     }));
 
@@ -267,20 +282,10 @@ const programmes = [
     const LISSAGE = 0.14;  // part de l'écart rattrapée à chaque image
     const FONDU = 0.3;     // durée des fondus des textes, en secondes de film
 
-    // Le film ralentit là où la caméra se pose (poids 3) : plus de scroll pour lire.
-    const RYTHME: [number, number, number][] = [
-      [0, 2.4, 2], [2.4, 4.6, 1],        // devant la villa (texte d'ouverture) · l'allée, la porte
-      [4.6, 6.05, 3],                     // l'arrivée dans le cabinet
-      [6.05, 9.6, 1], [9.6, 11.4, 3],    // vers la lampe · la lampe (Bilan de soi)
-      [11.4, 14.8, 1], [14.8, 16.3, 3],  // vers l'ordinateur · l'ordinateur (Madame la CEO)
-      [16.3, 19.2, 1], [19.2, 99, 3],    // vers le livre · le livre (la Consultation d'Axe)
-    ];
-
-    const telephone = window.matchMedia('(max-width: 860px) and (orientation: portrait)').matches;
     const sources = telephone ? SOURCES.telephone : SOURCES.ordinateur;
-
-    // Durée du film assemblé : les textes suivent le scroll même avant que la vidéo soit prête (connexion lente).
-    const DUREE_FILM = 20.67;
+    // Durée du montage : les textes suivent le scroll même avant que la vidéo soit prête (connexion lente).
+    const DUREE_FILM = montage.duree;
+    const RYTHME = montage.rythme;
 
     let avancement = 0;
     let temps = 0;      // temps du film affiché, lissé

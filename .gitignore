@@ -16,3 +16,6 @@ dist/
 CONTENU-SOURCE.md
 .vercel
 .env*
+
+# Livraison vidéo temporaire (hors dépôt)
+_livraison-film/
