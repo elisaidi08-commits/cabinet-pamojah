@@ -9,18 +9,21 @@ Outil : [Keystatic](https://keystatic.com). Les textes sont enregistrés dans le
 |---|---|
 | **Pages → Page d'accueil** | Tous les textes de l'accueil, y compris les textes du film (arrivée devant la villa, « Bienvenue chez Pamojah ») |
 | **Pages → L'architecte (Huguette)** | Sa présentation, son parcours, la genèse du Cabinet, **son portrait** (tant qu'il est vide, le Pilier du logo s'affiche) |
-| **Services → La Consultation d'Axe** | Toute la page Consultation, la présentation courte (accueil, film) et la mention de Leadership durable |
-| **Services → Programme — Bilan de soi / Madame la CEO** | Nom, devise, durée, description, listes, phrase de transformation |
+| **Pages → Le Cabinet** | Le bandeau « Le Cabinet Pamojah » : la phrase forte et le sens du mot Pamojah |
+| **Pages → La Sphère de pouvoir** | Tous les textes de la page : chapô, à qui elle est réservée, ce que le cercle inclut |
+| **Services → La Consultation d'Axe** | Toute la page Consultation et la présentation courte (accueil, film) |
+| **Services → Programme — Bilan de soi / Madame la CEO / Leadership durable** | Nom, devise, durée, description, listes, phrase de transformation |
 | **Contenus → Articles** | Écrire, modifier, dépublier (case « Brouillon ») les articles de la page Apprendre ; les images glissées dans le texte sont optimisées automatiquement |
 | **Contenus → Questions fréquentes** | Les questions de l'accueil et de la page Consultation |
 | **Contenus → Avis clientes** | Ajouter ou retirer un avis (publié sous forme anonyme) |
 | **Réglages → Coordonnées et réglages** | Email, Instagram, lien Calendly, signature, mention « non médical » |
 
-Restent dans le code (à demander à Sady) : la mise en page, les images du cabinet, le film, les pages Le Cabinet, La Sphère et les pages légales.
+Restent dans le code (à demander à Sady) : la mise en page, les images du cabinet et des programmes, le film et les pages légales.
 
 **Règles à respecter**
 
 - **Aucun prix** nulle part sur le site.
+- **Les trois programmes** (Bilan de soi, Madame la CEO, Leadership durable & Influence maîtrisée) sont accessibles **sur candidature, à l'issue d'une Consultation d'Axe**.
 - Aucune photo de banque d'images présentée comme une cliente ou comme Huguette.
 - Les textes du film et de l'accueil sont courts : au-delà de deux ou trois lignes, ils débordent de l'image sur téléphone.
 - Écrire les espaces avant « : ; ? ! » comme d'habitude : le site les rend insécables (la ponctuation ne se retrouve jamais seule en début de ligne). Les guillemets autour des citations et des avis sont ajoutés par le site : inutile de les taper.

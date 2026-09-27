@@ -23,10 +23,31 @@ const aCompleter = (champ: string) => `<span class="a-completer">À compléter :
   <p>La ponctualité est indispensable : au-delà de 10 minutes de retard, la séance ne peut être maintenue.</p>
 
   <h2>Report et annulation</h2>
-  <p><Fragment set:html={aCompleter('délai de report ou d’annulation sans frais, conditions de remboursement, cas de la séance non honorée')} /></p>
+  <p>
+    Vous pouvez reporter ou annuler votre séance sans frais jusqu’à 48 heures avant l’horaire réservé, en répondant à
+    l’email de confirmation ou en écrivant à <a href={`mailto:${site.email}`}>{site.email}</a>. Dans ce cas, la séance
+    est reportée à une date convenue ensemble ou intégralement remboursée sous 14 jours.
+  </p>
+  <p>
+    Moins de 48 heures avant la séance, celle-ci reste due. Elle peut être reportée une fois, dans les trois mois,
+    sans nouveau paiement. Une séance non honorée — sans report demandé, ou au-delà des 10 minutes de retard —
+    n’est ni reportée ni remboursée.
+  </p>
+  <p>
+    Si le Cabinet Pamojah doit reporter une séance, une nouvelle date vous est proposée ; à défaut d’accord,
+    la séance est intégralement remboursée.
+  </p>
 
   <h2>Droit de rétractation</h2>
-  <p><Fragment set:html={aCompleter('modalités du droit de rétractation de 14 jours (et de la renonciation expresse si la séance a lieu avant la fin de ce délai) — à faire valider par un juriste')} /></p>
+  <p>
+    La Consultation d’Axe est une prestation de services conclue à distance : vous disposez d’un délai de rétractation
+    de quatorze jours à compter de la confirmation de votre réservation, sans motif ni frais. Pour l’exercer, il suffit
+    d’écrire à <a href={`mailto:${site.email}`}>{site.email}</a> ; le remboursement intervient sous quatorze jours.
+  </p>
+  <p>
+    Lorsque la séance est fixée avant la fin de ce délai, vous demandez expressément son exécution immédiate :
+    une fois la séance réalisée, le droit de rétractation ne peut plus être exercé.
+  </p>
 
   <h2>Nature de l’accompagnement</h2>
   <p>

@@ -1,16 +1,18 @@
 ---
 // Le Cabinet : ce qu'il est, l'approche (4 piliers), la méthode (4 dimensions), à qui il s'adresse, le cadre de confiance.
-// Textes du brief de la fondatrice (p.2–4 et p.8). Le cadre « hybride (visio et présentiel) » n'est pas repris :
-// la Consultation d'Axe est en visio uniquement et aucune adresse n'est communiquée.
+// Textes du brief de la fondatrice (p.2–4 et p.8). Format (décision du 28/09/2026) : visio par défaut,
+// présentiel possible sur demande particulière par mail ; aucune adresse n'est communiquée sur le site.
 import Photo from '../components/Photo.astro';
 import Base from '../layouts/Base.astro';
 import Titre from '../components/Titre.astro';
 import { site, disclaimer } from '../data/site';
 import cabinet from '../assets/images/cabinet/S1-cabinet.png';
+import villa from '../assets/images/cabinet/S0-villa.png';
+import lc from '../contenu/le-cabinet.json';
 import bureau from '../assets/images/portraits/bureau.jpg';
 
 const piliers = [
-  { nom: 'Clinique et préventive', texte: 'Par l’écoute, la prévention de la surcharge, du burn-out et l’attention portée à la santé globale.' },
+  { nom: 'Clinique et préventive', texte: 'Par l’écoute, l’attention portée aux signaux de surcharge et à l’équilibre global.' },
   { nom: 'Multiculturelle', texte: 'Par la prise en compte de l’identité, des héritages, des contextes et des appartenances.' },
   { nom: 'Stratégique', texte: 'Par la clarification des priorités, l’orchestration des talents et la structuration de l’impact.' },
   { nom: 'Souveraine', texte: 'Par le développement d’une capacité à choisir, décider, agir et influencer sans se perdre.' },
@@ -130,6 +132,16 @@ const cadre = [
     </div>
   </section>
 
+  <section class="ensemble" aria-labelledby="ensemble-titre">
+    <Photo src={villa} alt="" widths={[960, 1600, 2400]} sizes="100vw" class="ensemble__image" />
+    <div class="ensemble__voile" aria-hidden="true"></div>
+    <div class="conteneur centre ensemble__texte">
+      <Titre surtitre="Pamojah" id="ensemble-titre" centre>{lc.identite.titre}</Titre>
+      <p class="chapo espace ensemble__fort">{lc.identite.phraseForte}</p>
+      <p class="espace-s">{lc.identite.ensemble}</p>
+    </div>
+  </section>
+
   <section class="section fond-noir" aria-labelledby="cadre">
     <div class="conteneur deux-col">
       <div>
@@ -166,6 +178,13 @@ const cadre = [
   .deux-col--centre { align-items: center; }
   :global(.image) { width: 100%; height: auto; }
   :global(.portrait) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 35%; }
+
+  .ensemble { position: relative; overflow: hidden; color: var(--ivoire); padding-block: var(--section); }
+  :global(.ensemble__image) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ensemble__voile { position: absolute; inset: 0; background: rgba(13, 13, 13, 0.62); }
+  .ensemble__texte { position: relative; max-width: 46rem; }
+  .ensemble :global(.surtitre) { color: var(--or); }
+  .ensemble__fort { font-size: clamp(24px, 1.2vw + 18px, 32px); font-style: italic; }
 
   .quatre {
     display: grid;

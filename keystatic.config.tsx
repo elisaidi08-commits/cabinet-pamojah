@@ -51,8 +51,8 @@ export default config({
   ui: {
     brand: { name: 'Le Cabinet Pamojah' },
     navigation: {
-      Pages: ['accueil', 'huguette'],
-      Services: ['consultation', 'bilanDeSoi', 'madameLaCeo'],
+      Pages: ['accueil', 'huguette', 'leCabinet', 'laSphere'],
+      Services: ['consultation', 'bilanDeSoi', 'madameLaCeo', 'leadershipDurable'],
       Contenus: ['articles', 'faq', 'avis'],
       Réglages: ['reglages'],
     },
@@ -181,8 +181,39 @@ export default config({
         posture: liste('Architecte de souveraineté', 'Paragraphe'),
         parcours: titreTexte('Mon parcours', 'Étape'),
         genese: liste('La genèse du Cabinet', 'Paragraphe'),
-        citation: texte('Citation'),
-        ensemble: texte('Pamojah = ensemble'),
+        citation: texte('Citation', 'Seule parole à la première personne de la page, affichée entre guillemets et signée.'),
+      },
+    }),
+
+    leCabinet: singleton({
+      label: 'Le Cabinet',
+      path: 'src/contenu/le-cabinet',
+      format: { data: 'json' },
+      schema: {
+        identite: fields.object(
+          {
+            titre: ligne('Titre'),
+            phraseForte: texte('Phrase forte'),
+            ensemble: texte('Ce que signifie Pamojah'),
+          },
+          { label: 'Le Cabinet Pamojah (bandeau)' },
+        ),
+      },
+    }),
+
+    laSphere: singleton({
+      label: 'La Sphère de pouvoir',
+      path: 'src/contenu/la-sphere',
+      format: { data: 'json' },
+      schema: {
+        surtitre: ligne('Surtitre'),
+        titre: ligne('Titre'),
+        chapo: texte('Chapô'),
+        reservee: texte('À qui elle est réservée'),
+        entrez: liste('Vous y entrez pour', 'Raison'),
+        inclutTitre: ligne('Titre de la liste des contenus'),
+        inclut: liste('Ce que le cercle inclut', 'Élément'),
+        acces: texte('Comment elle s’ouvre'),
       },
     }),
 
@@ -219,12 +250,12 @@ export default config({
         sortie: liste('Ce que vous recevrez', 'Point'),
         diagnostic: fields.object({ intro: texte('Introduction'), options: liste('Options', 'Option') }, { label: 'Diagnostic stratégique' }),
         preparation: liste('Préparation avant la séance', 'Paragraphe'),
-        mentionLeadership: texte('Mention du programme Leadership durable'),
       },
     }),
 
     bilanDeSoi: programme('Bilan de soi', 'programme-bilan-de-soi'),
     madameLaCeo: programme('Madame la CEO', 'programme-madame-la-ceo'),
+    leadershipDurable: programme('Leadership durable & Influence maîtrisée', 'programme-leadership-durable'),
 
     faq: singleton({
       label: 'Questions fréquentes',

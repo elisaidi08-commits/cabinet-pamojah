@@ -22,15 +22,20 @@
 
 Mise en ligne : déposer le contenu de `dist/` chez l'hébergeur (Netlify, Vercel, OVH, Hostinger…), puis faire pointer le domaine. Si Odoo garde le domaine principal, le mettre sur un sous-domaine (ex. `gestion.`) pour le CRM et la facturation.
 
-## Décisions de Sady (18/09/2026) — à respecter partout
+## Décisions de fond (28/09/2026) — à respecter partout
 
-- **Les 3 services sont la Consultation d'Axe, le Bilan de soi et Madame la CEO.** Leadership durable & Influence maîtrisée n'est pas un service du site : il est seulement mentionné, « accessible uniquement sur candidature, à l'issue d'une Consultation d'Axe ».
-- **La Consultation d'Axe est obligatoire** avant tout programme ; c'est écrit sur l'accueil, dans le film, sur les pages des programmes et dans la FAQ.
-- **Aucun prix sur le site** : ni les 250 € de la Consultation, ni « sur proposition personnalisée ». Le paiement est seulement mentionné (« paiement sécurisé pour confirmer votre créneau ») ; le montant n'apparaît que dans Calendly.
+Elles remplacent les décisions du 18/09/2026 et priment en cas de conflit avec le reste de ce document.
+
+- **La Consultation d'Axe est le point de départ obligatoire**, suivie de **trois programmes** : Bilan de soi, Madame la CEO et **Leadership durable & Influence maîtrisée**. Leadership durable devient un programme à part entière, avec sa carte et sa page (cela remplace la décision du 18/09 qui le cantonnait à une mention).
+- **Phrase d'accès unique, reprise partout** : « Les programmes sont accessibles uniquement sur candidature, à l'issue d'une Consultation d'Axe. » Version courte dans les listes « en bref » : « Sur candidature, après une Consultation d'Axe ».
+- **Aucun prix sur le site** : ni montant, ni « sur proposition personnalisée ». Le paiement est seulement mentionné (« paiement sécurisé pour confirmer votre créneau ») ; le montant n'apparaît que dans Calendly.
+- **Format** : visio par défaut ; **présentiel possible sur demande particulière par mail** à contact@cabinetpamojah.com.
+- **Décor à venir** : un hôtel particulier parisien, maison de famille confidentielle et cocooning luxueux. Les images actuelles restent en place ; chaque service porte son image dans `src/data/services.ts`, avec le décor cible en commentaire (une ligne à changer le moment venu).
+- **La page de l'architecte est écrite à la 3e personne**, à l'exception de la citation signée.
 
 ## Ce qui est fait (18/09/2026)
 
-**16 pages** : accueil · Consultation d'Axe · Bilan de soi · Madame la CEO · La Sphère de pouvoir · L'architecte · Le Cabinet · Apprendre + 3 articles · mentions légales · confidentialité et cookies · conditions de la Consultation · confirmation de réservation · page 404. Plus `robots.txt` et `sitemap.xml`.
+**18 pages** : accueil · **Accompagnements** · Consultation d'Axe · Bilan de soi · Madame la CEO · **Leadership durable & Influence maîtrisée** · La Sphère de pouvoir · L'architecte · Le Cabinet · Apprendre + 3 articles · mentions légales · confidentialité et cookies · conditions de la Consultation · confirmation de réservation · page 404. Plus `robots.txt` et `sitemap.xml`.
 
 - **Film d'entrée** piloté par le scroll, avec ses textes (demande de Sady) : devant la villa, un texte pour situer le lieu ; logo et « Bienvenue chez Pamojah » à l'arrivée dans le cabinet ; puis chaque service quand la caméra se pose sur son objet (lampe → Bilan de soi, ordinateur → Madame la CEO, livre = livret d'axe → la Consultation d'Axe, avec le bouton de réservation). Pas d'écran de clôture : après le livre, on entre directement dans le site. Le film ralentit à ces moments pour laisser lire (réglage `RYTHME` dans `FilmEntree.astro`). Flèche pour passer le film ; image fixe sans JavaScript ou si le mouvement est réduit ; bande centrale sur téléphone.
 - **Accueil** dans l'ordre validé : phrase-miroir → « Elles tiennent. Elles réussissent. Elles avancent. » et les 5 situations → le Passage → les 3 services (Consultation d'Axe, Bilan de soi, Madame la CEO) et la mention de Leadership durable → la Consultation d'Axe → l'architecte → les avis → la Sphère → la Bibliothèque → retour au seuil et questions fréquentes.
@@ -55,6 +60,52 @@ Mise en ligne : déposer le contenu de `dist/` chez l'hébergeur (Netlify, Verce
 - **Pages préchargées au survol** des liens, **fondu enchaîné de 450 ms** entre les pages (Chrome, Edge, Safari récents), défilement doux vers les ancres, polices préchargées. Tout est désactivé si la visiteuse demande moins d'animations.
 - **Données structurées** (schema.org) : fiche du Cabinet sur toutes les pages, questions fréquentes sur l'accueil et la page Consultation.
 
+## Retours de la cliente (28/09/2026) — ce qui est fait
+
+Branche `retours-huguette-2809`, un commit par bloc. Construction sans erreur, 0 violation d'accessibilité sur 15 pages, aucun lien interne cassé, contrôlé à 390 px et 1440 px.
+
+| Bloc | Fait | Fichiers |
+|---|---|---|
+| **A — Accueil** | Surtitre du Parvis « Un espace confidentiel pour les femmes leaders multipotentielles » ; section des services en « Trois programmes · un même point de départ » (4 cartes) ; mention séparée de Leadership durable remplacée par la phrase d'accès ; « Visio ou présentiel sur demande » | `contenu/accueil.json`, `pages/index.astro`, `data/services.ts` |
+| **B — Consultation** | Nouveau titre « Renforcer l'axe qui soutient votre pouvoir d'agir et de devenir. » ; fin de « prévenir l'épuisement » retirée ; section « Pour qui » fusionnée ; champ `mentionLeadership` supprimé partout ; lien vers `/accompagnements/` suivi de la phrase d'accès ; présentiel dans les conditions | `contenu/consultation.json`, `pages/consultation-axe.astro`, `data/site.ts`, `keystatic.config.tsx` |
+| **C — Accompagnements + Leadership durable** | Page `/accompagnements/` ; Leadership durable devient le 3e programme (page, carte, contenu éditable) ; cartes mutualisées en composant ; menu et plan du site mis à jour ; FAQ reformulée | `pages/accompagnements.astro`, `components/CartesServices.astro`, `contenu/programme-leadership-durable.json`, `contenu/faq.json`, `pages/sitemap.xml.ts` |
+| **D — L'architecte** | Textes à la 3e personne ; « Étudiante à vie » → « Une signature d'évolution permanente » ; citation signée ; portrait branché ; texte « bien-vivre ensemble » déplacé | `contenu/huguette.json`, `pages/huguette.astro` |
+| **E — Le Cabinet** | Bandeau « Le Cabinet Pamojah » : bien-vivre ensemble + « Pamojah signifie ensemble », éditable ; commentaire du format corrigé | `contenu/le-cabinet.json`, `pages/le-cabinet.astro` |
+| **F — Film et images** | « Bienvenue » sous le logo (vidéos intactes) ; une image par service + décor cible en commentaire ; citation du Bilan de soi | `contenu/accueil.json`, `data/services.ts`, `contenu/programme-bilan-de-soi.json` |
+| **G — La Sphère** | Textes de la cliente mot pour mot, éditables ; « La Sphère » dans le menu, doublons retirés ; accueil aligné | `contenu/la-sphere.json`, `pages/la-sphere.astro`, `data/site.ts`, `components/Header.astro`, `components/Footer.astro` |
+| **H — Contrôles** | Présentiel dans les questions fréquentes (adresse cliquable) ; données structurées avec les quatre accompagnements ; vérifications globales (aucun prix, aucun lien `#accompagnements`, aucune mention « pas proposé en accès direct ») | `contenu/faq.json`, `components/Faq.astro`, `layouts/Base.astro` |
+
+### Textes complétés le 28/09/2026 (accord de Sady) — à relire par Huguette
+
+| Où | Ce qui a été écrit |
+|---|---|
+| `contenu/consultation.json` → `diagnostic.intro` | Rien à compléter : le texte du site est déjà celui de Calendly, en entier (voir CONTENU-SOURCE B9). |
+| `contenu/accueil.json` → `services.intro` | Phrase complétée avec ses propres mots : « …une trajectoire **cohérente et alignée** avec qui vous êtes, ce que vous portez et l'impact que vous souhaitez créer. » |
+| `pages/le-cabinet.astro` → pilier « Clinique et préventive » et article « Clinique du leadership » | « la prévention de la surcharge, du burn-out » devient « l'attention portée aux signaux de surcharge et à l'équilibre global », dans la même logique que le retrait de « prévenir l'épuisement ». |
+| `contenu/consultation.json` → `souhaits` | « structurer leur intensité pour éviter l'épuisement » devient « …pour préserver leur énergie ». |
+| `pages/conditions-consultation.astro` | **Projet** de politique de report, d'annulation et de rétractation (48 h sans frais, report unique sous 3 mois, séance non honorée due, rétractation de 14 jours avec exécution immédiate demandée). **À faire relire par un juriste avant le lancement.** |
+| `pages/confidentialite.astro` | Durées de conservation : trois ans après le dernier contact, dix ans pour les pièces comptables. |
+| `contenu/programme-leadership-durable.json` | Textes repris du brief (p.7) et de l'optimisation éditoriale (p.6) : à relire, aucun champ vide. |
+
+**Reste à fournir par Huguette** (données réelles, impossibles à écrire à sa place) : raison sociale et forme juridique, adresse du siège, numéro SIRET, RCS/RNE et TVA le cas échéant — dans les mentions légales et la page Confidentialité.
+
+### À valider par Sady
+
+- **Surtitre de l'accueil** : ancien « Le Cabinet Pamojah · Clinique du leadership multi-talents » → nouveau « Un espace confidentiel pour les femmes leaders multipotentielles ».
+- **Citation de la page L'architecte** : seule parole à la 1re personne, entre guillemets et signée « — Huguette Tolo-Tolo Ngemeyeme ».
+- **Images provisoires** : Madame la CEO (le livre) et Leadership durable (le cabinet) en attendant le décor « hôtel particulier ».
+- **Titre de section** ajouté sur la page Consultation : « À qui s'adresse la Consultation d'Axe » (l'ancien « Pour les femmes qui souhaitent » faisait doublon avec la nouvelle introduction).
+- **Fin de la page L'architecte** : le bandeau reprend la phrase « Toutes les portes du cabinet s'ouvrent par la Consultation d'Axe » à la place du texte déplacé.
+
+### Assets manquants
+
+1. **Portrait HD d'Huguette** (cadrage buste) : à déposer dans `src/assets/images/portraits/huguette.jpg` ou dans l'administration. Tant qu'il manque, le Pilier s'affiche.
+2. **Quatre images du décor « hôtel particulier »** : bureau d'accueil (Consultation), salon (Bilan de soi), table de réunion (Madame la CEO), bureau exécutif avec salon privatif (Leadership durable).
+
+### Hors périmètre (phase vidéos)
+
+Nouveau décor du film, un seul arrêt sur l'ordinateur pour présenter la Consultation d'Axe comme le point d'entrée de l'univers, suppression des arrêts lampe et livre.
+
 ## Audit complet du site (18/09/2026, soir)
 
 Relecture du code, des textes et tests dans Brave et Safari iPhone (6 largeurs d'écran, clavier, sans JavaScript, mouvement réduit, connexion lente). Corrigé :
@@ -72,11 +123,10 @@ Vérifié : 0 violation d'accessibilité (axe, 13 pages), aucun défilement hori
 
 ## Textes : propositions à faire valider par Huguette
 
-Ce sont ses mots ; rien n'a été changé sans son accord. Objectif : ne jamais présenter la lectrice comme fragile ni faire de promesse de santé (le site précise qu'il ne remplace pas un soin).
+Ce sont ses mots ; rien n'a été changé sans son accord. La mention « qui aide à prévenir l'épuisement » a été retirée le 28/09 à sa demande. Objectif : ne jamais présenter la lectrice comme fragile ni faire de promesse de santé (le site précise qu'il ne remplace pas un soin).
 
 | Où | Aujourd'hui | Proposition |
 |---|---|---|
-| Consultation (`clinique`) | « …qui aide à prévenir l'épuisement » | « …en préservant votre énergie » |
 | Consultation (`souhaits`) | « structurer leur intensité pour éviter l'épuisement » | « …pour préserver leur énergie » |
 | Consultation (`approche`) | « la prévention des risques professionnels liés à la santé mentale » | « l'attention portée à l'équilibre au travail » |
 | Le Cabinet + article « Clinique » | « la prévention de la surcharge, du burn-out » | « l'attention portée aux signaux de surcharge et à l'équilibre global » |
@@ -92,15 +142,15 @@ Ce sont ses mots ; rien n'a été changé sans son accord. Objectif : ne jamais 
 - Les textes du film sont réglés sur des fenêtres de temps (`data-debut` / `data-fin` en secondes). Si le film est régénéré (2K, correctif de l'ordinateur), il faudra recaler ces fenêtres.
 - **Téléphone : plus de barre de réservation fixe en bas de l'écran** (jugée trop présente par Sady). Le bouton « Réserver » est dans l'en-tête, qui se cache en descendant et revient en remontant ; les boutons dans la page et dans le menu restent.
 - Les pages des programmes affichent la liste complète du brief (7 et 9 points), plutôt qu'une sélection de 6.
-- Texte Calendly : « qui protège du burn-out » devient « qui aide à prévenir l'épuisement » (promesse de santé trop affirmative).
+- Texte Calendly : « qui protège du burn-out » est devenu « qui aide à prévenir l'épuisement » le 18/09, puis la mention a été retirée le 28/09 à la demande de la cliente.
 - Non publiés sur la page de l'architecte, en attendant sa validation : le rôle en église, la formation de décoratrice, les autres entreprises (Pamojaah, Madame Afya).
 - Le cadre « visio et présentiel » n'est pas repris : la Consultation est en visio uniquement et aucune adresse n'est donnée.
 - La Lettre (inscription email) n'est pas en ligne : il faut d'abord choisir un outil d'envoi (Brevo, Mailchimp…). Un formulaire qui ne mène nulle part serait pire que pas de formulaire.
 
 ## À fournir ou valider par la cliente avant la mise en ligne
 
-1. **Mentions légales** : raison sociale, adresse, SIRET, hébergeur (champs « À compléter » dans les 3 pages légales).
-2. **Politique d'annulation, de report et de remboursement** de la Consultation, et modalités du droit de rétractation (à faire relire par un juriste).
+1. **Mentions légales** : raison sociale, adresse du siège, SIRET (seuls champs « À compléter » restants, dans les mentions légales et la page Confidentialité).
+2. **Politique d'annulation, de report et de remboursement** : un projet complet est en ligne depuis le 28/09/2026 (page Conditions de la Consultation) — à faire relire par un juriste et valider par Huguette.
 3. **Le domaine** : `lecabinetpamojah.com` (carte de visite) ou `cabinetpamojah.com` (email, Calendly).
 4. **Portrait d'Huguette** (shooting) : la page L'architecte est prête à l'accueillir.
 5. **Validation des textes** : les textes ynn design (« en attente de validation finale »), la page La Sphère et les 3 articles de départ, composés à partir de ses propres textes.
@@ -117,7 +167,7 @@ Ce sont ses mots ; rien n'a été changé sans son accord. Objectif : ne jamais 
 ```
 src/
   pages/        une page = un fichier ([service].astro génère les 2 programmes)
-  components/   FilmEntree, Header (menu), Footer, Consentement (cookies), Reservation, Faq, Citations, Cercles, Logo, Photo, Titre
+  components/   FilmEntree, Header (menu), Footer, Consentement (cookies), Reservation, CartesServices, Faq, Citations, Cercles, Logo, Photo, Titre
   layouts/      Base (en-tête, pied, métadonnées) · PageTexte (pages de lecture)
   contenu/      les textes modifiables dans l'administration (JSON)
   data/         lecture de ces textes pour les pages (services, consultation, faq, avis, site)

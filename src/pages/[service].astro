@@ -4,7 +4,7 @@ import Photo from '../components/Photo.astro';
 import Base from '../layouts/Base.astro';
 import Titre from '../components/Titre.astro';
 import Citations from '../components/Citations.astro';
-import { services, consultationCarte, ACCES, type Service } from '../data/services';
+import { services, consultationCarte, ACCES, ACCES_COURT, type Service } from '../data/services';
 import { avis } from '../data/avis';
 import { site, resume, citer } from '../data/site';
 
@@ -19,8 +19,8 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
 <Base title={s.nom} description={resume(`${s.nom} : ${s.description[0] ?? s.devise}`)}>
   <section class="entree fond-noir">
     <Photo
-      src={s.objet.image}
-      alt={s.objet.alt}
+      src={s.image}
+      alt={s.alt}
       widths={[768, 1280, 1920, 2560]}
       sizes="100vw"
       class="entree__image"
@@ -34,7 +34,7 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
       <p class="devise">{s.devise}</p>
       <ul class="faits" aria-label="En bref">
         <li>{s.duree}</li>
-        <li>{ACCES}</li>
+        <li>{ACCES_COURT}</li>
       </ul>
     </div>
   </section>
@@ -46,8 +46,8 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
         {s.description.map((p) => <p class="chapo">{p}</p>)}
         {s.fondation && <p class="fondation">{s.fondation}</p>}
         <p class="acces">
-          <strong>Ce programme est accessible uniquement après une Consultation d’Axe.</strong>{' '}
-          C’est elle qui permet de vérifier qu’il correspond à votre situation.
+          <strong>{ACCES}</strong>{' '}
+          C’est elle qui permet de vérifier que le programme correspond à votre situation.
         </p>
       </div>
     </div>
@@ -122,14 +122,14 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
   <nav class="autres fond-noir" aria-label="Les autres services du Cabinet">
     <div class="conteneur autres__grille">
       <a class="autre" href={consultationCarte.href}>
-        <Photo src={consultationCarte.objet.image} alt="" widths={[480, 800]} sizes="(max-width: 700px) 100vw, 50vw" class="autre__image" />
+        <Photo src={consultationCarte.image} alt="" widths={[480, 800]} sizes="(max-width: 700px) 100vw, 50vw" class="autre__image" />
         <span class="surtitre">Le point d’entrée</span>
         <span class="autre__nom">{consultationCarte.nom}</span>
         <span class="devise">{consultationCarte.devise}</span>
       </a>
       {autres.map((x) => (
         <a class="autre" href={`/${x.slug}/`}>
-          <Photo src={x.objet.image} alt="" widths={[480, 800]} sizes="(max-width: 700px) 100vw, 50vw" class="autre__image" />
+          <Photo src={x.image} alt="" widths={[480, 800]} sizes="(max-width: 700px) 100vw, 50vw" class="autre__image" />
           <span class="surtitre">Programme · {x.duree}</span>
           <span class="autre__nom">{x.nom}</span>
           <span class="devise">{x.devise}</span>

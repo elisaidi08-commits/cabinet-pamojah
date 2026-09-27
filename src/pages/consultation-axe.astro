@@ -8,7 +8,7 @@ import Reservation from '../components/Reservation.astro';
 import { consultation as c } from '../data/consultation';
 import { faqConsultation } from '../data/faq';
 import { site, disclaimer } from '../data/site';
-import { leadershipDurable } from '../data/services';
+import { ACCES } from '../data/services';
 import { avis } from '../data/avis';
 import carnet from '../assets/images/portraits/carnet.jpg';
 import cabinet from '../assets/images/cabinet/S1-cabinet.png';
@@ -70,7 +70,7 @@ const romains = ['I', 'II', 'III'];
   <section class="section fond-sable" aria-labelledby="ensemble">
     <div class="conteneur deux-col">
       <div>
-        <Titre surtitre="Ce que nous faisons ensemble" id="ensemble">Renforcer l’axe qui organise votre manière d’agir</Titre>
+        <Titre surtitre="Ce que nous faisons ensemble" id="ensemble">Renforcer l’axe qui soutient votre pouvoir d’agir et de devenir.</Titre>
         <p class="chapo espace">{c.axe.intro}</p>
         <ul class="verbes">
           {c.axe.verbes.map((v) => <li>{v}</li>)}
@@ -91,11 +91,12 @@ const romains = ['I', 'II', 'III'];
   <section class="section fond-noir" aria-labelledby="pour-qui">
     <div class="conteneur deux-col">
       <div>
-        <Titre surtitre="Pour qui" id="pour-qui">Pour les femmes qui souhaitent</Titre>
-        <p class="espace">{c.attention} {c.cible}</p>
+        <Titre surtitre="Pour qui" id="pour-qui">À qui s’adresse la Consultation d’Axe</Titre>
+        <p class="chapo espace">{c.cible}</p>
         <ul class="liste-filets espace-s">
           {c.souhaits.map((s) => <li>{s}</li>)}
         </ul>
+        <p class="espace-s">{c.attention}</p>
       </div>
       <div>
         <Titre surtitre="Pour qui ce n’est pas adapté" niveau="h3">Cette consultation n’est pas adaptée si vous recherchez</Titre>
@@ -125,8 +126,8 @@ const romains = ['I', 'II', 'III'];
         <ul class="liste-filets espace-s">
           {c.diagnostic.options.map((s) => <li>{s}</li>)}
         </ul>
-        <p class="espace-s note-ld">{leadershipDurable.mention}</p>
-        <a class="lien espace" href="/#accompagnements">Découvrir les programmes</a>
+        <a class="lien espace" href="/accompagnements/">Découvrir les programmes</a>
+        <p class="espace-s note-acces">{ACCES}</p>
       </div>
     </div>
   </section>
@@ -219,7 +220,7 @@ const romains = ['I', 'II', 'III'];
   }
   .verbes li::before { content: '— '; color: var(--or); }
 
-  .note-ld { font-size: 18px; font-style: italic; color: var(--encre-douce); }
+  .note-acces { font-size: 18px; font-style: italic; color: var(--encre-douce); }
   .nature { margin-top: var(--e-6); font-size: var(--t-chapo); font-style: italic; }
 
   .espace { margin-top: var(--e-6); }

@@ -4,10 +4,10 @@
     "ouvertureTitre": "Le Cabinet Pamojah",
     "ouvertureTexte": "Un espace confidentiel pour les femmes leaders africaines et afro-descendantes.",
     "ouvertureIndice": "Faites défiler pour entrer",
-    "bienvenue": "Bienvenue chez Pamojah"
+    "bienvenue": "Bienvenue"
   },
   "parvis": {
-    "surtitre": "Le Cabinet Pamojah · Clinique du leadership multi-talents",
+    "surtitre": "Un espace confidentiel pour les femmes leaders multipotentielles",
     "titre": "Votre multiplicité n’est pas un défaut à réduire. Elle est une richesse à architecturer.",
     "sousTexte": "Vous n’avez pas à choisir entre vos talents pour avancer. Vous avez besoin d’un axe suffisamment clair pour les orchestrer.",
     "cible": "Pour les femmes leaders africaines et afro-descendantes qui portent plusieurs talents, plusieurs rôles, plusieurs responsabilités.",
@@ -22,11 +22,26 @@
     "texte": "Derrière la réussite, certaines femmes leaders portent pourtant une réalité plus complexe : plusieurs rôles, de nombreux talents, des responsabilités qui s’accumulent et une capacité permanente à s’adapter.",
     "texteSuite": "Lorsque cette multiplicité n’est plus suffisamment structurée, elle peut progressivement fragiliser ce qu’elles ont construit.",
     "situations": [
-      { "nom": "Dispersion", "texte": "Beaucoup d’activité, sans toujours consolider les résultats." },
-      { "nom": "Surcharge", "texte": "Trop de responsabilités et de sollicitations à porter simultanément." },
-      { "nom": "Difficulté à choisir", "texte": "Plusieurs directions possibles, au risque de perdre en clarté." },
-      { "nom": "Suradaptation", "texte": "Devenir indispensable aux autres, parfois au détriment de ses propres limites." },
-      { "nom": "Identité fragmentée", "texte": "De nombreux talents, mais un fil rouge devenu difficile à identifier." }
+      {
+        "nom": "Dispersion",
+        "texte": "Beaucoup d’activité, sans toujours consolider les résultats."
+      },
+      {
+        "nom": "Surcharge",
+        "texte": "Trop de responsabilités et de sollicitations à porter simultanément."
+      },
+      {
+        "nom": "Difficulté à choisir",
+        "texte": "Plusieurs directions possibles, au risque de perdre en clarté."
+      },
+      {
+        "nom": "Suradaptation",
+        "texte": "Devenir indispensable aux autres, parfois au détriment de ses propres limites."
+      },
+      {
+        "nom": "Identité fragmentée",
+        "texte": "De nombreux talents, mais un fil rouge devenu difficile à identifier."
+      }
     ]
   },
   "passage": {
@@ -40,9 +55,9 @@
     "nature": "Ni coaching, ni thérapie, ni motivation. Un travail clinique : écoute, prévention, discernement, structure."
   },
   "services": {
-    "surtitre": "Trois services · un même point de départ",
+    "surtitre": "Trois programmes · un même point de départ",
     "titre": "Votre multiplicité n’appelle pas une réponse unique.",
-    "intro": "Les parcours du Cabinet Pamojah accompagnent différentes étapes de votre évolution, avec un même objectif : vous permettre de construire une trajectoire cohérente avec qui vous êtes, ce que vous portez et l’impact que vous souhaitez créer.",
+    "intro": "Les parcours du Cabinet Pamojah accompagnent différentes étapes de votre évolution, avec un même objectif : vous permettre de construire une trajectoire cohérente et alignée avec qui vous êtes, ce que vous portez et l’impact que vous souhaitez créer.",
     "question": "Où en êtes-vous aujourd’hui ?",
     "axe": "Des trajectoires différentes. Un même point de départ : votre axe."
   },
@@ -60,10 +75,22 @@
       "Une nouvelle manière d’exercer votre influence"
     ],
     "clarifions": [
-      { "titre": "Votre enjeu prioritaire", "texte": "Ce qui mérite réellement votre attention aujourd’hui." },
-      { "titre": "Votre axe", "texte": "La direction autour de laquelle organiser votre énergie, vos décisions et vos talents." },
-      { "titre": "Votre prochaine décision", "texte": "Ce qui doit être choisi, repositionné ou laissé de côté." },
-      { "titre": "Votre première action", "texte": "Le premier mouvement concret permettant de remettre votre trajectoire en cohérence." }
+      {
+        "titre": "Votre enjeu prioritaire",
+        "texte": "Ce qui mérite réellement votre attention aujourd’hui."
+      },
+      {
+        "titre": "Votre axe",
+        "texte": "La direction autour de laquelle organiser votre énergie, vos décisions et vos talents."
+      },
+      {
+        "titre": "Votre prochaine décision",
+        "texte": "Ce qui doit être choisi, repositionné ou laissé de côté."
+      },
+      {
+        "titre": "Votre première action",
+        "texte": "Le premier mouvement concret permettant de remettre votre trajectoire en cohérence."
+      }
     ],
     "issue": "À l’issue de cette consultation, vous repartez avec une orientation claire et, lorsque cela est pertinent, une recommandation vers le parcours Pamojah correspondant à votre situation.",
     "sphere": "La Consultation ouvre aussi le premier cercle de la Sphère de pouvoir."
@@ -76,8 +103,8 @@
   "avisTitre": "Plus ancrées, plus confiantes, avec une direction.",
   "sphere": {
     "titre": "La Sphère de pouvoir",
-    "accroche": "Elle ne s’achète pas. Elle s’ouvre après votre Consultation d’Axe.",
-    "texte": "Un espace réservé aux femmes accompagnées par le Cabinet : pour apprendre, comprendre son fonctionnement, prendre conscience de ses mécanismes et développer une forme de maîtrise. Chaque accompagnement ouvre un cercle plus proche du centre."
+    "accroche": "Un cercle privé de continuité, de réflexion stratégique et d’élévation.",
+    "texte": "La Sphère est réservée exclusivement aux femmes accompagnées par le Cabinet Pamojah. Elle ne s’achète pas. Elle s’ouvre après votre Consultation d’Axe."
   },
   "retour": "Toutes les portes du cabinet s’ouvrent par la Consultation d’Axe."
 }

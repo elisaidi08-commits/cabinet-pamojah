@@ -4,6 +4,10 @@ interface Props {
   questions: { question: string; reponse: string }[];
 }
 const { questions } = Astro.props;
+
+// Une adresse email saisie dans une réponse devient un lien « mailto: » (le texte reste du texte : aucun HTML n'est interprété).
+const EMAIL = /([^\s@]+@[^\s@.]+\.[^\s@,;)]+)/g;
+const morceaux = (reponse: string) => reponse.split(EMAIL).map((m, i) => ({ texte: m, email: i % 2 === 1 }));
 ---
 <div class="faq">
   {questions.map((q) => (
@@ -12,7 +16,9 @@ const { questions } = Astro.props;
         <span>{q.question}</span>
         <span class="faq__signe" aria-hidden="true"></span>
       </summary>
-      <div class="faq__reponse"><p>{q.reponse}</p></div>
+      <div class="faq__reponse">
+        <p>{morceaux(q.reponse).map((m) => (m.email ? <a href={`mailto:${m.texte}`}>{m.texte}</a> : m.texte))}</p>
+      </div>
     </details>
   ))}
 </div>

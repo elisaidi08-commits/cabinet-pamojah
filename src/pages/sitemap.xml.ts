@@ -7,6 +7,7 @@ export const GET: APIRoute = async ({ site }) => {
   const articles = await getCollection('articles', ({ data }) => !data.brouillon);
   const chemins = [
     '/',
+    '/accompagnements/',
     '/consultation-axe/',
     ...services.map((s) => `/${s.slug}/`),
     '/la-sphere/',

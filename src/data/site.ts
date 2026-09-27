@@ -16,16 +16,17 @@ export const site = {
   consultation: {
     name: 'Consultation d’Axe',
     duration: '75 min',
-    format: 'Visio',
+    format: 'Visio ou présentiel sur demande',
   },
 };
 
 export const nav = [
-  { href: '/#accompagnements', label: 'Accompagnements' },
+  { href: '/accompagnements/', label: 'Accompagnements' },
   { href: '/consultation-axe/', label: 'La Consultation' },
   { href: '/le-cabinet/', label: 'Le Cabinet' },
   { href: '/huguette/', label: 'L’architecte' },
   { href: '/apprendre/', label: 'Apprendre' },
+  { href: '/la-sphere/', label: 'La Sphère' },
 ];
 
 export const legal = [

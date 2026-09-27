@@ -1,0 +1,106 @@
+---
+// Les cartes de l'offre, dans l'ordre du parcours : la Consultation d'Axe (point d'entrée obligatoire),
+// puis les trois programmes. Utilisées sur l'accueil et sur la page Accompagnements.
+import Photo from './Photo.astro';
+import { services, consultationCarte, ACCES, ACCES_COURT } from '../data/services';
+import { citer } from '../data/site';
+
+// Niveau de titre des cartes : h3 sous le titre de section de l'accueil, h2 quand elles suivent directement le titre de la page.
+interface Props {
+  niveau?: 'h2' | 'h3';
+}
+const { niveau = 'h3' } = Astro.props;
+const NomDeCarte = niveau;
+
+const cartes = [
+  {
+    id: 'consultation',
+    href: consultationCarte.href,
+    image: consultationCarte.image,
+    porte: consultationCarte.porte,
+    surtitre: consultationCarte.surtitre,
+    nom: consultationCarte.nom,
+    devise: consultationCarte.devise,
+    texte: consultationCarte.description,
+    transformation: consultationCarte.transformation,
+    faits: ['75 min', 'Visio ou présentiel sur demande', 'Confidentialité absolue'],
+    lien: 'Découvrir la Consultation d’Axe',
+  },
+  ...services.map((s) => ({
+    id: s.slug,
+    href: `/${s.slug}/`,
+    image: s.image,
+    porte: s.porte,
+    surtitre: `Programme · ${s.duree}`,
+    nom: s.nom,
+    devise: s.devise,
+    texte: s.description[0],
+    transformation: s.transformation,
+    faits: [ACCES_COURT],
+    lien: `Découvrir ${s.nom}`,
+  })),
+];
+---
+<div class="accomp__liste">
+  {cartes.map((s, i) => (
+    <article class:list={['accomp', { 'accomp--inverse': i % 2 === 1 }]} aria-labelledby={`accomp-${s.id}`}>
+      <a class="accomp__image" href={s.href} tabindex="-1" aria-hidden="true">
+        <Photo src={s.image} alt="" widths={[640, 960, 1440]} sizes="(max-width: 900px) 100vw, 55vw" />
+      </a>
+      <div class="accomp__texte">
+        <p class="accomp__porte">« {citer(s.porte)} »</p>
+        <span class="surtitre">{s.surtitre}</span>
+        <NomDeCarte id={`accomp-${s.id}`} class="accomp__nom">{s.nom}</NomDeCarte>
+        <p class="devise">{s.devise}</p>
+        <p class="espace-s">{s.texte}</p>
+        <p class="accomp__transformation">{s.transformation}</p>
+        <ul class="faits">
+          {s.faits.map((f) => <li>{f}</li>)}
+        </ul>
+        <a class="lien espace-s" href={s.href}>{s.lien}</a>
+      </div>
+    </article>
+  ))}
+</div>
+<p class="accomp__acces">{ACCES}</p>
+
+<style>
+  .espace-s { margin-top: var(--e-4); }
+  .accomp__liste { display: grid; gap: var(--e-10); margin-top: var(--e-9); }
+  .accomp {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--e-8);
+    align-items: center;
+  }
+  .accomp--inverse .accomp__image { order: 2; }
+  .accomp__image { display: block; overflow: hidden; }
+  .accomp__image :global(img) {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    transition: transform 1200ms var(--courbe);
+  }
+  .accomp__image:hover :global(img) { transform: scale(1.02); }
+  .accomp__porte {
+    margin-bottom: var(--e-6);
+    font-size: clamp(24px, 1vw + 19px, 30px);
+    font-style: italic;
+    line-height: 1.3;
+  }
+  .accomp__nom { margin: var(--e-3) 0 var(--e-3); font-size: var(--t-h3); }
+  .accomp__transformation { margin-top: var(--e-4); font-style: italic; color: var(--or-fonce); }
+  .accomp__acces {
+    max-width: 40rem;
+    margin: var(--e-8) auto 0;
+    text-align: center;
+    font-style: italic;
+    color: var(--encre-douce);
+  }
+
+  @media (max-width: 900px) {
+    .accomp { grid-template-columns: 1fr; }
+    .accomp--inverse .accomp__image { order: 0; }
+    .accomp__liste { gap: var(--e-9); }
+  }
+</style>

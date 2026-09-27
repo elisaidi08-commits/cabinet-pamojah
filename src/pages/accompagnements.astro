@@ -1,0 +1,63 @@
+---
+// Les accompagnements : la Consultation d'Axe (point d'entrée obligatoire) puis les trois programmes.
+// Les textes viennent de l'administration (« Page d'accueil » → section des services) pour rester alignés avec l'accueil.
+import Base from '../layouts/Base.astro';
+import Titre from '../components/Titre.astro';
+import Photo from '../components/Photo.astro';
+import CartesServices from '../components/CartesServices.astro';
+import { site, resume } from '../data/site';
+import a from '../contenu/accueil.json';
+import villa from '../assets/images/cabinet/S0-villa.png';
+---
+<Base title="Les accompagnements" description={resume(a.services.intro)}>
+  <section class="section fond-noir tete">
+    <div class="conteneur tete__grille">
+      <div>
+        <span class="surtitre">Les accompagnements</span>
+        <h1>Trois programmes. Un même point de départ.</h1>
+        <p class="chapo espace">{a.services.intro}</p>
+        <p class="espace question">{a.services.question}</p>
+      </div>
+      <Photo
+        src={villa}
+        alt=""
+        widths={[480, 720, 960]}
+        sizes="(max-width: 900px) 100vw, 35vw"
+        class="tete__photo"
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  <section class="section fond-ivoire" aria-label="La Consultation d’Axe et les trois programmes">
+    <div class="conteneur">
+      <CartesServices niveau="h2" />
+    </div>
+  </section>
+
+  <section class="section fond-sable" aria-labelledby="entrer-titre">
+    <div class="conteneur centre entrer">
+      <Titre surtitre={site.signature} id="entrer-titre" centre>{a.retour}</Titre>
+      <a class="bouton espace" href="/consultation-axe/#reserver">Réserver ma Consultation d’Axe</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .espace { margin-top: var(--e-6); }
+  .tete { padding-top: var(--e-10); }
+  .tete__grille {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--e-8);
+    align-items: center;
+  }
+  .tete h1 { margin-top: var(--e-4); }
+  .question { font-size: var(--t-h3); font-style: italic; color: var(--or); }
+  :global(.tete__photo) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .entrer { max-width: 44rem; }
+
+  @media (max-width: 900px) {
+    .tete__grille { grid-template-columns: 1fr; }
+  }
+</style>
