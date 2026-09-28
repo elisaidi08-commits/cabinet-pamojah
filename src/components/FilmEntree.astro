@@ -8,14 +8,29 @@
 // Sans JavaScript ou avec le mouvement réduit : l'affiche et le texte d'ouverture.
 import Logo from './Logo.astro';
 import { services, consultationCarte, ACCES_COURT } from '../data/services';
+import { empreinte } from '../data/fichiers';
 import accueil from '../contenu/accueil.json';
 const f = accueil.film;
+
+// Deux temps : une version légère pour que le film réagisse vite, puis la HD en arrière-plan.
+// L'empreinte du fichier fait partie de l'adresse : un film remplacé s'affiche tout de suite,
+// sans attendre que le cache du navigateur (un jour) expire.
+const SOURCES = {
+  ordinateur: { leger: empreinte('/film/film-ordinateur-leger.mp4'), hd: empreinte('/film/film-ordinateur.mp4') },
+  telephone: { leger: empreinte('/film/film-telephone-leger.mp4'), hd: empreinte('/film/film-telephone.mp4') },
+};
 ---
-<section class="film" id="film" aria-label="Film d’entrée : l’hôtel particulier du Cabinet Pamojah" data-film>
+<section
+  class="film"
+  id="film"
+  aria-label="Film d’entrée : l’hôtel particulier du Cabinet Pamojah"
+  data-film
+  data-sources={JSON.stringify(SOURCES)}
+>
   <div class="film__scene">
     <picture>
-      <source media="(max-width: 860px) and (orientation: portrait)" srcset="/film/affiche-telephone.jpg" width="720" height="1280" />
-      <img class="film__affiche" src="/film/affiche-ordinateur.jpg" width="1280" height="720" alt="" fetchpriority="high" />
+      <source media="(max-width: 860px) and (orientation: portrait)" srcset={empreinte('/film/affiche-telephone.jpg')} width="720" height="1280" />
+      <img class="film__affiche" src={empreinte('/film/affiche-ordinateur.jpg')} width="1280" height="720" alt="" fetchpriority="high" />
     </picture>
     <video class="film__video" muted playsinline preload="auto" aria-hidden="true"></video>
     <div class="film__voile" aria-hidden="true"></div>
@@ -294,11 +309,8 @@ const f = accueil.film;
       voile: Number(el.dataset.voile ?? 0),       // voile plein (ouverture, bienvenue)
     }));
 
-    // Deux temps : une version légère pour que le film réagisse vite, puis la HD en arrière-plan.
-    const SOURCES = {
-      ordinateur: { leger: '/film/film-ordinateur-leger.mp4', hd: '/film/film-ordinateur.mp4' },
-      telephone: { leger: '/film/film-telephone-leger.mp4', hd: '/film/film-telephone.mp4' },
-    };
+    // Les adresses des vidéos (avec l'empreinte du fichier) sont posées par le gabarit.
+    const SOURCES = JSON.parse(film.dataset.sources!) as Record<'ordinateur' | 'telephone', { leger: string; hd: string }>;
     const LISSAGE = 0.14;  // part de l'écart rattrapée à chaque image
     const FONDU = 0.3;     // durée des fondus des textes, en secondes de film
 

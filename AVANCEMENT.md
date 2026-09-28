@@ -80,6 +80,8 @@ Les deux formats racontent le même film (`CINQ_PLANS` dans `FilmEntree.astro`) 
 | Téléphone 720 × 1280 | 3,1 Mo → 12 Mo | le bureau exécutif n'existe qu'en 16:9 : un lent travelling horizontal le parcourt, de la bibliothèque au salon privatif |
 | Ordinateur 1280 × 720 | 4,3 Mo → 15 Mo | le couloir n'existe qu'en vertical : il est recadré en 16:9 et agrandi (un peu moins net, sous le voile du texte) |
 
+Les adresses des vidéos et des affiches portent l'empreinte du fichier (`src/data/fichiers.ts`) : quand un film est remplacé, les visiteuses déjà venues le voient tout de suite, sans attendre l'expiration du cache d'un jour.
+
 Réglages : `duree`, `rythme` (`[début, fin, poids]`, poids 2,5 = la caméra se pose) et `legendes` (`[apparition, disparition]`, la clé d'un programme est son slug). La section du film mesure 900vh. Le décor étant très clair, le voile des deux premiers textes est à 0,58. Le reste du mécanisme est inchangé : version légère puis HD, compatibilité Safari et iPhone, flèche « Passer le film », mémorisation de la visite, affiche fixe sans JavaScript ou en mouvement réduit.
 
 ### Les clips sources et comment refabriquer le film

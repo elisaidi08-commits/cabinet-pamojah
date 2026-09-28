@@ -9,6 +9,7 @@ import Citations from '../components/Citations.astro';
 import { services, consultationCarte, ACCES, ACCES_COURT, type Service } from '../data/services';
 import { avis } from '../data/avis';
 import { site, resume, citer } from '../data/site';
+import { empreinte } from '../data/fichiers';
 
 export function getStaticPaths() {
   return services.map((service) => ({ params: { service: service.slug }, props: { service } }));
@@ -19,7 +20,11 @@ const autres = services.filter((x) => x.slug !== s.slug);
 const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
 ---
 <Base title={s.nom} description={resume(`${s.nom} : ${s.description[0] ?? s.devise}`)}>
-  <section class="entree fond-noir" data-ambiance={s.ambiance?.large} data-ambiance-tel={s.ambiance?.vertical}>
+  <section
+    class="entree fond-noir"
+    data-ambiance={s.ambiance && empreinte(s.ambiance.large)}
+    data-ambiance-tel={s.ambiance?.vertical && empreinte(s.ambiance.vertical)}
+  >
     <Photo
       src={s.image}
       alt={s.alt}
