@@ -1,5 +1,7 @@
 ---
-// Gabarit commun des trois accompagnements (02-conception §9, adapté au film : lampe, ordinateur, livre).
+// Gabarit commun des trois accompagnements. Le haut de page montre la pièce de l'hôtel particulier :
+// la photo d'abord, puis une vidéo d'ambiance qui s'y fond, chargée seulement après le premier geste
+// de la visiteuse (jamais en mouvement réduit, ni en économie de données, ni sur connexion lente).
 import Photo from '../components/Photo.astro';
 import Base from '../layouts/Base.astro';
 import Titre from '../components/Titre.astro';
@@ -17,7 +19,7 @@ const autres = services.filter((x) => x.slug !== s.slug);
 const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
 ---
 <Base title={s.nom} description={resume(`${s.nom} : ${s.description[0] ?? s.devise}`)}>
-  <section class="entree fond-noir">
+  <section class="entree fond-noir" data-ambiance={s.ambiance?.large} data-ambiance-tel={s.ambiance?.vertical}>
     <Photo
       src={s.image}
       alt={s.alt}
@@ -27,6 +29,7 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
       loading="eager"
       fetchpriority="high"
     />
+    {s.ambiance && <video class="entree__video" muted loop playsinline preload="none" aria-hidden="true"></video>}
     <div class="entree__voile" aria-hidden="true"></div>
     <div class="conteneur entree__texte">
       <span class="surtitre">Programme · {s.duree}</span>
@@ -147,13 +150,17 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
     min-height: min(92vh, 900px);
     overflow: hidden;
   }
-  :global(.entree__image) {
+  :global(.entree__image),
+  .entree__video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+  /* La vidéo se fond sur la photo une fois qu'elle tourne vraiment ; sinon la photo reste. */
+  .entree__video { opacity: 0; transition: opacity 900ms var(--courbe); }
+  .entree__video.est-visible { opacity: 1; }
   .entree__voile {
     position: absolute;
     inset: 0;
@@ -254,3 +261,33 @@ const aDesAvis = avis.some((a) => a.accompagnement === s.avis);
     .autres__grille { grid-template-columns: 1fr; }
   }
 </style>
+
+<script>
+  // Vidéo d'ambiance du haut de page : la pièce s'anime doucement derrière le titre.
+  // Chargée au premier geste de la visiteuse (défilement, toucher, clic), jamais avant :
+  // la page s'affiche avec la photo, qui reste si la vidéo ne peut pas démarrer (iPhone en économie d'énergie).
+  const entree = document.querySelector<HTMLElement>('[data-ambiance]');
+  const video = entree?.querySelector<HTMLVideoElement>('.entree__video');
+
+  if (entree && video && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const connexion = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    const permise = !(connexion?.saveData || /(^|-)(2g|3g)$/.test(connexion?.effectiveType ?? ''));
+    const vertical = window.matchMedia('(max-width: 860px) and (orientation: portrait)').matches;
+    // Sur téléphone, seule une vidéo verticale convient : sans elle (bureau exécutif), la photo reste.
+    const source = vertical ? entree.dataset.ambianceTel : entree.dataset.ambiance;
+
+    let lancee = false;
+    const lancer = () => {
+      if (lancee || !permise || !source) return;
+      lancee = true;
+      video.addEventListener('playing', () => video.classList.add('est-visible'), { once: true });
+      video.src = source;
+      video.load();
+      video.play().catch(() => {});   // refusée (économie d'énergie) : la photo reste, sans bruit
+    };
+
+    for (const geste of ['scroll', 'touchstart', 'pointerdown', 'keydown'] as const) {
+      window.addEventListener(geste, lancer, { once: true, passive: true });
+    }
+  }
+</script>

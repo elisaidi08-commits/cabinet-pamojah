@@ -37,6 +37,9 @@ export type Service = {
   transformation: string;
   image: ImageMetadata;     // l'image de la carte et du haut de page (décor actuel)
   alt: string;
+  // Vidéo d'ambiance du haut de page : la pièce s'anime en boucle derrière le titre.
+  // Le plan vertical manque pour le bureau exécutif : sur téléphone, la photo reste.
+  ambiance?: { large: string; vertical?: string };
   photo: { image: ImageMetadata; position: string };
   avis: Avis['accompagnement'];
 };
@@ -50,6 +53,7 @@ export const services: Service[] = [
     ...texteDe(bilanJson),
     image: salon,
     alt: 'Le salon de l’hôtel particulier : deux fauteuils bouclés, une table de marbre et de hautes fenêtres sur Paris.',
+    ambiance: { large: '/film/ambiance-salon.mp4', vertical: '/film/ambiance-salon-tel.mp4' },
     photo: { image: sourire, position: '50% 12%' },
     avis: 'bilan-de-soi',
   },
@@ -58,6 +62,7 @@ export const services: Service[] = [
     ...texteDe(ceoJson),
     image: tableReunion,
     alt: 'La table de réunion de l’hôtel particulier, sous un lustre de laiton, entourée de fauteuils clairs.',
+    ambiance: { large: '/film/ambiance-reunion.mp4', vertical: '/film/ambiance-reunion-tel.mp4' },
     photo: { image: travail, position: '40% 30%' },
     avis: 'madame-la-ceo',
   },
@@ -66,6 +71,7 @@ export const services: Service[] = [
     ...texteDe(leadershipJson),
     image: bureauExecutif,
     alt: 'Le bureau exécutif de l’hôtel particulier : une bibliothèque sombre, un bureau massif et un petit salon privatif.',
+    ambiance: { large: '/film/ambiance-executif.mp4' },
     photo: { image: tailleur, position: '50% 20%' },
     avis: 'leadership-durable',
   },

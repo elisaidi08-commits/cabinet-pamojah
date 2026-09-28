@@ -119,6 +119,25 @@ Tout le site est passé dans l'hôtel particulier : les photos sont extraites de
 
 Vérifié : aucune page n'affiche deux fois la même image. Les photos viennent de vidéos en 1280 × 720 ; sur un très grand écran, les bandeaux pleine largeur sont donc un peu moins nets que les anciennes images (2752 px). À remplacer si des images haute définition du même appartement sont générées.
 
+## Vidéos d'ambiance des programmes (28/09/2026)
+
+Le haut de chaque page programme montre sa pièce en mouvement : la photo s'affiche d'abord, la vidéo s'y fond ensuite. Elle ne se charge **qu'au premier geste** de la visiteuse (défilement, toucher, clic), jamais avant, et jamais en mouvement réduit, en économie de données ou en 2G/3G. Si la lecture est refusée (iPhone en économie d'énergie), la photo reste, sans message ni trou.
+
+| Programme | Pièce | Ordinateur | Téléphone |
+|---|---|---|---|
+| Bilan de soi | le salon | `ambiance-salon.mp4` · 3,8 Mo | `ambiance-salon-tel.mp4` · 2,3 Mo |
+| Madame la CEO | la table de réunion | `ambiance-reunion.mp4` · 3,5 Mo | `ambiance-reunion-tel.mp4` · 1,5 Mo |
+| Leadership durable | le bureau exécutif | `ambiance-executif.mp4` · 3,9 Mo | la photo (plan vertical à tourner) |
+
+Chaque boucle est le plan joué puis rembobiné (30 s) : le raccord ne saute pas. Pour en refabriquer une :
+
+```bash
+B="[0:v]fps=24,format=yuv420p,split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1,setsar=1[v]"
+E=(-c:v libx264 -preset slow -pix_fmt yuv420p -g 48 -movflags +faststart -an)
+ffmpeg -y -i "<clip>.mp4" -filter_complex "$B" -map "[v]" "${E[@]}" -crf 29 public/film/ambiance-<pièce>.mp4
+# version téléphone : ajouter scale=540:-2 dans le filtre, à partir du clip vertical
+```
+
 ## Retours de la cliente (28/09/2026) — ce qui est fait
 
 Branche `retours-huguette-2809`, un commit par bloc. Construction sans erreur, 0 violation d'accessibilité sur 15 pages, aucun lien interne cassé, contrôlé à 390 px et 1440 px.
