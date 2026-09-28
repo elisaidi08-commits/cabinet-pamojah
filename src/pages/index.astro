@@ -15,8 +15,8 @@ import { faqAccueil } from '../data/faq';
 import { avis } from '../data/avis';
 import { site, disclaimer, citer } from '../data/site';
 import assise from '../assets/images/portraits/portrait-assise.jpg';
-import cabinet from '../assets/images/cabinet/S1-cabinet.png';
-import villa from '../assets/images/cabinet/S0-villa.png';
+import cabinet from '../assets/images/cabinet/hp-bureau-plan-serre.jpg';
+import villa from '../assets/images/cabinet/hp-enfilade.jpg';
 // Tous les textes de l'accueil se modifient dans l'administration (« Page d'accueil » → src/contenu/accueil.json).
 import a from '../contenu/accueil.json';
 
@@ -117,7 +117,7 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
       </div>
       <Photo
         src={cabinet}
-        alt="Le cabinet : un bureau de bois sombre sur l’axe, deux fauteuils vides face à lui, la lumière douce du soir."
+        alt="Le bureau d’accueil de l’hôtel particulier, vu de près : l’ordinateur ouvert et la lampe de laiton posés sur le plateau noir."
         widths={[640, 960, 1440]}
         sizes="(max-width: 900px) 100vw, 45vw"
         class="seuil__image"

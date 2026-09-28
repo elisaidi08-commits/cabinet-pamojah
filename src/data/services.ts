@@ -3,10 +3,11 @@
 // Les programmes sont accessibles sur candidature, à l'issue d'une Consultation d'Axe.
 // Textes : optimisation éditoriale ynn design (p.6, p.8) et brief fondatrice (p.5–7), voir CONTENU-SOURCE.md.
 import type { ImageMetadata } from 'astro';
-import cabinet from '../assets/images/cabinet/S1-cabinet.png';
-import lampe from '../assets/images/cabinet/S2-lampe.png';
-import ordinateur from '../assets/images/cabinet/S3-ordinateur.png';
-import livre from '../assets/images/cabinet/S4-livre.png';
+// Le décor : l'hôtel particulier parisien, photos extraites des clips du film (28/09/2026).
+import bureauAccueil from '../assets/images/cabinet/hp-bureau-accueil.jpg';
+import salon from '../assets/images/cabinet/hp-salon.jpg';
+import tableReunion from '../assets/images/cabinet/hp-table-reunion.jpg';
+import bureauExecutif from '../assets/images/cabinet/hp-bureau-executif.jpg';
 import sourire from '../assets/images/portraits/portrait-sourire.jpg';
 import travail from '../assets/images/portraits/ordinateur.jpg';
 import tailleur from '../assets/images/portraits/portrait-tailleur.jpg';
@@ -47,27 +48,24 @@ export const services: Service[] = [
   {
     slug: 'bilan-de-soi',
     ...texteDe(bilanJson),
-    // Décor à venir : le salon de l'hôtel particulier.
-    image: lampe,
-    alt: 'Gros plan sur la lampe de laiton du cabinet, allumée, qui éclaire le bureau de bois sombre.',
+    image: salon,
+    alt: 'Le salon de l’hôtel particulier : deux fauteuils bouclés, une table de marbre et de hautes fenêtres sur Paris.',
     photo: { image: sourire, position: '50% 12%' },
     avis: 'bilan-de-soi',
   },
   {
     slug: 'madame-la-ceo',
     ...texteDe(ceoJson),
-    // Décor à venir : la table à manger, qui sert de table de réunion.
-    image: livre,
-    alt: 'Gros plan sur le livre relié de lin du cabinet, son signet de laiton posé sur le bureau.',
+    image: tableReunion,
+    alt: 'La table de réunion de l’hôtel particulier, sous un lustre de laiton, entourée de fauteuils clairs.',
     photo: { image: travail, position: '40% 30%' },
     avis: 'madame-la-ceo',
   },
   {
     slug: 'leadership-durable',
     ...texteDe(leadershipJson),
-    // Décor à venir : le bureau exécutif et son petit salon privatif.
-    image: cabinet,
-    alt: 'Le cabinet Pamojah : un bureau de bois sombre sur l’axe, deux fauteuils vides face à lui, la lumière douce du soir.',
+    image: bureauExecutif,
+    alt: 'Le bureau exécutif de l’hôtel particulier : une bibliothèque sombre, un bureau massif et un petit salon privatif.',
     photo: { image: tailleur, position: '50% 20%' },
     avis: 'leadership-durable',
   },
@@ -79,7 +77,6 @@ export const consultationCarte = {
   surtitre: 'Le point d’entrée · 75 min · Visio ou présentiel',
   ...consultationJson.carte,
   href: '/consultation-axe/',
-  // Décor à venir : le bureau d'accueil de l'hôtel particulier.
-  image: ordinateur,
-  alt: 'Gros plan sur l’ordinateur ouvert du cabinet, écran en veille où se reflète la lumière de la lampe.',
+  image: bureauAccueil,
+  alt: 'Le bureau d’accueil de l’hôtel particulier : un plateau noir, un ordinateur ouvert et une lampe de laiton devant la bibliothèque.',
 };

@@ -104,6 +104,21 @@ ffmpeg -y -i master-telephone.mp4 -frames:v 1 -q:v 3 public/film/affiche-telepho
 
 Les deux montages partagent désormais les mêmes réglages dans `MONTAGES` (29,04 s, mêmes rythme et légendes). Viser moins de 20 Mo par version HD : au-delà, monter le `crf` de 2. En zsh, écrire les options communes dans un tableau (`X=(…)` puis `"${X[@]}"`) — une variable simple n'est pas découpée en mots.
 
+## Le décor du site (28/09/2026)
+
+Tout le site est passé dans l'hôtel particulier : les photos sont extraites des clips du film (`src/assets/images/cabinet/hp-*.jpg`, 1280 × 720). L'ancien décor (villa, cabinet de bois sombre, lampe, livre) n'est plus affiché nulle part ; les fichiers `S0`–`S4` restent dans le dossier au cas où.
+
+| Image | Où elle sert |
+|---|---|
+| `hp-bureau-accueil` | la Consultation d'Axe : carte, haut de page, cartes « autres services » |
+| `hp-salon` | Bilan de soi · page Consultation (ce que vous recevrez) · bandeau de la page L'architecte |
+| `hp-table-reunion` | Madame la CEO · haut de la page Le Cabinet |
+| `hp-bureau-executif` | Leadership durable & Influence maîtrisée |
+| `hp-bureau-plan-serre` | l'accueil, à côté de la Consultation d'Axe |
+| `hp-enfilade` | ouverture de la page Accompagnements · bandeaux « toutes les portes s'ouvrent » (accueil, Le Cabinet) — recadrage 16:9 du plan vertical |
+
+Vérifié : aucune page n'affiche deux fois la même image. Les photos viennent de vidéos en 1280 × 720 ; sur un très grand écran, les bandeaux pleine largeur sont donc un peu moins nets que les anciennes images (2752 px). À remplacer si des images haute définition du même appartement sont générées.
+
 ## Retours de la cliente (28/09/2026) — ce qui est fait
 
 Branche `retours-huguette-2809`, un commit par bloc. Construction sans erreur, 0 violation d'accessibilité sur 15 pages, aucun lien interne cassé, contrôlé à 390 px et 1440 px.
@@ -115,7 +130,7 @@ Branche `retours-huguette-2809`, un commit par bloc. Construction sans erreur, 0
 | **C — Accompagnements + Leadership durable** | Page `/accompagnements/` ; Leadership durable devient le 3e programme (page, carte, contenu éditable) ; cartes mutualisées en composant ; menu et plan du site mis à jour ; FAQ reformulée | `pages/accompagnements.astro`, `components/CartesServices.astro`, `contenu/programme-leadership-durable.json`, `contenu/faq.json`, `pages/sitemap.xml.ts` |
 | **D — L'architecte** | Textes à la 3e personne ; « Étudiante à vie » → « Une signature d'évolution permanente » ; citation signée ; portrait branché ; texte « bien-vivre ensemble » déplacé | `contenu/huguette.json`, `pages/huguette.astro` |
 | **E — Le Cabinet** | Bandeau « Le Cabinet Pamojah » : bien-vivre ensemble + « Pamojah signifie ensemble », éditable ; commentaire du format corrigé | `contenu/le-cabinet.json`, `pages/le-cabinet.astro` |
-| **F — Film et images** | « Bienvenue » sous le logo (vidéos intactes) ; une image par service + décor cible en commentaire ; citation du Bilan de soi | `contenu/accueil.json`, `data/services.ts`, `contenu/programme-bilan-de-soi.json` |
+| **F — Film et images** | « Bienvenue » sous le logo ; une image par service ; citation du Bilan de soi. Décor remplacé le 28/09 par l'hôtel particulier | `contenu/accueil.json`, `data/services.ts`, `contenu/programme-bilan-de-soi.json` |
 | **G — La Sphère** | Textes de la cliente mot pour mot, éditables ; « La Sphère » dans le menu, doublons retirés ; accueil aligné | `contenu/la-sphere.json`, `pages/la-sphere.astro`, `data/site.ts`, `components/Header.astro`, `components/Footer.astro` |
 | **H — Contrôles** | Présentiel dans les questions fréquentes (adresse cliquable) ; données structurées avec les quatre accompagnements ; vérifications globales (aucun prix, aucun lien `#accompagnements`, aucune mention « pas proposé en accès direct ») | `contenu/faq.json`, `components/Faq.astro`, `layouts/Base.astro` |
 
@@ -144,7 +159,7 @@ Branche `retours-huguette-2809`, un commit par bloc. Construction sans erreur, 0
 ### Assets manquants
 
 1. **Portrait HD d'Huguette** (cadrage buste) : à déposer dans `src/assets/images/portraits/huguette.jpg` ou dans l'administration. Tant qu'il manque, le Pilier s'affiche.
-2. **Quatre images du décor « hôtel particulier »** : bureau d'accueil (Consultation), salon (Bilan de soi), table de réunion (Madame la CEO), bureau exécutif avec salon privatif (Leadership durable).
+2. ~~Quatre images du décor « hôtel particulier »~~ — **fait le 28/09/2026** : extraites des clips (voir « Le décor du site » ci-dessous).
 
 ### Hors périmètre (phase vidéos)
 
