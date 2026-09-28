@@ -1,13 +1,13 @@
 ---
-// Le film d'entrée : l'hôtel particulier parisien du Cabinet (retours d'Huguette, 28/09/2026).
-// Le scroll pilote le temps de la vidéo. Trois temps, et le film ralentit à chacun pour laisser lire :
-// l'ouverture (où sommes-nous ?), « Bienvenue » avec le logo à l'arrivée, puis l'approche de l'ordinateur
-// du bureau d'accueil : la Consultation d'Axe, le point d'entrée de notre univers. Pas d'écran de clôture.
-// Deux montages, même récit en deux plans : téléphone (vertical) = enfilade d'arches → bureau d'accueil ;
-// ordinateur (16:9) = salon → bureau d'accueil (l'enfilade d'arches n'a été tournée qu'en vertical).
+// Le film d'entrée : l'hôtel particulier parisien du Cabinet (souhait d'Huguette, 28/09/2026).
+// On part du couloir aux arches, puis chaque pièce présente un accompagnement, et l'on finit
+// sur le bureau d'accueil : la Consultation d'Axe, le point d'entrée de notre univers.
+// Le scroll pilote le temps de la vidéo et le film ralentit à chaque texte pour laisser lire.
+// Cinq plans, même récit dans les deux formats : couloir · salon (Bilan de soi) · table de réunion
+// (Madame la CEO) · bureau exécutif (Leadership durable) · bureau d'accueil (Consultation d'Axe).
 // Sans JavaScript ou avec le mouvement réduit : l'affiche et le texte d'ouverture.
 import Logo from './Logo.astro';
-import { consultationCarte } from '../data/services';
+import { services, consultationCarte, ACCES_COURT } from '../data/services';
 import accueil from '../contenu/accueil.json';
 const f = accueil.film;
 ---
@@ -22,7 +22,7 @@ const f = accueil.film;
     <div class="film__ombre" aria-hidden="true"></div>
 
     <!-- L'ouverture : où sommes-nous ? -->
-    <div class="film__legende film__ouverture" data-legende="ouverture" data-voile="0.35">
+    <div class="film__legende film__ouverture" data-legende="ouverture" data-voile="0.58">
       <p class="surtitre">{f.ouvertureSurtitre}</p>
       <p class="film__lieu">{f.ouvertureTitre}</p>
       <p class="film__description">{f.ouvertureTexte}</p>
@@ -30,12 +30,24 @@ const f = accueil.film;
     </div>
 
     <!-- L'arrivée : le logo et « Bienvenue » -->
-    <div class="film__legende film__bienvenue" data-legende="bienvenue" data-voile="0.5">
+    <div class="film__legende film__bienvenue" data-legende="bienvenue" data-voile="0.58">
       <Logo variant="principal" class="film__logo" />
       <p class="film__bienvenue-texte">{f.bienvenue}</p>
     </div>
 
-    <!-- L'ordinateur du bureau d'accueil : la Consultation d'Axe (reste jusqu'à la fin du film) -->
+    <!-- Une pièce par accompagnement : le salon, la table de réunion, le bureau exécutif -->
+    {services.map((s) => (
+      <div class="film__legende film__service" data-legende={s.slug} data-ombre>
+        <p class="surtitre">Programme · {s.duree}</p>
+        <p class="film__nom">{s.nom}</p>
+        <p class="devise">{s.devise}</p>
+        <p class="film__description">{s.description[0]}</p>
+        <p class="film__acces">{ACCES_COURT}</p>
+        <a class="lien" href={`/${s.slug}/`} aria-label={`Découvrir le programme ${s.nom}`}>Découvrir le programme</a>
+      </div>
+    ))}
+
+    <!-- Le bureau d'accueil : la Consultation d'Axe (reste jusqu'à la fin du film) -->
     <div class="film__legende film__service" data-legende="consultation" data-ombre>
       <p class="surtitre">Le point d’entrée de notre univers</p>
       <p class="film__nom">{consultationCarte.nom}</p>
@@ -84,7 +96,7 @@ const f = accueil.film;
     height: 88dvh;
     overflow: hidden;
   }
-  .film.est-anime { height: 700vh; }
+  .film.est-anime { height: 900vh; }
   .film.est-anime .film__scene { position: sticky; top: 0; height: 100vh; height: 100dvh; }
 
   .film__affiche,
@@ -250,20 +262,28 @@ const f = accueil.film;
     // Les deux montages, en secondes de film. rythme : [début, fin, poids] ; poids 3 = la caméra se pose,
     // il faut plus de scroll pour la même durée (le temps de lire). legendes : [apparition, disparition].
     type Montage = { duree: number; rythme: [number, number, number][]; legendes: Record<string, [number, number]> };
-    const MONTAGES: Record<'ordinateur' | 'telephone', Montage> = {
-      // Salon (0 → 15 s), fondu de 14 à 15 s, bureau d'accueil (14 → 29 s).
-      ordinateur: {
-        duree: 29.04,
-        rythme: [[0, 3, 2], [3, 10.5, 0.8], [10.5, 13.5, 3], [13.5, 25.5, 0.8], [25.5, 99, 3]],
-        legendes: { ouverture: [-1, 3], bienvenue: [10.5, 13.5], consultation: [25.5, 99] },
-      },
-      // Enfilade d'arches (0 → 15 s), fondu de 14 à 15 s, bureau d'accueil (14 → 29 s).
-      telephone: {
-        duree: 29.04,
-        rythme: [[0, 3, 2], [3, 10.5, 0.8], [10.5, 13.5, 3], [13.5, 25.5, 0.8], [25.5, 99, 3]],
-        legendes: { ouverture: [-1, 3], bienvenue: [10.5, 13.5], consultation: [25.5, 99] },
+    // Les deux formats racontent le même film (26 s) : cinq plans de six secondes, fondus d'une seconde.
+    // Couloir 0-5 · salon 6-10 · table de réunion 11-15 · bureau exécutif 16-20 · bureau d'accueil 21-26.
+    const CINQ_PLANS: Montage = {
+      duree: 26,
+      rythme: [
+        [0, 3.2, 2.5], [3.2, 4, 1],        // le couloir : le texte d'ouverture
+        [4, 5.6, 2.5], [5.6, 6.6, 1],      // « Bienvenue », puis on entre dans le salon
+        [6.6, 9.8, 2.5], [9.8, 11.4, 1],   // le salon : Bilan de soi
+        [11.4, 14.8, 2.5], [14.8, 16.4, 1], // la table de réunion : Madame la CEO
+        [16.4, 19.8, 2.5], [19.8, 21.6, 1], // le bureau exécutif : Leadership durable
+        [21.6, 99, 2.5],                    // le bureau d'accueil : la Consultation d'Axe
+      ],
+      legendes: {
+        ouverture: [-1, 3.2],
+        bienvenue: [4, 5.6],
+        'bilan-de-soi': [6.6, 9.8],
+        'madame-la-ceo': [11.4, 14.8],
+        'leadership-durable': [16.4, 19.8],
+        consultation: [21.6, 99],
       },
     };
+    const MONTAGES: Record<'ordinateur' | 'telephone', Montage> = { ordinateur: CINQ_PLANS, telephone: CINQ_PLANS };
     const montage = telephone ? MONTAGES.telephone : MONTAGES.ordinateur;
 
     const legendes = [...film.querySelectorAll<HTMLElement>('[data-legende]')].map((el) => ({

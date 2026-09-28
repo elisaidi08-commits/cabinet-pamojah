@@ -62,20 +62,25 @@ Elles remplacent les décisions du 18/09/2026 et priment en cas de conflit avec 
 
 ## Film d'entrée : l'hôtel particulier (28/09/2026)
 
-Le film de la villa (arrêts lampe, ordinateur, livre) est remplacé par un film court tourné dans un **hôtel particulier parisien**. Trois temps seulement, et le film ralentit à chacun pour laisser lire :
+Le film de la villa est remplacé par un film tourné dans un **hôtel particulier parisien**. On part du couloir aux arches, chaque pièce présente ensuite un accompagnement, et l'on finit sur le bureau d'accueil (souhait d'Huguette, 28/09/2026). **Cinq plans de six secondes**, fondus d'une seconde, 26 s en tout ; le film ralentit à chaque texte pour laisser lire.
 
-1. **L'ouverture** — « Le Cabinet Pamojah », « Un espace confidentiel pour les femmes leaders multipotentielles. »
-2. **L'arrivée** — le logo et « Bienvenue ».
-3. **L'ordinateur du bureau d'accueil** — « Le point d'entrée de notre univers » : la Consultation d'Axe, sa devise, sa description et les deux boutons. La légende reste jusqu'à la fin, puis on entre directement dans le site.
+| Temps du film | Plan | Texte affiché |
+|---|---|---|
+| 0 → 3,2 s | le couloir aux arches | « Le Cabinet Pamojah », « Un espace confidentiel pour les femmes leaders multipotentielles. » |
+| 4 → 5,6 s | le couloir | le logo et « Bienvenue » |
+| 6,6 → 9,8 s | le salon | Bilan de soi |
+| 11,4 → 14,8 s | la table de réunion | Madame la CEO |
+| 16,4 → 19,8 s | le bureau exécutif | Leadership durable & Influence maîtrisée |
+| 21,6 s → fin | le bureau d'accueil | « Le point d'entrée de notre univers » : la Consultation d'Axe et ses deux boutons |
 
-**Deux montages**, choisis selon le format de l'écran (`MONTAGES` dans `FilmEntree.astro`) :
+Les deux formats racontent le même film (`CINQ_PLANS` dans `FilmEntree.astro`) :
 
-| Format | Contenu | Durée | Poids (léger → HD) |
-|---|---|---|---|
-| Téléphone 720 × 1280 | enfilade d'arches (0 → 15 s), fondu, bureau d'accueil (14 → 29 s) | 29,04 s | 3,1 Mo → 12 Mo |
-| Ordinateur 1280 × 720 | salon (0 → 15 s), fondu, bureau d'accueil (14 → 29 s) | 29,04 s | 5,1 Mo → 18 Mo |
+| Format | Poids (léger → HD) | Particularité |
+|---|---|---|
+| Téléphone 720 × 1280 | 3,1 Mo → 12 Mo | le bureau exécutif n'existe qu'en 16:9 : un lent travelling horizontal le parcourt, de la bibliothèque au salon privatif |
+| Ordinateur 1280 × 720 | 4,3 Mo → 15 Mo | le couloir n'existe qu'en vertical : il est recadré en 16:9 et agrandi (un peu moins net, sous le voile du texte) |
 
-Réglages par montage : `duree`, `rythme` (`[début, fin, poids]`, poids 3 = la caméra se pose) et `legendes` (`[apparition, disparition]` par légende nommée). La section du film mesure 700vh. Le reste du mécanisme est inchangé : version légère puis HD, compatibilité Safari et iPhone, flèche « Passer le film », mémorisation de la visite, affiche fixe sans JavaScript ou en mouvement réduit.
+Réglages : `duree`, `rythme` (`[début, fin, poids]`, poids 2,5 = la caméra se pose) et `legendes` (`[apparition, disparition]`, la clé d'un programme est son slug). La section du film mesure 900vh. Le décor étant très clair, le voile des deux premiers textes est à 0,58. Le reste du mécanisme est inchangé : version légère puis HD, compatibilité Safari et iPhone, flèche « Passer le film », mémorisation de la visite, affiche fixe sans JavaScript ou en mouvement réduit.
 
 ### Les clips sources et comment refabriquer le film
 
