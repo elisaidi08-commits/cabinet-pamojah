@@ -3,8 +3,8 @@
 // Le scroll pilote le temps de la vidéo. Trois temps, et le film ralentit à chacun pour laisser lire :
 // l'ouverture (où sommes-nous ?), « Bienvenue » avec le logo à l'arrivée, puis l'approche de l'ordinateur
 // du bureau d'accueil : la Consultation d'Axe, le point d'entrée de notre univers. Pas d'écran de clôture.
-// Deux montages : téléphone (vertical) = enfilade d'arches → bureau d'accueil ; ordinateur (16:9) =
-// bureau d'accueil seul, en attendant l'enfilade en 16:9 (il suffira alors de copier le montage téléphone).
+// Deux montages, même récit en deux plans : téléphone (vertical) = enfilade d'arches → bureau d'accueil ;
+// ordinateur (16:9) = salon → bureau d'accueil (l'enfilade d'arches n'a été tournée qu'en vertical).
 // Sans JavaScript ou avec le mouvement réduit : l'affiche et le texte d'ouverture.
 import Logo from './Logo.astro';
 import { consultationCarte } from '../data/services';
@@ -251,11 +251,11 @@ const f = accueil.film;
     // il faut plus de scroll pour la même durée (le temps de lire). legendes : [apparition, disparition].
     type Montage = { duree: number; rythme: [number, number, number][]; legendes: Record<string, [number, number]> };
     const MONTAGES: Record<'ordinateur' | 'telephone', Montage> = {
-      // Bureau d'accueil seul (15 s).
+      // Salon (0 → 15 s), fondu de 14 à 15 s, bureau d'accueil (14 → 29 s).
       ordinateur: {
-        duree: 15.04,
-        rythme: [[0, 3, 2], [3, 4, 1], [4, 7, 3], [7, 11.5, 1], [11.5, 99, 3]],
-        legendes: { ouverture: [-1, 3], bienvenue: [4, 7], consultation: [11.5, 99] },
+        duree: 29.04,
+        rythme: [[0, 3, 2], [3, 10.5, 0.8], [10.5, 13.5, 3], [13.5, 25.5, 0.8], [25.5, 99, 3]],
+        legendes: { ouverture: [-1, 3], bienvenue: [10.5, 13.5], consultation: [25.5, 99] },
       },
       // Enfilade d'arches (0 → 15 s), fondu de 14 à 15 s, bureau d'accueil (14 → 29 s).
       telephone: {
