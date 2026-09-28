@@ -37,8 +37,7 @@ export type Service = {
   transformation: string;
   image: ImageMetadata;     // l'image de la carte et du haut de page (décor actuel)
   alt: string;
-  // Vidéo d'ambiance du haut de page : la pièce s'anime en boucle derrière le titre.
-  // Le plan vertical manque pour le bureau exécutif : sur téléphone, la photo reste.
+  // Vidéo d'ambiance du haut de page : la pièce s'anime en boucle derrière le titre (16:9 et vertical).
   ambiance?: { large: string; vertical?: string };
   photo: { image: ImageMetadata; position: string };
   avis: Avis['accompagnement'];
@@ -71,7 +70,7 @@ export const services: Service[] = [
     ...texteDe(leadershipJson),
     image: bureauExecutif,
     alt: 'Le bureau exécutif de l’hôtel particulier : une bibliothèque sombre, un bureau massif et un petit salon privatif.',
-    ambiance: { large: '/film/ambiance-executif.mp4' },
+    ambiance: { large: '/film/ambiance-executif.mp4', vertical: '/film/ambiance-executif-tel.mp4' },
     photo: { image: tailleur, position: '50% 20%' },
     avis: 'leadership-durable',
   },

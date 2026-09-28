@@ -75,10 +75,12 @@ Le film de la villa est remplacé par un film tourné dans un **hôtel particuli
 
 Les deux formats racontent le même film (`CINQ_PLANS` dans `FilmEntree.astro`) :
 
-| Format | Poids (léger → HD) | Particularité |
-|---|---|---|
-| Téléphone 720 × 1280 | 3,1 Mo → 12 Mo | le bureau exécutif n'existe qu'en 16:9 : un lent travelling horizontal le parcourt, de la bibliothèque au salon privatif |
-| Ordinateur 1280 × 720 | 4,3 Mo → 15 Mo | le couloir n'existe qu'en vertical : il est recadré en 16:9 et agrandi (un peu moins net, sous le voile du texte) |
+| Format | Poids (léger → HD) |
+|---|---|
+| Téléphone 720 × 1280 | 3,0 Mo → 12 Mo |
+| Ordinateur 1280 × 720 | 4,6 Mo → 16 Mo |
+
+Depuis le 28/09 au soir, **chaque plan est tourné dans son format** : le couloir en 16:9 (clip 10) et le bureau exécutif en vertical (clip 8) ont été ajoutés. Plus aucun recadrage ni travelling de substitution.
 
 Les adresses des vidéos et des affiches portent l'empreinte du fichier (`src/data/fichiers.ts`) : quand un film est remplacé, les visiteuses déjà venues le voient tout de suite, sans attendre l'expiration du cache d'un jour.
 
@@ -86,27 +88,36 @@ Réglages : `duree`, `rythme` (`[début, fin, poids]`, poids 2,5 = la caméra se
 
 ### Les clips sources et comment refabriquer le film
 
-Les 8 clips sont dans `03_ASSETS_VISUELS/deco intérieur news assets /news home /` (attention aux espaces en fin de nom de dossier), tous en 15,04 s à 24 i/s : `(1)` bureau d'accueil 16:9 · `(7)` enfilade d'arches 9:16 · `(5)` bureau d'accueil 9:16 · sans numéro salon 16:9 · `(4)` salon 9:16 · `(2)` table de réunion 16:9 · `(6)` table de réunion 9:16 · `(3)` bureau exécutif 16:9.
+Les 11 clips sont dans `03_ASSETS_VISUELS/deco intérieur news assets /news home /` (attention aux espaces en fin de nom de dossier), tous en 15,04 s à 24 i/s :
 
-L'enfilade d'arches n'a été tournée qu'en vertical : le film ordinateur s'ouvre donc sur le **salon**. Pour changer de plan d'ouverture, il suffit de remplacer la première source dans la commande ci-dessous.
+| Pièce | 16:9 | 9:16 |
+|---|---|---|
+| couloir aux arches | `(10)` | `(7)` |
+| salon | sans numéro | `(4)` |
+| table de réunion | `(2)` | `(6)` |
+| bureau exécutif | `(3)` | `(8)` (= `(9)`, fichiers identiques) |
+| bureau d'accueil | `(1)` | `(5)` |
 
 ```bash
 SRC="<dossier des clips>/grok-video-05c7789a-d340-4b6a-8158-25c7964796c6"
 X=(-c:v libx264 -preset slow -pix_fmt yuv420p -g 6 -keyint_min 6 -sc_threshold 0 -bf 0 -movflags +faststart -an)
 
-# Ordinateur : salon puis bureau d'accueil, fondu d'une seconde à 14 s
-ffmpeg -y -i "$SRC.mp4" -i "$SRC (1).mp4" -filter_complex \
- "[0:v]settb=AVTB,fps=24,format=yuv420p[a];[1:v]settb=AVTB,fps=24,format=yuv420p[b];[a][b]xfade=transition=fade:duration=1:offset=14,setsar=1[v]" \
- -map "[v]" -c:v libx264 -crf 12 -preset slow -an master-ordinateur.mp4
+# 1. Un segment de 6 s par pièce (ordinateur : 10, salon, 2, 3, 1 · téléphone : 7, 4, 6, 8, 5)
+#    Le bureau d'accueil est pris à la fin du clip (-ss 9), quand la caméra est près de l'ordinateur.
+ffmpeg -y -ss 0 -t 6 -i "$SRC (10).mp4" -vf "fps=24,scale=1280:720,setsar=1" -c:v libx264 -crf 12 -preset fast -an seg/o1.mp4
+# … idem pour les quatre autres plans, puis les cinq plans verticaux en scale=720:1280
+
+# 2. Le montage : quatre fondus d'une seconde, soit 26 s
+F="[0:v]settb=AVTB[a0];[1:v]settb=AVTB[a1];[2:v]settb=AVTB[a2];[3:v]settb=AVTB[a3];[4:v]settb=AVTB[a4];\
+[a0][a1]xfade=transition=fade:duration=1:offset=5[x1];[x1][a2]xfade=transition=fade:duration=1:offset=10[x2];\
+[x2][a3]xfade=transition=fade:duration=1:offset=15[x3];[x3][a4]xfade=transition=fade:duration=1:offset=20,setsar=1[v]"
+ffmpeg -y -i seg/o1.mp4 -i seg/o2.mp4 -i seg/o3.mp4 -i seg/o4.mp4 -i seg/o5.mp4 -filter_complex "$F" -map "[v]" -c:v libx264 -crf 12 -preset slow -an master-ordinateur.mp4
+
+# 3. Les fichiers du site
 ffmpeg -y -i master-ordinateur.mp4 "${X[@]}" -crf 22 public/film/film-ordinateur.mp4
 ffmpeg -y -i master-ordinateur.mp4 -vf scale=960:540 "${X[@]}" -crf 27 public/film/film-ordinateur-leger.mp4
 ffmpeg -y -i master-ordinateur.mp4 -frames:v 1 -q:v 3 public/film/affiche-ordinateur.jpg
-
-# Téléphone : enfilade (7) puis bureau (5), même fondu
-ffmpeg -y -i "$SRC (7).mp4" -i "$SRC (5).mp4" -filter_complex "…même filtre…" -map "[v]" -c:v libx264 -crf 12 -preset slow -an master-telephone.mp4
-ffmpeg -y -i master-telephone.mp4 "${X[@]}" -crf 24 public/film/film-telephone.mp4
-ffmpeg -y -i master-telephone.mp4 -vf scale=406:720 "${X[@]}" -crf 26 public/film/film-telephone-leger.mp4
-ffmpeg -y -i master-telephone.mp4 -frames:v 1 -q:v 3 public/film/affiche-telephone.jpg
+# téléphone : mêmes commandes sur master-telephone.mp4, en crf 24 et scale=406:720
 ```
 
 Les deux montages partagent désormais les mêmes réglages dans `MONTAGES` (29,04 s, mêmes rythme et légendes). Viser moins de 20 Mo par version HD : au-delà, monter le `crf` de 2. En zsh, écrire les options communes dans un tableau (`X=(…)` puis `"${X[@]}"`) — une variable simple n'est pas découpée en mots.
@@ -122,7 +133,7 @@ Tout le site est passé dans l'hôtel particulier : les photos sont extraites de
 | `hp-table-reunion` | Madame la CEO · haut de la page Le Cabinet |
 | `hp-bureau-executif` | Leadership durable & Influence maîtrisée |
 | `hp-bureau-plan-serre` | l'accueil, à côté de la Consultation d'Axe |
-| `hp-enfilade` | ouverture de la page Accompagnements · bandeaux « toutes les portes s'ouvrent » (accueil, Le Cabinet) — recadrage 16:9 du plan vertical |
+| `hp-enfilade` | ouverture de la page Accompagnements · bandeaux « toutes les portes s'ouvrent » (accueil, Le Cabinet) |
 
 Vérifié : aucune page n'affiche deux fois la même image. Les photos viennent de vidéos en 1280 × 720 ; sur un très grand écran, les bandeaux pleine largeur sont donc un peu moins nets que les anciennes images (2752 px). À remplacer si des images haute définition du même appartement sont générées.
 
@@ -134,7 +145,7 @@ Le haut de chaque page programme montre sa pièce en mouvement : la photo s'affi
 |---|---|---|---|
 | Bilan de soi | le salon | `ambiance-salon.mp4` · 3,8 Mo | `ambiance-salon-tel.mp4` · 2,3 Mo |
 | Madame la CEO | la table de réunion | `ambiance-reunion.mp4` · 3,5 Mo | `ambiance-reunion-tel.mp4` · 1,5 Mo |
-| Leadership durable | le bureau exécutif | `ambiance-executif.mp4` · 3,9 Mo | la photo (plan vertical à tourner) |
+| Leadership durable | le bureau exécutif | `ambiance-executif.mp4` · 3,9 Mo | `ambiance-executif-tel.mp4` · 1,7 Mo |
 
 Chaque boucle est le plan joué puis rembobiné (30 s) : le raccord ne saute pas. Pour en refabriquer une :
 
