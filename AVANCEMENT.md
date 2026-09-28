@@ -60,6 +60,37 @@ Elles remplacent les décisions du 18/09/2026 et priment en cas de conflit avec 
 - **Pages préchargées au survol** des liens, **fondu enchaîné de 450 ms** entre les pages (Chrome, Edge, Safari récents), défilement doux vers les ancres, polices préchargées. Tout est désactivé si la visiteuse demande moins d'animations.
 - **Données structurées** (schema.org) : fiche du Cabinet sur toutes les pages, questions fréquentes sur l'accueil et la page Consultation.
 
+## Conformité et sécurité (28/09/2026)
+
+Passage de la liste « ce qu'il nous faut absolument », point par point.
+
+| Point | État |
+|---|---|
+| Page RGPD / confidentialité | Complétée : bases légales, destinataires, transferts hors UE, absence de profilage, sécurité, droits (dont directives post-mortem) et délai de réponse, date de mise à jour |
+| CGU | Nouvelle page `/conditions-generales/`, distincte des conditions de la Consultation (qui régissent la prestation) |
+| API hors du navigateur | Aucun secret dans le code livré ; le site est statique, les seules clés (Keystatic) sont des variables d'environnement côté serveur |
+| HTTPS forcé | Redirection 308 depuis http, HSTS deux ans avec `includeSubDomains; preload` |
+| Bandeau cookies | Conforme CNIL : refus par défaut, refus aussi simple que l'acceptation, choix conservé 6 mois, modifiable depuis le pied de page |
+| Titres et descriptions | Uniques sur les 18 pages, descriptions ≤ 160 signes |
+| Image réseaux sociaux | `partage.jpg` 1200 × 630 (le couloir et le logo), avec dimensions et texte alternatif déclarés |
+| Favicon | SVG + icônes 180/192/512 px et manifeste web (écran d'accueil des téléphones) |
+| Sitemap et robots.txt | 13 pages au plan du site ; robots ouvert, `noindex` sur chaque page jusqu'au lancement |
+| Textes des images | Toutes les images décoratives en `alt=""`, les autres décrites ; 0 violation axe |
+| Compression des images | AVIF et WebP générés par Astro, JPEG en secours |
+| Vitesse | 130 à 408 Ko par page, affichage en moins de 0,16 s en local ; le film ne charge sa version HD que si la visiteuse le fait défiler |
+| Contrastes | 0 violation axe sur 15 pages ; voile renforcé sous les textes du film |
+| Responsive | Vérifié de 320 à 1920 px, en portrait et en paysage |
+| Page 404 | Page personnalisée « Cette porte n'existe pas », servie avec le vrai statut 404 |
+| Liens cassés | 17 liens internes vérifiés, aucun cassé |
+| Validation de formulaire | Aucun formulaire sur le site : la réservation et le paiement se font dans Calendly |
+| Anti-spam | Pas de formulaire donc pas de spam ; l'adresse email reste un lien `mailto:` volontairement lisible |
+| Outil analytique | Vercel Analytics câblé et conditionné au consentement — **reste à activer dans le tableau de bord Vercel** |
+| CTA clairs | « Réserver ma Consultation d'Axe » partout ; les libellés courts portent un intitulé complet pour les lecteurs d'écran |
+
+En-têtes de sécurité (`vercel.json`) : politique de sécurité de contenu (scripts, images, polices et vidéos limités au site ; iframes limités à Calendly et Stripe), HSTS, `nosniff`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`. L'espace d'administration est exclu de la CSP pour ne pas gêner Keystatic.
+
+Dépendances : `npm audit` à **0 vulnérabilité** (la faille `path-to-regexp` est corrigée par une surcharge dans `package.json`), versions figées par `package-lock.json`.
+
 ## Film d'entrée : l'hôtel particulier (28/09/2026)
 
 Le film de la villa est remplacé par un film tourné dans un **hôtel particulier parisien**. On part du couloir aux arches, chaque pièce présente ensuite un accompagnement, et l'on finit sur le bureau d'accueil (souhait d'Huguette, 28/09/2026). **Cinq plans de six secondes**, fondus d'une seconde, 26 s en tout ; le film ralentit à chaque texte pour laisser lire.
