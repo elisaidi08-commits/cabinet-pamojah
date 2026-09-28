@@ -1,0 +1,87 @@
+---
+// Conditions générales d'utilisation du site (distinctes des conditions de la Consultation, qui régissent la prestation).
+// À faire relire par un juriste avant le lancement officiel.
+import PageTexte from '../layouts/PageTexte.astro';
+import { site } from '../data/site';
+---
+<PageTexte
+  title="Conditions générales d’utilisation"
+  description="Les règles d’utilisation du site du Cabinet Pamojah : accès, propriété intellectuelle, responsabilité, droit applicable."
+  surtitre="Le cadre du site"
+  noindex
+>
+  <p>
+    Ces conditions régissent l’utilisation du site {site.name}. En le consultant, vous en acceptez les termes.
+    La prestation elle-même est encadrée par les <a href="/conditions-consultation/">conditions de la Consultation d’Axe</a>.
+  </p>
+
+  <h2>Éditeur et hébergeur</h2>
+  <p>
+    L’éditeur du site et son hébergeur sont identifiés dans les <a href="/mentions-legales/">mentions légales</a>.
+    Pour toute question sur le site : <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+
+  <h2>Accès au site</h2>
+  <p>
+    Le site est accessible gratuitement, sans création de compte. Le Cabinet s’efforce de le maintenir disponible sans interruption,
+    sans pouvoir le garantir : maintenance, panne d’un prestataire ou cas de force majeure peuvent le rendre temporairement indisponible,
+    sans ouvrir droit à indemnité.
+  </p>
+
+  <h2>Contenus du site</h2>
+  <p>
+    Les textes, images, vidéos, le logo et la charte graphique sont protégés par le droit d’auteur. Ils appartiennent au Cabinet Pamojah
+    ou sont utilisés avec l’autorisation de leurs titulaires. Toute reproduction, représentation, adaptation ou extraction, totale ou
+    partielle, sans autorisation écrite préalable, est interdite. La citation d’un extrait reste possible si la source et l’auteure sont
+    clairement mentionnées.
+  </p>
+
+  <h2>Utilisation attendue</h2>
+  <p>Vous vous engagez à ne pas :</p>
+  <ul>
+    <li>extraire ou réutiliser le contenu de façon systématique, y compris par des moyens automatisés ;</li>
+    <li>tenter d’accéder à des parties non publiques du site, de le perturber ou d’en éprouver la sécurité sans autorisation ;</li>
+    <li>utiliser le site à des fins illicites, trompeuses ou portant atteinte aux droits d’un tiers.</li>
+  </ul>
+
+  <h2>Nature des contenus</h2>
+  <p>
+    Les contenus publiés — pages, articles, descriptions des accompagnements — sont proposés à titre informatif. Ils ne constituent ni un
+    avis médical, ni un avis psychologique, ni un conseil juridique ou financier. {site.name} ne se substitue pas à des soins médicaux,
+    psychologiques ou psychiatriques : lorsque la situation le nécessite, une orientation vers un professionnel compétent est recommandée.
+  </p>
+
+  <h2>Liens et services externes</h2>
+  <p>
+    Le site renvoie vers des services tiers, notamment le calendrier de réservation Calendly, le paiement Stripe et le compte Instagram du
+    Cabinet. Ces services appliquent leurs propres conditions et politiques de confidentialité ; le Cabinet n’a pas la maîtrise de leurs
+    contenus ni de leur disponibilité.
+  </p>
+
+  <h2>Données personnelles et cookies</h2>
+  <p>
+    Le traitement de vos données et l’usage des cookies sont décrits dans la
+    <a href="/confidentialite/"> politique de confidentialité</a>. Votre choix en matière de cookies est modifiable à tout moment depuis le
+    pied de page.
+  </p>
+
+  <h2>Responsabilité</h2>
+  <p>
+    Le Cabinet apporte le plus grand soin aux informations publiées, sans garantir qu’elles soient exemptes d’erreur ni parfaitement à jour.
+    Sa responsabilité ne saurait être engagée pour un dommage indirect résultant de l’utilisation du site, d’une indisponibilité, ou d’un
+    contenu publié par un service tiers.
+  </p>
+
+  <h2>Modification des conditions</h2>
+  <p>
+    Ces conditions peuvent être modifiées à tout moment ; la version applicable est celle publiée sur cette page. Elles ont été revues le{' '}
+    <time datetime="2026-09-28">28 septembre 2026</time>.
+  </p>
+
+  <h2>Droit applicable</h2>
+  <p>
+    Ces conditions sont soumises au droit français. En cas de différend, une solution amiable sera recherchée avant toute action
+    judiciaire. À défaut d’accord, les tribunaux français sont compétents, sous réserve des règles protectrices applicables aux
+    consommatrices et consommateurs.
+  </p>
+</PageTexte>

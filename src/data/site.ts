@@ -33,6 +33,7 @@ export const legal = [
   { href: '/mentions-legales/', label: 'Mentions légales' },
   { href: '/confidentialite/', label: 'Confidentialité et cookies' },
   { href: '/conditions-consultation/', label: 'Conditions de la Consultation' },
+  { href: '/conditions-generales/', label: 'Conditions d’utilisation' },
 ];
 
 export const disclaimer = reglages.avertissement;

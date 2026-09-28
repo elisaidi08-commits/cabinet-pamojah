@@ -1,0 +1,15 @@
+{
+  "name": "Le Cabinet Pamojah",
+  "short_name": "Pamojah",
+  "description": "Clinique du leadership multi-talents pour les femmes leaders africaines et afro-descendantes.",
+  "lang": "fr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D0D0D",
+  "theme_color": "#0D0D0D",
+  "icons": [
+    { "src": "/icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icone-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
