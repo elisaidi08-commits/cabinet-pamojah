@@ -73,25 +73,36 @@ Le film de la villa (arrêts lampe, ordinateur, livre) est remplacé par un film
 | Format | Contenu | Durée | Poids (léger → HD) |
 |---|---|---|---|
 | Téléphone 720 × 1280 | enfilade d'arches (0 → 15 s), fondu, bureau d'accueil (14 → 29 s) | 29,04 s | 3,1 Mo → 12 Mo |
-| Ordinateur 1280 × 720 | bureau d'accueil seul, en attendant l'enfilade en 16:9 | 15,04 s | 2,5 Mo → 11 Mo |
+| Ordinateur 1280 × 720 | salon (0 → 15 s), fondu, bureau d'accueil (14 → 29 s) | 29,04 s | 5,1 Mo → 18 Mo |
 
 Réglages par montage : `duree`, `rythme` (`[début, fin, poids]`, poids 3 = la caméra se pose) et `legendes` (`[apparition, disparition]` par légende nommée). La section du film mesure 700vh. Le reste du mécanisme est inchangé : version légère puis HD, compatibilité Safari et iPhone, flèche « Passer le film », mémorisation de la visite, affiche fixe sans JavaScript ou en mouvement réduit.
 
-### Quand l'enfilade en 16:9 arrivera
+### Les clips sources et comment refabriquer le film
 
-Sources attendues : `enfilade-16x9.mp4` et `bureau-16x9.mp4`, 15 s chacune.
+Les 8 clips sont dans `03_ASSETS_VISUELS/deco intérieur news assets /news home /` (attention aux espaces en fin de nom de dossier), tous en 15,04 s à 24 i/s : `(1)` bureau d'accueil 16:9 · `(7)` enfilade d'arches 9:16 · `(5)` bureau d'accueil 9:16 · sans numéro salon 16:9 · `(4)` salon 9:16 · `(2)` table de réunion 16:9 · `(6)` table de réunion 9:16 · `(3)` bureau exécutif 16:9.
+
+L'enfilade d'arches n'a été tournée qu'en vertical : le film ordinateur s'ouvre donc sur le **salon**. Pour changer de plan d'ouverture, il suffit de remplacer la première source dans la commande ci-dessous.
 
 ```bash
-X="-c:v libx264 -preset slow -pix_fmt yuv420p -g 6 -keyint_min 6 -sc_threshold 0 -bf 0 -movflags +faststart -an"
-ffmpeg -i enfilade-16x9.mp4 -i bureau-16x9.mp4 -filter_complex \
+SRC="<dossier des clips>/grok-video-05c7789a-d340-4b6a-8158-25c7964796c6"
+X=(-c:v libx264 -preset slow -pix_fmt yuv420p -g 6 -keyint_min 6 -sc_threshold 0 -bf 0 -movflags +faststart -an)
+
+# Ordinateur : salon puis bureau d'accueil, fondu d'une seconde à 14 s
+ffmpeg -y -i "$SRC.mp4" -i "$SRC (1).mp4" -filter_complex \
  "[0:v]settb=AVTB,fps=24,format=yuv420p[a];[1:v]settb=AVTB,fps=24,format=yuv420p[b];[a][b]xfade=transition=fade:duration=1:offset=14,setsar=1[v]" \
  -map "[v]" -c:v libx264 -crf 12 -preset slow -an master-ordinateur.mp4
-ffmpeg -i master-ordinateur.mp4 $X -crf 19 public/film/film-ordinateur.mp4
-ffmpeg -i master-ordinateur.mp4 -vf scale=960:540 $X -crf 26 public/film/film-ordinateur-leger.mp4
-ffmpeg -i master-ordinateur.mp4 -frames:v 1 -q:v 3 public/film/affiche-ordinateur.jpg
+ffmpeg -y -i master-ordinateur.mp4 "${X[@]}" -crf 22 public/film/film-ordinateur.mp4
+ffmpeg -y -i master-ordinateur.mp4 -vf scale=960:540 "${X[@]}" -crf 27 public/film/film-ordinateur-leger.mp4
+ffmpeg -y -i master-ordinateur.mp4 -frames:v 1 -q:v 3 public/film/affiche-ordinateur.jpg
+
+# Téléphone : enfilade (7) puis bureau (5), même fondu
+ffmpeg -y -i "$SRC (7).mp4" -i "$SRC (5).mp4" -filter_complex "…même filtre…" -map "[v]" -c:v libx264 -crf 12 -preset slow -an master-telephone.mp4
+ffmpeg -y -i master-telephone.mp4 "${X[@]}" -crf 24 public/film/film-telephone.mp4
+ffmpeg -y -i master-telephone.mp4 -vf scale=406:720 "${X[@]}" -crf 26 public/film/film-telephone-leger.mp4
+ffmpeg -y -i master-telephone.mp4 -frames:v 1 -q:v 3 public/film/affiche-telephone.jpg
 ```
 
-Ensuite, dans `MONTAGES`, copier le montage `telephone` dans `ordinateur` (mêmes durées, rythme et légendes).
+Les deux montages partagent désormais les mêmes réglages dans `MONTAGES` (29,04 s, mêmes rythme et légendes). Viser moins de 20 Mo par version HD : au-delà, monter le `crf` de 2. En zsh, écrire les options communes dans un tableau (`X=(…)` puis `"${X[@]}"`) — une variable simple n'est pas découpée en mots.
 
 ## Retours de la cliente (28/09/2026) — ce qui est fait
 
