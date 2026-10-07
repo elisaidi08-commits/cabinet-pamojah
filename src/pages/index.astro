@@ -14,7 +14,6 @@ import Cercles from '../components/Cercles.astro';
 import { faqAccueil } from '../data/faq';
 import { avis } from '../data/avis';
 import { site, disclaimer, citer } from '../data/site';
-import assise from '../assets/images/portraits/portrait-assise.jpg';
 import huguette from '../assets/images/portraits/huguette.jpg';
 import cabinet from '../assets/images/cabinet/hp-bureau-plan-serre.jpg';
 import villa from '../assets/images/cabinet/hp-enfilade.jpg';
@@ -62,7 +61,7 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
         <p class="espace-s apparait">{a.vestibule.texteSuite}</p>
       </div>
       <Photo
-        src={assise}
+        src={huguette}
         alt=""
         widths={[480, 720, 960]}
         sizes="(max-width: 900px) 100vw, 38vw"
@@ -157,13 +156,6 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
       <div>
         <Titre surtitre="L’architecte" id="architecte-titre">Huguette Tolo-Tolo Ngemeyeme</Titre>
         <p class="devise espace-s">Architecte de souveraineté · Fondatrice du Cabinet Pamojah</p>
-        <Photo
-          src={huguette}
-          alt="Portrait d’Huguette Tolo-Tolo Ngemeyeme, fondatrice du Cabinet Pamojah."
-          widths={[360, 540, 720]}
-          sizes="(max-width: 900px) 100vw, 34vw"
-          class="architecte__portrait"
-        />
       </div>
       <div class="architecte__texte">
         <blockquote class="architecte__citation apparait">
@@ -381,7 +373,6 @@ const axeFin = coupe > 0 ? a.services.axe.slice(coupe + 3) : '';
     gap: var(--e-8);
     align-items: start;
   }
-  :global(.architecte__portrait) { width: 100%; max-width: 26rem; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 25%; margin-top: var(--e-7); }
   .architecte__linkedin { margin-left: var(--e-6); }
   .architecte__citation { margin: 0; }
   .architecte__citation p { font-size: clamp(26px, 1.4vw + 19px, 36px); font-style: italic; line-height: 1.3; }
