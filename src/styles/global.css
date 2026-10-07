@@ -36,7 +36,7 @@
   --courbe: cubic-bezier(0.2, 0, 0.3, 1);
   --geste: 200ms;
   --etat: 450ms;
-  --recit: 1000ms;
+  --recit: 600ms;
 
   --entete: 72px;
 }
@@ -275,11 +275,11 @@ a { color: inherit; }
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
 
-  /* Changement de page : fondu enchaîné de 450 ms (navigateurs compatibles ; les autres changent de page normalement). */
+  /* Changement de page : fondu enchaîné court, 200 ms (navigateurs compatibles ; les autres changent de page normalement). */
   @view-transition { navigation: auto; }
   ::view-transition-old(root),
   ::view-transition-new(root) {
-    animation-duration: var(--etat);
+    animation-duration: var(--geste);
     animation-timing-function: var(--courbe);
   }
 }
@@ -289,9 +289,10 @@ a { color: inherit; }
 @media (prefers-reduced-motion: no-preference) {
   .js .apparait {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(10px);
     transition: opacity var(--recit) var(--courbe), transform var(--recit) var(--courbe);
-    transition-delay: var(--delai, 0ms);
+    /* Le décalage entre éléments d'une liste est réduit de moitié : le texte arrive sans se faire attendre. */
+    transition-delay: calc(var(--delai, 0ms) / 2);
   }
   .js .apparait.est-visible { opacity: 1; transform: none; }
 }

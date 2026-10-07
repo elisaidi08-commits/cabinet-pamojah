@@ -239,6 +239,7 @@ Nouveau décor du film, un seul arrêt sur l'ordinateur pour présenter la Consu
 - **Sa vidéo** en haut de la page L'architecte (`public/film/huguette.mp4`, verticale, sous-titrée) : en boucle sans le son, bouton « Activer le son ».
 - **Lien LinkedIn** vers son profil sur ces deux emplacements (réglage `linkedin`, modifiable dans « Coordonnées et réglages »).
 - **Photo assise** retirée du site à sa demande.
+- **Fluidité** : apparitions des textes plus rapides (600 ms au lieu de 1 s, déclenchées dès l'entrée dans l'écran, décalages divisés par deux) ; fondu entre les pages de 200 ms au lieu de 450 ms ; préchargement des pages des liens visibles (le survol n'existe pas sur téléphone) ; le film d'entrée suit le scroll de plus près.
 
 ## Audit complet du site (18/09/2026, soir)
 

@@ -312,7 +312,7 @@ const SOURCES = {
 
     // Les adresses des vidéos (avec l'empreinte du fichier) sont posées par le gabarit.
     const SOURCES = JSON.parse(film.dataset.sources!) as Record<'ordinateur' | 'telephone', { leger: string; hd: string }>;
-    const LISSAGE = 0.14;  // part de l'écart rattrapée à chaque image
+    const LISSAGE = 0.2;   // part de l'écart rattrapée à chaque image
     const FONDU = 0.3;     // durée des fondus des textes, en secondes de film
 
     const sources = telephone ? SOURCES.telephone : SOURCES.ordinateur;

@@ -110,7 +110,7 @@ const hasBefore = Astro.slots.has('avant-entete');
     <Footer />
 
     <script>
-      // Apparitions calmes du récit : une seule fois, à l'entrée dans l'écran.
+      // Apparitions du récit : une seule fois, dès que l'élément entre dans l'écran.
       const elements = document.querySelectorAll('.apparait');
       if ('IntersectionObserver' in window && elements.length) {
         const observer = new IntersectionObserver(
@@ -122,7 +122,7 @@ const hasBefore = Astro.slots.has('avant-entete');
               }
             });
           },
-          { rootMargin: '0px 0px -10% 0px' },
+          { rootMargin: '0px 0px 5% 0px' },
         );
         elements.forEach((el) => observer.observe(el));
       } else {

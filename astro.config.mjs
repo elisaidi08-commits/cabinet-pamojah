@@ -14,8 +14,9 @@ export default defineConfig({
   site: adresse,
   trailingSlash: 'ignore',
   build: { format: 'directory' },
-  // Navigation fluide : les pages se préchargent dès que le pointeur survole un lien.
-  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
+  // Navigation fluide : les pages des liens visibles à l'écran se préchargent en arrière-plan
+  // (le survol n'existe pas sur téléphone) ; rien n'est préchargé en économie de données ou connexion lente.
+  prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
   integrations: [react(), keystatic(), typographie()],
   adapter: vercel({ webAnalytics: { enabled: false } }),
 });
