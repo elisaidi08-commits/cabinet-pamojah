@@ -11,6 +11,7 @@ export const site = {
   email: reglages.email,
   instagram: reglages.instagram,
   instagramHandle: reglages.instagramHandle,
+  linkedin: reglages.linkedin,
   calendly: reglages.calendly,
   // Aucun prix n'est affiché sur le site (décision de Sady, 18/09/2026).
   consultation: {

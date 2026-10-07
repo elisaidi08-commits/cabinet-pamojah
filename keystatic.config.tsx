@@ -308,6 +308,7 @@ export default config({
         }),
         instagram: fields.url({ label: 'Lien Instagram' }),
         instagramHandle: ligne('Nom du compte Instagram', 'ex. @lecabinetpamojah'),
+        linkedin: fields.url({ label: 'LinkedIn d’Huguette' }),
         calendly: fields.url({ label: 'Lien de réservation Calendly', validation: { isRequired: true } }),
         signature: ligne('Signature', 'ex. « Confidentialité · Discernement · Exigence »'),
         avertissement: texte('Mention « non médical » (pied de page)'),

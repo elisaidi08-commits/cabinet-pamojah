@@ -34,7 +34,7 @@ const organisation = {
   logo: new URL('/favicon.svg', Astro.site).href,
   image: new URL('/partage.jpg', Astro.site).href,
   email: site.email,
-  founder: { '@type': 'Person', name: 'Huguette Tolo-Tolo Ngemeyeme', jobTitle: 'Architecte de souveraineté' },
+  founder: { '@type': 'Person', name: 'Huguette Tolo-Tolo Ngemeyeme', jobTitle: 'Architecte de souveraineté', ...(site.linkedin && { sameAs: [site.linkedin] }) },
   sameAs: [site.instagram],
   // La Consultation d'Axe et les trois programmes (aucun prix n'est publié).
   hasOfferCatalog: {

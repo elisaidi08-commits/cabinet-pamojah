@@ -28,6 +28,7 @@ const portrait = (h.portrait ? deposes[h.portrait]?.default : undefined) ?? Obje
         <h1>Huguette Tolo-Tolo Ngemeyeme</h1>
         <p class="devise espace-s">Architecte de souveraineté · Fondatrice du Cabinet Pamojah</p>
         <p class="chapo espace">{h.presentation}</p>
+        {site.linkedin && <a class="lien espace" href={site.linkedin} rel="noopener">Son profil LinkedIn</a>}
       </div>
       {portrait
         ? <Photo src={portrait} alt="Portrait d’Huguette Tolo-Tolo Ngemeyeme, fondatrice du Cabinet Pamojah." widths={[360, 540, 720]} sizes="(max-width: 900px) 80vw, 25vw" class="tete__portrait" loading="eager" />
