@@ -233,6 +233,12 @@ Branche `retours-huguette-2809`, un commit par bloc. Construction sans erreur, 0
 
 Nouveau décor du film, un seul arrêt sur l'ordinateur pour présenter la Consultation d'Axe comme le point d'entrée de l'univers, suppression des arrêts lampe et livre.
 
+## Retours d'Huguette (07/10/2026)
+
+- **Son portrait** ajouté à la page L'architecte (à la place du Pilier) et à la section L'architecte de l'accueil (`portraits/huguette.jpg`).
+- **Lien LinkedIn** vers son profil sur ces deux emplacements (réglage `linkedin`, modifiable dans « Coordonnées et réglages »).
+- **Photo assise** du Vestibule recadrée : le support sous ses pieds n'apparaît plus.
+
 ## Audit complet du site (18/09/2026, soir)
 
 Relecture du code, des textes et tests dans Brave et Safari iPhone (6 largeurs d'écran, clavier, sans JavaScript, mouvement réduit, connexion lente). Corrigé :
