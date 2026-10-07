@@ -173,7 +173,7 @@ export default config({
       schema: {
         portrait: fields.image({
           label: 'Portrait',
-          description: 'Vrai portrait d’Huguette (format vertical). Tant qu’il est vide, le Pilier du logo s’affiche à la place.',
+          description: 'Vrai portrait d’Huguette (format vertical). Pas affiché pour l’instant : sa vidéo occupe le haut de la page.',
           directory: 'src/assets/images/huguette',
           publicPath: '/src/assets/images/huguette/',
         }),

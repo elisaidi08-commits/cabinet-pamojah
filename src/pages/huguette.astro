@@ -1,23 +1,16 @@
 ---
 // L'architecte. Texte de la fondatrice (brief p.1–2), écrit à la 3e personne (décision du 28/09/2026),
-// modifiable dans l'administration
-// (« L'architecte (Huguette) » → src/contenu/huguette.json), portrait compris.
+// modifiable dans l'administration (« L'architecte (Huguette) » → src/contenu/huguette.json).
 // Non publiés en attendant sa validation : le rôle en église, la formation de décoratrice, les autres entreprises.
-// Tant qu'aucun portrait n'est déposé, le Pilier du logo s'affiche : aucune photo de banque d'images ne la représente.
+// En haut de page : sa vidéo (public/film/huguette.mp4, verticale, sous-titrée), sans le son tant qu'elle ne l'active pas.
 import Photo from '../components/Photo.astro';
 import Base from '../layouts/Base.astro';
 import Titre from '../components/Titre.astro';
-import Logo from '../components/Logo.astro';
 import villa from '../assets/images/cabinet/hp-salon.jpg';
 import h from '../contenu/huguette.json';
 import accueil from '../contenu/accueil.json';
 import { site, citer } from '../data/site';
-
-// Le portrait : celui déposé dans l'administration (src/assets/images/huguette/), sinon la photo fournie par Sady
-// (src/assets/images/portraits/huguette.jpg). Tant qu'aucun des deux n'existe, le Pilier du logo s'affiche.
-const deposes = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/huguette/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}', { eager: true });
-const fournis = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/portraits/huguette.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG}', { eager: true });
-const portrait = (h.portrait ? deposes[h.portrait]?.default : undefined) ?? Object.values(fournis)[0]?.default;
+import { empreinte } from '../data/fichiers';
 
 ---
 <Base title="Huguette Tolo-Tolo Ngemeyeme" description="Huguette Tolo-Tolo Ngemeyeme, architecte de souveraineté et fondatrice du Cabinet Pamojah : infirmière pendant 17 ans, multi-entrepreneure.">
@@ -30,9 +23,15 @@ const portrait = (h.portrait ? deposes[h.portrait]?.default : undefined) ?? Obje
         <p class="chapo espace">{h.presentation}</p>
         {site.linkedin && <a class="lien espace" href={site.linkedin} rel="noopener">Son profil LinkedIn</a>}
       </div>
-      {portrait
-        ? <Photo src={portrait} alt="Portrait d’Huguette Tolo-Tolo Ngemeyeme, fondatrice du Cabinet Pamojah." widths={[360, 540, 720]} sizes="(max-width: 900px) 80vw, 25vw" class="tete__portrait" loading="eager" />
-        : <Logo variant="pilier" decorative class="tete__pilier" />}
+      <figure class="tete__video">
+        <video
+          src={empreinte('/film/huguette.mp4')}
+          poster={empreinte('/film/affiche-huguette.jpg')}
+          muted loop playsinline preload="metadata"
+          aria-label="Huguette Tolo-Tolo Ngemeyeme : « C’est parce que j’ai cru que j’avais échoué que j’ai trouvé ma voie ! »"
+        ></video>
+        <button type="button" class="tete__son" aria-pressed="false">Activer le son</button>
+      </figure>
     </div>
   </section>
 
@@ -94,8 +93,15 @@ const portrait = (h.portrait ? deposes[h.portrait]?.default : undefined) ?? Obje
   }
   .tete h1 { margin-top: var(--e-4); max-width: 14ch; }
   .tete .chapo { max-width: 40rem; }
-  .tete :global(.tete__pilier) { height: clamp(160px, 22vw, 300px); width: auto; margin-inline: auto; color: var(--ivoire); }
-  :global(.tete__portrait) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .tete__video { position: relative; margin: 0; }
+  .tete__video video { display: block; width: 100%; aspect-ratio: 9 / 16; object-fit: cover; background: #000; }
+  .tete__son {
+    position: absolute; right: 12px; bottom: 12px;
+    min-height: 44px; padding: 0 16px;
+    font-family: var(--f-capitales); font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ivoire); background: rgba(13, 13, 13, 0.65); border: 1px solid var(--or); cursor: pointer;
+  }
+  .tete__son:hover, .tete__son:focus-visible { background: rgba(13, 13, 13, 0.85); }
 
   .deux-col {
     display: grid;
@@ -127,6 +133,23 @@ const portrait = (h.portrait ? deposes[h.portrait]?.default : undefined) ?? Obje
 
   @media (max-width: 900px) {
     .tete__grille, .deux-col, .parcours { grid-template-columns: 1fr; }
-    .tete :global(.tete__pilier) { display: none; }
+    .tete__video { max-width: 22rem; }
   }
 </style>
+
+<script>
+  // La vidéo d'Huguette : en boucle et sans le son ; le bouton active ou coupe le son.
+  // Mouvement réduit demandé : elle ne démarre pas d'elle-même (l'affiche reste, le bouton la lance avec le son).
+  const video = document.querySelector<HTMLVideoElement>('.tete__video video');
+  const bouton = document.querySelector<HTMLButtonElement>('.tete__son');
+
+  if (video && bouton) {
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) video.play().catch(() => {});
+    bouton.addEventListener('click', () => {
+      video.muted = !video.muted;
+      if (!video.muted) video.play().catch(() => {});
+      bouton.textContent = video.muted ? 'Activer le son' : 'Couper le son';
+      bouton.setAttribute('aria-pressed', String(!video.muted));
+    });
+  }
+</script>

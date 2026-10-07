@@ -235,7 +235,8 @@ Nouveau décor du film, un seul arrêt sur l'ordinateur pour présenter la Consu
 
 ## Retours d'Huguette (07/10/2026)
 
-- **Son portrait** (`portraits/huguette.jpg`) remplace la photo assise dans le Vestibule de l'accueil et s'affiche sur la page L'architecte (à la place du Pilier) — en attendant sa vraie photo LinkedIn pour cette page.
+- **Son portrait** (`portraits/huguette.jpg`) remplace la photo assise dans le Vestibule de l'accueil.
+- **Sa vidéo** en haut de la page L'architecte (`public/film/huguette.mp4`, verticale, sous-titrée) : en boucle sans le son, bouton « Activer le son ».
 - **Lien LinkedIn** vers son profil sur ces deux emplacements (réglage `linkedin`, modifiable dans « Coordonnées et réglages »).
 - **Photo assise** retirée du site à sa demande.
 
